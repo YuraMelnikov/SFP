@@ -2,10 +2,9 @@
 
 namespace Entities.DataTransferObjects
 {
-    public  class CountryDto
+    public class CountryUpdateDto
     {
-        public Guid Id;
         public string Name { get; set; }
-        public ImageDto Image { get; set; }
+        public Guid IdImage { get; set; }
     }
 }
