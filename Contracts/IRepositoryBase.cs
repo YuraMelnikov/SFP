@@ -9,7 +9,7 @@ namespace Contracts
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(Guid id);
         Task<int> Create(T entity);
-        Task Update(T entity);
-        Task<int> Delete(T entity);
+        int Update(T entity);
+        int Delete(T entity);
     }
 }

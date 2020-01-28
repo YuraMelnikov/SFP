@@ -16,8 +16,8 @@ namespace SFPrj.Controllers
     [ApiController]
     public class ImageController : ControllerBase
     {
-        private IRepositoryWrapper _repository;
-        private IMapper _mapper;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
 
         public ImageController(IRepositoryWrapper repository, IMapper mapper)
         {
@@ -45,7 +45,7 @@ namespace SFPrj.Controllers
         public async Task<IActionResult> CreateImage(ImageForCreationDto image)
         {
             var imageEntity = _mapper.Map<Image>(image);
-            _repository.Image.Create(imageEntity);
+            await _repository.Image.Create(imageEntity);
             await _repository.SaveAsync();
             var createImage = _mapper.Map<ImageDto>(imageEntity);
             return CreatedAtRoute("ImageById", new { id = createImage.Id }, createImage);
@@ -54,9 +54,11 @@ namespace SFPrj.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateImage(Guid id, ImageForUpdateDto image)
         {
-            var imageEntity = _repository.Image.GetById(id);
-            _mapper.Map(image, imageEntity);
+            var imageEntity = await _repository.Image.GetById(id);
+            imageEntity = _mapper.Map(image, imageEntity);
+
             _repository.Image.Update(imageEntity);
+
             await _repository.SaveAsync();
             return NoContent();
         }
@@ -64,7 +66,7 @@ namespace SFPrj.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteImage(Guid id)
         {
-            var image = _repository.Image.GetById(id);
+            var image = await _repository.Image.GetById(id);
             _repository.Image.Delete(image);
             await _repository.SaveAsync();
             return NoContent();

@@ -21,24 +21,48 @@ namespace Repository
             return await RepositoryContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T> Create(T entity)
-        {
-            return await RepositoryContext.Set<T>().Add(entity);
-        }
-
-        public async Task<T> Update(T entity)
-        {
-            return await RepositoryContext.Set<T>().Update(entity);
-        }
-
-        public async Task<T> Delete(T entity)
-        {
-            return await RepositoryContext.Set<T>().Remove(entity);
-        }
-
         public async Task<T> GetById(Guid id)
         {
             return await RepositoryContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<int> Create(T entity)
+        {
+            try
+            {
+                await RepositoryContext.Set<T>().AddAsync(entity);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int Update(T entity)
+        {
+            try
+            {
+                RepositoryContext.Set<T>().Update(entity);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int Delete(T entity)
+        {
+            try
+            {
+                RepositoryContext.Set<T>().Remove(entity);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 }
