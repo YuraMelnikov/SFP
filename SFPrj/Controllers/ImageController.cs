@@ -26,7 +26,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllImages()
+        public async Task<IActionResult> GetAll()
         {
             var images = await _repository.Image.GetAll();
             var imagesResult = _mapper.Map<IEnumerable<ImageDto>>(images);
@@ -42,7 +42,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateImage(ImageForCreationDto image)
+        public async Task<IActionResult> Create(ImageForCreationDto image)
         {
             var imageEntity = _mapper.Map<Image>(image);
             await _repository.Image.Create(imageEntity);
@@ -52,19 +52,17 @@ namespace SFPrj.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateImage(Guid id, ImageForUpdateDto image)
+        public async Task<IActionResult> Update(Guid id, ImageForUpdateDto image)
         {
             var imageEntity = await _repository.Image.GetById(id);
             imageEntity = _mapper.Map(image, imageEntity);
-
             _repository.Image.Update(imageEntity);
-
             await _repository.SaveAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteImage(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var image = await _repository.Image.GetById(id);
             _repository.Image.Delete(image);
