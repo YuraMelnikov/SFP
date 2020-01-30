@@ -8,19 +8,18 @@ using SFPrj.ActionFilters;
 using Entities.DataTransferObjects;
 using Entities.Models;
 
-
 namespace SFPrj.Controllers
 {
+    [Route("api/season")]
+    [ApiController]
     [ServiceFilter(typeof(ModelNullAttribute))]
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/livery")]
-    [ApiController]
-    public class LiveryController : ControllerBase
+    public class SeasonController : ControllerBase
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
 
-        public LiveryController(IRepositoryWrapper repository, IMapper mapper)
+        public SeasonController(IRepositoryWrapper repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,35 +28,35 @@ namespace SFPrj.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var liverys = await _repository.Livery.GetAll();
-            var liverysResult = _mapper.Map<IEnumerable<LiveryDto>>(liverys);
-            return Ok(liverysResult);
+            var seasons = await _repository.Season.GetAll();
+            var seasonsResult = _mapper.Map<IEnumerable<SeasonDto>>(seasons);
+            return Ok(seasonsResult);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var livery = await _repository.Livery.GetById(id);
-            var liveryResult = _mapper.Map<LiveryDto>(livery);
-            return Ok(liveryResult);
+            var season = await _repository.Season.GetById(id);
+            var seasonResult = _mapper.Map<SeasonDto>(season);
+            return Ok(seasonResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LiveryCreateDto livery)
+        public async Task<IActionResult> Create(SeasonCreateDto season)
         {
-            var liveryEntity = _mapper.Map<Livery>(livery);
-            await _repository.Livery.Create(liveryEntity);
+            var seasonEntity = _mapper.Map<Season>(season);
+            await _repository.Season.Create(seasonEntity);
             await _repository.SaveAsync();
-            var liveryCreate = _mapper.Map<LiveryDto>(liveryEntity);
-            return CreatedAtRoute("LiveryById", new { id = liveryCreate.Id }, liveryCreate);
+            var seasonCreate = _mapper.Map<SeasonDto>(seasonEntity);
+            return CreatedAtRoute("GetById", new { id = seasonCreate.Id }, seasonCreate);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, LiveryUpdateDto livery)
         {
-            var liveryEntity = await _repository.Livery.GetById(id);
-            liveryEntity = _mapper.Map(livery, liveryEntity);
-            _repository.Livery.Update(liveryEntity);
+            var seasonEntity = await _repository.Season.GetById(id);
+            seasonEntity = _mapper.Map(livery, seasonEntity);
+            _repository.Season.Update(seasonEntity);
             await _repository.SaveAsync();
             return NoContent();
         }
@@ -65,8 +64,8 @@ namespace SFPrj.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var liveryEntity = await _repository.Livery.GetById(id);
-            _repository.Livery.Delete(liveryEntity);
+            var seasonEntity = await _repository.Season.GetById(id);
+            _repository.Season.Delete(seasonEntity);
             await _repository.SaveAsync();
             return NoContent();
         }
