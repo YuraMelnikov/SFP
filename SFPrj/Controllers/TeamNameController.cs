@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var teamNames = await _repository.TeamName.GetAll();
+            var teamNames = await _repository.TeamName.GetAllAsync();
             var teamNameResult = _mapper.Map<IEnumerable<TeamNameDto>>(teamNames);
             return Ok(teamNameResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var teamName = await _repository.TeamName.GetById(id);
+            var teamName = await _repository.TeamName.GetByIdAsync(id);
             var teamNameResult = _mapper.Map<TeamNameDto>(teamName);
             return Ok(teamNameResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TeamNameCreateDto team)
+        public async Task<IActionResult> Post(TeamNameCreateDto team)
         {
             var teamNameEntity = _mapper.Map<TeamName>(team);
-            await _repository.TeamName.Create(teamNameEntity);
-            await _repository.SaveAsync();
+            await _repository.TeamName.AddAsync(teamNameEntity);
             var teamNameCreate = _mapper.Map<TeamNameDto>(teamNameEntity);
             return CreatedAtRoute("GetById", new { id = teamNameCreate.Id }, teamNameCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, TeamNameUpdateDto team)
+        public async Task<IActionResult> Put(Guid id, TeamNameUpdateDto team)
         {
-            var teamNameEntity = await _repository.TeamName.GetById(id);
+            var teamNameEntity = await _repository.TeamName.GetByIdAsync(id);
             teamNameEntity = _mapper.Map(team, teamNameEntity);
-            _repository.TeamName.Update(teamNameEntity);
-            await _repository.SaveAsync();
+            await _repository.TeamName.UpdateAsync(teamNameEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var teamNameEntity = await _repository.TeamName.GetById(id);
-            _repository.TeamName.Delete(teamNameEntity);
-            await _repository.SaveAsync();
+            var teamNameEntity = await _repository.TeamName.GetByIdAsync(id);
+            await _repository.TeamName.DeleteAsync(teamNameEntity);
             return NoContent();
         }
     }

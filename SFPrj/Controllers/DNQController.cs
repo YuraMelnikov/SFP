@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var dnqList = await _repository.DNQ.GetAll();
+            var dnqList = await _repository.DNQ.GetAllAsync();
             var dnqListResult = _mapper.Map<IEnumerable<DNQDto>>(dnqList);
             return Ok(dnqListResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var dnq = await _repository.DNQ.GetById(id);
+            var dnq = await _repository.DNQ.GetByIdAsync(id);
             var dnqResult = _mapper.Map<DNQDto>(dnq);
             return Ok(dnqResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(DNQCreateDto dnq)
+        public async Task<IActionResult> Post(DNQCreateDto dnq)
         {
             var dnqEntity = _mapper.Map<DNQ>(dnq);
-            await _repository.DNQ.Create(dnqEntity);
-            await _repository.SaveAsync();
+            await _repository.DNQ.AddAsync(dnqEntity);
             var dnqCreate = _mapper.Map<DNQDto>(dnqEntity);
             return CreatedAtRoute("DNQById", new { id = dnqCreate.Id }, dnqCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, DNQUpdateDto dnq)
+        public async Task<IActionResult> Put(Guid id, DNQUpdateDto dnq)
         {
-            var dnqEntity = await _repository.DNQ.GetById(id);
+            var dnqEntity = await _repository.DNQ.GetByIdAsync(id);
             dnqEntity = _mapper.Map(dnq, dnqEntity);
-            _repository.DNQ.Update(dnqEntity);
-            await _repository.SaveAsync();
+            await _repository.DNQ.UpdateAsync(dnqEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var dnqEntity = await _repository.DNQ.GetById(id);
-            _repository.DNQ.Delete(dnqEntity);
-            await _repository.SaveAsync();
+            var dnqEntity = await _repository.DNQ.GetByIdAsync(id);
+            await _repository.DNQ.DeleteAsync(dnqEntity);
             return NoContent();
         }
     }

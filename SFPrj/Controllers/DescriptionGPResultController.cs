@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var descriptions = await _repository.DescriptionGPResult.GetAll();
+            var descriptions = await _repository.DescriptionGPResult.GetAllAsync();
             var descriptionsResult = _mapper.Map<IEnumerable<DescriptionGPResultDto>>(descriptions);
             return Ok(descriptionsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var description = await _repository.DescriptionGPResult.GetById(id);
+            var description = await _repository.DescriptionGPResult.GetByIdAsync(id);
             var descriptionResult = _mapper.Map<DescriptionGPResultDto>(description);
             return Ok(descriptionResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(DescriptionGPResultCreateDto description)
+        public async Task<IActionResult> Post(DescriptionGPResultCreateDto description)
         {
             var descriptionEntity = _mapper.Map<DescriptionGPResult>(description);
-            await _repository.DescriptionGPResult.Create(descriptionEntity);
-            await _repository.SaveAsync();
+            await _repository.DescriptionGPResult.AddAsync(descriptionEntity);
             var descriptionCreate = _mapper.Map<DescriptionGPResultDto>(descriptionEntity);
             return CreatedAtRoute("DescriptionById", new { id = descriptionCreate.Id }, descriptionCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, DescriptionGPResultUpdateDto description)
+        public async Task<IActionResult> Put(Guid id, DescriptionGPResultUpdateDto description)
         {
-            var descriptionEntity = await _repository.DescriptionGPResult.GetById(id);
+            var descriptionEntity = await _repository.DescriptionGPResult.GetByIdAsync(id);
             descriptionEntity = _mapper.Map(description, descriptionEntity);
-            _repository.DescriptionGPResult.Update(descriptionEntity);
-            await _repository.SaveAsync();
+            await _repository.DescriptionGPResult.UpdateAsync(descriptionEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var descriptionEntity = await _repository.DescriptionGPResult.GetById(id);
-            _repository.DescriptionGPResult.Delete(descriptionEntity);
-            await _repository.SaveAsync();
+            var descriptionEntity = await _repository.DescriptionGPResult.GetByIdAsync(id);
+            await _repository.DescriptionGPResult.DeleteAsync(descriptionEntity);
             return NoContent();
         }
     }

@@ -6,10 +6,10 @@ namespace Contracts
 {
     public interface IRepositoryBase<T>
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(Guid id);
-        Task<int> Create(T entity);
-        int Update(T entity);
-        int Delete(T entity);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(Guid id);
+        Task<T> AddAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(T entity);
     }
 }

@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var fastLaps = await _repository.FastLap.GetAll();
+            var fastLaps = await _repository.FastLap.GetAllAsync();
             var fastLapsResult = _mapper.Map<IEnumerable<FastLapDto>>(fastLaps);
             return Ok(fastLapsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var fastLap = await _repository.FastLap.GetById(id);
+            var fastLap = await _repository.FastLap.GetByIdAsync(id);
             var fastLapResult = _mapper.Map<FastLapDto>(fastLap);
             return Ok(fastLapResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FastLapCreateDto fastLap)
+        public async Task<IActionResult> Post(FastLapCreateDto fastLap)
         {
             var fastLapEntity = _mapper.Map<FastLap>(fastLap);
-            await _repository.FastLap.Create(fastLapEntity);
-            await _repository.SaveAsync();
+            await _repository.FastLap.AddAsync(fastLapEntity);
             var fastLapCreate = _mapper.Map<FastLapDto>(fastLapEntity);
             return CreatedAtRoute("FastlpaById", new { id = fastLapCreate.Id}, fastLapCreate);
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, FastLapUpdateDto fastLap)
+        public async Task<IActionResult> Put(Guid id, FastLapUpdateDto fastLap)
         {
-            var fastLapEntity = await _repository.FastLap.GetById(id);
+            var fastLapEntity = await _repository.FastLap.GetByIdAsync(id);
             fastLapEntity = _mapper.Map(fastLap, fastLapEntity);
-            _repository.FastLap.Update(fastLapEntity);
-            await _repository.SaveAsync();
+            await _repository.FastLap.UpdateAsync(fastLapEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var fastLapEntity = await _repository.FastLap.GetById(id);
-            _repository.FastLap.Delete(fastLapEntity);
-            await _repository.SaveAsync();
+            var fastLapEntity = await _repository.FastLap.GetByIdAsync(id);
+            await _repository.FastLap.DeleteAsync(fastLapEntity);
             return NoContent();
         }
     }

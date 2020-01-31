@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var seasons = await _repository.Season.GetAll();
+            var seasons = await _repository.Season.GetAllAsync();
             var seasonsResult = _mapper.Map<IEnumerable<SeasonDto>>(seasons);
             return Ok(seasonsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var season = await _repository.Season.GetById(id);
+            var season = await _repository.Season.GetByIdAsync(id);
             var seasonResult = _mapper.Map<SeasonDto>(season);
             return Ok(seasonResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SeasonCreateDto season)
+        public async Task<IActionResult> Post(SeasonCreateDto season)
         {
             var seasonEntity = _mapper.Map<Season>(season);
-            await _repository.Season.Create(seasonEntity);
-            await _repository.SaveAsync();
+            await _repository.Season.AddAsync(seasonEntity);
             var seasonCreate = _mapper.Map<SeasonDto>(seasonEntity);
             return CreatedAtRoute("GetById", new { id = seasonCreate.Id }, seasonCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, LiveryUpdateDto livery)
+        public async Task<IActionResult> Put(Guid id, LiveryUpdateDto livery)
         {
-            var seasonEntity = await _repository.Season.GetById(id);
+            var seasonEntity = await _repository.Season.GetByIdAsync(id);
             seasonEntity = _mapper.Map(livery, seasonEntity);
-            _repository.Season.Update(seasonEntity);
-            await _repository.SaveAsync();
+            await _repository.Season.UpdateAsync(seasonEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var seasonEntity = await _repository.Season.GetById(id);
-            _repository.Season.Delete(seasonEntity);
-            await _repository.SaveAsync();
+            var seasonEntity = await _repository.Season.GetByIdAsync(id);
+            await _repository.Season.DeleteAsync(seasonEntity);
             return NoContent();
         }
     }

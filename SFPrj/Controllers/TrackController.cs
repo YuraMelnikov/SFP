@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var tracks = await _repository.Track.GetAll();
+            var tracks = await _repository.Track.GetAllAsync();
             var tracksResult = _mapper.Map<IEnumerable<RacerDto>>(tracks);
             return Ok(tracksResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var track = await _repository.Track.GetById(id);
+            var track = await _repository.Track.GetByIdAsync(id);
             var trackResult = _mapper.Map<TrackDto>(track);
             return Ok(trackResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TrackCreateDto track)
+        public async Task<IActionResult> Post(TrackCreateDto track)
         {
             var trackEntity = _mapper.Map<Track>(track);
-            await _repository.Track.Create(trackEntity);
-            await _repository.SaveAsync();
+            await _repository.Track.AddAsync(trackEntity);
             var trackCreate = _mapper.Map<TrackDto>(trackEntity);
             return CreatedAtRoute("GetById", new { id = trackCreate.Id }, trackCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, TrackUpdateDto track)
+        public async Task<IActionResult> Put(Guid id, TrackUpdateDto track)
         {
-            var trackEntity = await _repository.Track.GetById(id);
+            var trackEntity = await _repository.Track.GetByIdAsync(id);
             trackEntity = _mapper.Map(track, trackEntity);
-            _repository.Track.Update(trackEntity);
-            await _repository.SaveAsync();
+            await _repository.Track.UpdateAsync(trackEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var trackEntity = await _repository.Track.GetById(id);
-            _repository.Track.Delete(trackEntity);
-            await _repository.SaveAsync();
+            var trackEntity = await _repository.Track.GetByIdAsync(id);
+            await _repository.Track.DeleteAsync(trackEntity);
             return NoContent();
         }
     }

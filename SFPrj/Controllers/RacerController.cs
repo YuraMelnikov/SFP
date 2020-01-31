@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var racers = await _repository.Racer.GetAll();
+            var racers = await _repository.Racer.GetAllAsync();
             var racersResult = _mapper.Map<IEnumerable<RacerDto>>(racers);
             return Ok(racersResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var racer = await _repository.Racer.GetById(id);
+            var racer = await _repository.Racer.GetByIdAsync(id);
             var racerResult = _mapper.Map<RacerDto>(racer);
             return Ok(racerResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(RacerCreateDto racer)
+        public async Task<IActionResult> Post(RacerCreateDto racer)
         {
             var racerEntity = _mapper.Map<Racer>(racer);
-            await _repository.Racer.Create(racerEntity);
-            await _repository.SaveAsync();
+            await _repository.Racer.AddAsync(racerEntity);
             var racerCreate = _mapper.Map<RacerDto>(racerEntity);
             return CreatedAtRoute("GetById", new { id = racerCreate.Id}, racerCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, RacerCreateDto racer)
+        public async Task<IActionResult> Put(Guid id, RacerCreateDto racer)
         {
-            var racerEntity = await _repository.Racer.GetById(id);
+            var racerEntity = await _repository.Racer.GetByIdAsync(id);
             racerEntity = _mapper.Map(racer, racerEntity);
-            _repository.Racer.Update(racerEntity);
-            await _repository.SaveAsync();
+            await _repository.Racer.UpdateAsync(racerEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var racerEntity = await _repository.Racer.GetById(id);
-            _repository.Racer.Delete(racerEntity);
-            await _repository.SaveAsync();
+            var racerEntity = await _repository.Racer.GetByIdAsync(id);
+            await _repository.Racer.DeleteAsync(racerEntity);
             return NoContent();
         }
     }

@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var gps = await _repository.GP.GetAll();
+            var gps = await _repository.GP.GetAllAsync();
             var gpsResult = _mapper.Map<IEnumerable<GPDto>>(gps);
             return Ok(gpsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var gp = await _repository.GP.GetById(id);
+            var gp = await _repository.GP.GetByIdAsync(id);
             var gpResult = _mapper.Map<GPDto>(gp);
             return Ok(gpResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(GPCreateDto gP)
+        public async Task<IActionResult> Post(GPCreateDto gP)
         {
             var gpEntity = _mapper.Map<GP>(gP);
-            await _repository.GP.Create(gpEntity);
-            await _repository.SaveAsync();
+            await _repository.GP.AddAsync(gpEntity);
             var gpCreate = _mapper.Map<GPDto>(gpEntity);
             return CreatedAtRoute("GPById", new { id = gpCreate.Id}, gpCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, GPUpdateDto gP)
+        public async Task<IActionResult> Put(Guid id, GPUpdateDto gP)
         {
-            var gpEntity = await _repository.GP.GetById(id);
+            var gpEntity = await _repository.GP.GetByIdAsync(id);
             gpEntity = _mapper.Map(gP, gpEntity);
-            _repository.GP.Update(gpEntity);
-            await _repository.SaveAsync();
+            await _repository.GP.UpdateAsync(gpEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var gpEntity = await _repository.GP.GetById(id);
-            _repository.GP.Delete(gpEntity);
-            await _repository.SaveAsync();
+            var gpEntity = await _repository.GP.GetByIdAsync(id);
+            await _repository.GP.DeleteAsync(gpEntity);
             return NoContent();
         }
     }

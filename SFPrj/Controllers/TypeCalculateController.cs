@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var typeCalculates = await _repository.TypeCalculate.GetAll();
+            var typeCalculates = await _repository.TypeCalculate.GetAllAsync();
             var typeCalculatesResult = _mapper.Map<IEnumerable<TypeCalculateDto>>(typeCalculates);
             return Ok(typeCalculatesResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var type = await _repository.TypeCalculate.GetById(id);
+            var type = await _repository.TypeCalculate.GetByIdAsync(id);
             var typeResult = _mapper.Map<TypeCalculateDto>(type);
             return Ok(typeResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TypeCalculateCreateDto typeCalculate)
+        public async Task<IActionResult> Post(TypeCalculateCreateDto typeCalculate)
         {
             var typeCalculateEntity = _mapper.Map<TypeCalculate>(typeCalculate);
-            await _repository.TypeCalculate.Create(typeCalculateEntity);
-            await _repository.SaveAsync();
+            await _repository.TypeCalculate.AddAsync(typeCalculateEntity);
             var typeCalculateCreate = _mapper.Map<TypeCalculateDto>(typeCalculateEntity);
             return CreatedAtRoute("GetById", new { id = typeCalculateCreate.Id }, typeCalculateCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,  TypeCalculateUpdateDto typeCalculate)
+        public async Task<IActionResult> Put(Guid id,  TypeCalculateUpdateDto typeCalculate)
         {
-            var typeCalculateEntity = await _repository.TypeCalculate.GetById(id);
+            var typeCalculateEntity = await _repository.TypeCalculate.GetByIdAsync(id);
             typeCalculateEntity = _mapper.Map(typeCalculate, typeCalculateEntity);
-            _repository.TypeCalculate.Update(typeCalculateEntity);
-            await _repository.SaveAsync();
+            await _repository.TypeCalculate.UpdateAsync(typeCalculateEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var typeCalculateEntity = await _repository.TypeCalculate.GetById(id);
-            _repository.TypeCalculate.Delete(typeCalculateEntity);
-            await _repository.SaveAsync();
+            var typeCalculateEntity = await _repository.TypeCalculate.GetByIdAsync(id);
+            await _repository.TypeCalculate.DeleteAsync(typeCalculateEntity);
             return NoContent();
         }
     }

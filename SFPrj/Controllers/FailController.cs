@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var fails = await _repository.Fail.GetAll();
+            var fails = await _repository.Fail.GetAllAsync();
             var failsResult = _mapper.Map<IEnumerable<FailDto>>(fails);
             return Ok(failsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var fail = await _repository.Fail.GetById(id);
+            var fail = await _repository.Fail.GetByIdAsync(id);
             var failResult = _mapper.Map<FailDto>(fail);
             return Ok(failResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FailCreateDto fail)
+        public async Task<IActionResult> Post(FailCreateDto fail)
         {
             var failEntity = _mapper.Map<Fail>(fail);
-            await _repository.Fail.Create(failEntity);
-            await _repository.SaveAsync();
+            await _repository.Fail.AddAsync(failEntity);
             var failCreate = _mapper.Map<FailDto>(failEntity);
             return CreatedAtRoute("FailById", new { id = failCreate}, failCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, FailCreateDto fail)
+        public async Task<IActionResult> Put(Guid id, FailCreateDto fail)
         {
-            var failEntity = await _repository.Fail.GetById(id);
+            var failEntity = await _repository.Fail.GetByIdAsync(id);
             failEntity = _mapper.Map(fail, failEntity);
-            _repository.Fail.Update(failEntity);
-            await _repository.SaveAsync();
+            await _repository.Fail.UpdateAsync(failEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var failEntity = await _repository.Fail.GetById(id);
-            _repository.Fail.Delete(failEntity);
-            await _repository.SaveAsync();
+            var failEntity = await _repository.Fail.GetByIdAsync(id);
+            await _repository.Fail.DeleteAsync(failEntity);
             return NoContent();
         }
     }

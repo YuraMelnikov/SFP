@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var types = await _repository.TypeDNQ.GetAll();
+            var types = await _repository.TypeDNQ.GetAllAsync();
             var typesResult = _mapper.Map<IEnumerable<TypeDNQDto>>(types);
             return Ok(typesResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var type = await _repository.TypeDNQ.GetById(id);
+            var type = await _repository.TypeDNQ.GetByIdAsync(id);
             var typeResult = _mapper.Map<TypeDNQDto>(type);
             return Ok(typeResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TypeDNQCreateDto type)
+        public async Task<IActionResult> Post(TypeDNQCreateDto type)
         {
             var typeEntity = _mapper.Map<TypeDNQ>(type);
-            await _repository.TypeDNQ.Create(typeEntity);
-            await _repository.SaveAsync();
+            await _repository.TypeDNQ.AddAsync(typeEntity);
             var typeCreate = _mapper.Map<TypeDNQDto>(typeEntity);
             return CreatedAtRoute("GetById", new { id = typeCreate.Id }, typeCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,  TypeDNQUpdateDto type)
+        public async Task<IActionResult> Put(Guid id,  TypeDNQUpdateDto type)
         {
-            var typeEntity = await _repository.TypeDNQ.GetById(id);
+            var typeEntity = await _repository.TypeDNQ.GetByIdAsync(id);
             typeEntity = _mapper.Map(type, typeEntity);
-            _repository.TypeDNQ.Update(typeEntity);
-            await _repository.SaveAsync();
+            await _repository.TypeDNQ.UpdateAsync(typeEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var typeEntity = await _repository.TypeDNQ.GetById(id);
-            _repository.TypeDNQ.Delete(typeEntity);
-            await _repository.SaveAsync();
+            var typeEntity = await _repository.TypeDNQ.GetByIdAsync(id);
+            await _repository.TypeDNQ.DeleteAsync(typeEntity);
             return NoContent();
         }
     }

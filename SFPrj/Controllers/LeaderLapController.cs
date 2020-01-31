@@ -28,9 +28,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var leaders = await _repository.LeaderLap.GetAll();
+            var leaders = await _repository.LeaderLap.GetAllAsync();
             var leadersResult = _mapper.Map<IEnumerable<LeaderLapDto>>(leaders);
             return Ok(leadersResult);
         }
@@ -38,37 +38,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var leader = await _repository.LeaderLap.GetById(id);
+            var leader = await _repository.LeaderLap.GetByIdAsync(id);
             var leaderResult = _mapper.Map<LeaderLapDto>(leader);
             return Ok(leaderResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LeaderLapCreateDto leader)
+        public async Task<IActionResult> Post(LeaderLapCreateDto leader)
         {
             var leaderEntity = _mapper.Map<LeaderLap>(leader);
-            await _repository.LeaderLap.Create(leaderEntity);
-            await _repository.SaveAsync();
+            await _repository.LeaderLap.AddAsync(leaderEntity);
             var leaderCreate = _mapper.Map<LeaderLapDto>(leaderEntity);
             return CreatedAtRoute("LeaderLapById", new { id = leaderCreate.Id }, leaderCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, LeaderLapUpdateDto leader)
+        public async Task<IActionResult> Put(Guid id, LeaderLapUpdateDto leader)
         {
-            var leaderEntry = await _repository.LeaderLap.GetById(id);
+            var leaderEntry = await _repository.LeaderLap.GetByIdAsync(id);
             leaderEntry = _mapper.Map(leader, leaderEntry);
-            _repository.LeaderLap.Update(leaderEntry);
-            await _repository.SaveAsync();
+            await _repository.LeaderLap.UpdateAsync(leaderEntry);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var leaderEntry = await _repository.LeaderLap.GetById(id);
-            _repository.LeaderLap.Delete(leaderEntry);
-            await _repository.SaveAsync();
+            var leaderEntry = await _repository.LeaderLap.GetByIdAsync(id);
+            await _repository.LeaderLap.DeleteAsync(leaderEntry);
             return NoContent();
         }
     }

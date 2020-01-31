@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var pits = await _repository.Pit.GetAll();
+            var pits = await _repository.Pit.GetAllAsync();
             var pitsResult = _mapper.Map<IEnumerable<PitDto>>(pits);
             return Ok(pitsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var pit = await _repository.Pit.GetById(id);
+            var pit = await _repository.Pit.GetByIdAsync(id);
             var pitResult = _mapper.Map<PitDto>(pit);
             return Ok(pitResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Crete(PitCreateDto pit)
+        public async Task<IActionResult> Post(PitCreateDto pit)
         {
             var pitEntity = _mapper.Map<Pit>(pit);
-            await _repository.Pit.Create(pitEntity);
-            await _repository.SaveAsync();
+            await _repository.Pit.AddAsync(pitEntity);
             var pitCreate = _mapper.Map<PitDto>(pitEntity);
             return CreatedAtRoute("GetById", new { id = pitCreate.Id}, pitCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, PitUpdateDto pit)
+        public async Task<IActionResult> Put(Guid id, PitUpdateDto pit)
         {
-            var pitEntity = await _repository.Pit.GetById(id);
+            var pitEntity = await _repository.Pit.GetByIdAsync(id);
             pitEntity = _mapper.Map(pit, pitEntity);
-            _repository.Pit.Update(pitEntity);
-            await _repository.SaveAsync();
+            await _repository.Pit.UpdateAsync(pitEntity);
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var pitEntity = await _repository.Pit.GetById(id);
-            _repository.Pit.Delete(pitEntity);
-            await _repository.SaveAsync();
+            var pitEntity = await _repository.Pit.GetByIdAsync(id);
+            await _repository.Pit.DeleteAsync(pitEntity);
             return NoContent();
         }
     }

@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var manufacturers = await _repository.Manufacturer.GetAll();
+            var manufacturers = await _repository.Manufacturer.GetAllAsync();
             var manufacturersResult = _mapper.Map<IEnumerable<ManufacturerDto>>(manufacturers);
             return Ok(manufacturersResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var manufacturer = await _repository.Manufacturer.GetById(id);
+            var manufacturer = await _repository.Manufacturer.GetByIdAsync(id);
             var manufacturerResult = _mapper.Map<IEnumerable<ManufacturerDto>>(manufacturer);
             return Ok(manufacturerResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ManufacturerCreateDto manufacturer)
+        public async Task<IActionResult> Post(ManufacturerCreateDto manufacturer)
         {
             var manufacturerEntity = _mapper.Map<Manufacturer>(manufacturer);
-            await _repository.Manufacturer.Create(manufacturerEntity);
-            await _repository.SaveAsync();
+            await _repository.Manufacturer.AddAsync(manufacturerEntity);
             var manufacturerCreate = _mapper.Map<ManufacturerDto>(manufacturerEntity);
             return CreatedAtRoute("GetById", new { id = manufacturerCreate.Id }, manufacturerCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, ManufacturerUpdateDto manufacturer)
+        public async Task<IActionResult> Put(Guid id, ManufacturerUpdateDto manufacturer)
         {
-            var manufacturerEntity = await _repository.Manufacturer.GetById(id);
+            var manufacturerEntity = await _repository.Manufacturer.GetByIdAsync(id);
             manufacturerEntity = _mapper.Map(manufacturer, manufacturerEntity);
-            _repository.Manufacturer.Update(manufacturerEntity);
-            await _repository.SaveAsync();
+            await _repository.Manufacturer.UpdateAsync(manufacturerEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var manufacturerEntity = await _repository.Manufacturer.GetById(id);
-            _repository.Manufacturer.Delete(manufacturerEntity);
-            await _repository.SaveAsync();
+            var manufacturerEntity = await _repository.Manufacturer.GetByIdAsync(id);
+            await _repository.Manufacturer.DeleteAsync(manufacturerEntity);
             return NoContent();
         }
     }

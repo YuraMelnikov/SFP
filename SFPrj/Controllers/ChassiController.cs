@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var chassi = await _repository.Chassi.GetAll();
+            var chassi = await _repository.Chassi.GetAllAsync();
             var chassisResult = _mapper.Map<IEnumerable<ChassiDto>>(chassi);
             return Ok(chassisResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var chassi = await _repository.Chassi.GetById(id);
+            var chassi = await _repository.Chassi.GetByIdAsync(id);
             var chassiResult = _mapper.Map<ChassiDto>(chassi);
             return Ok(chassiResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ChassiCreateDto chassi)
+        public async Task<IActionResult> Post(ChassiCreateDto chassi)
         {
             var chassiEntity = _mapper.Map<Chassi>(chassi);
-            await _repository.Chassi.Create(chassiEntity);
-            await _repository.SaveAsync();
+            await _repository.Chassi.AddAsync(chassiEntity);
             var createChassi = _mapper.Map<ChassiDto>(chassiEntity);
             return CreatedAtRoute("ChassiById", new { id = createChassi.Id }, createChassi);
         }
 
         [HttpPut("{id}")] 
-        public async Task<IActionResult> Update(Guid id, ChassiUpdateDto chassi)
+        public async Task<IActionResult> Put(Guid id, ChassiUpdateDto chassi)
         {
-            var chassiEntity = await _repository.Chassi.GetById(id);
+            var chassiEntity = await _repository.Chassi.GetByIdAsync(id);
             chassiEntity = _mapper.Map(chassi, chassiEntity);
-            _repository.Chassi.Update(chassiEntity);
-            await _repository.SaveAsync();
+            await _repository.Chassi.UpdateAsync(chassiEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var chassi = await _repository.Chassi.GetById(id);
-            _repository.Chassi.Delete(chassi);
-            await _repository.SaveAsync();
+            var chassi = await _repository.Chassi.GetByIdAsync(id);
+            await _repository.Chassi.DeleteAsync(chassi);
             return NoContent();
         }
     }

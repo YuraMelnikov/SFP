@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var qualifications = await _repository.Qualification.GetAll();
+            var qualifications = await _repository.Qualification.GetAllAsync();
             var qualificationsResult = _mapper.Map<IEnumerable<QualificationDto>>(qualifications);
             return Ok(qualificationsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var qualification = await _repository.Qualification.GetById(id);
+            var qualification = await _repository.Qualification.GetByIdAsync(id);
             var qualificationReasult = _mapper.Map<QualificationDto>(qualification);
             return Ok(qualificationReasult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(QualificationCreateDto qualification)
+        public async Task<IActionResult> Post(QualificationCreateDto qualification)
         {
             var qualificationEntity = _mapper.Map<Qualification>(qualification);
-            await _repository.Qualification.Create(qualificationEntity);
-            await _repository.SaveAsync();
+            await _repository.Qualification.AddAsync(qualificationEntity);
             var qualificationCreate = _mapper.Map<QualificationDto>(qualificationEntity);
             return CreatedAtRoute("GetById", new { id = qualificationCreate.Id }, qualificationCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, QualificationUpdateDto qualification)
+        public async Task<IActionResult> Put(Guid id, QualificationUpdateDto qualification)
         {
-            var qualificationEntity = await _repository.Qualification.GetById(id);
+            var qualificationEntity = await _repository.Qualification.GetByIdAsync(id);
             qualificationEntity = _mapper.Map(qualification, qualificationEntity);
-            _repository.Qualification.Update(qualificationEntity);
-            await _repository.SaveAsync();
+            await _repository.Qualification.UpdateAsync(qualificationEntity);
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var qualificationEntity = await _repository.Qualification.GetById(id);
-            _repository.Qualification.Delete(qualificationEntity);
-            await _repository.SaveAsync();
+            var qualificationEntity = await _repository.Qualification.GetByIdAsync(id);
+            await _repository.Qualification.DeleteAsync(qualificationEntity);
             return NoContent();
         }
     }

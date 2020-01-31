@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var trackConfigurations = await _repository.TrackConfiguration.GetAll();
+            var trackConfigurations = await _repository.TrackConfiguration.GetAllAsync();
             var trackConfigurationsResult = _mapper.Map<IEnumerable<TrackСonfigurationDto>>(trackConfigurations);
             return Ok(trackConfigurationsResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var trackConfiguration = await _repository.TrackConfiguration.GetById(id);
+            var trackConfiguration = await _repository.TrackConfiguration.GetByIdAsync(id);
             var trackConfigurationResult = _mapper.Map<TrackСonfigurationDto>(trackConfiguration);
             return Ok(trackConfigurationResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TrackСonfigurationCreateDto track)
+        public async Task<IActionResult> Post(TrackСonfigurationCreateDto track)
         {
             var trackConfigurationEntity = _mapper.Map<TrackСonfiguration>(track);
-            await _repository.TrackConfiguration.Create(trackConfigurationEntity);
-            await _repository.SaveAsync();
+            await _repository.TrackConfiguration.AddAsync(trackConfigurationEntity);
             var trackConfigurationCreate = _mapper.Map<TrackСonfigurationDto>(trackConfigurationEntity);
             return CreatedAtRoute("GetById", new { id = trackConfigurationCreate.Id }, trackConfigurationCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,  TrackСonfigurationCreateDto track)
+        public async Task<IActionResult> Put(Guid id,  TrackСonfigurationCreateDto track)
         {
-            var trackConfigurationEntity = await _repository.TrackConfiguration.GetById(id);
+            var trackConfigurationEntity = await _repository.TrackConfiguration.GetByIdAsync(id);
             trackConfigurationEntity = _mapper.Map(track, trackConfigurationEntity);
-            _repository.TrackConfiguration.Update(trackConfigurationEntity);
-            await _repository.SaveAsync();
+            await _repository.TrackConfiguration.UpdateAsync(trackConfigurationEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var trackConfigurationEntity = await _repository.TrackConfiguration.GetById(id);
-            _repository.TrackConfiguration.Delete(trackConfigurationEntity);
-            await _repository.SaveAsync();
+            var trackConfigurationEntity = await _repository.TrackConfiguration.GetByIdAsync(id);
+            await _repository.TrackConfiguration.DeleteAsync(trackConfigurationEntity);
             return NoContent();
         }
     }

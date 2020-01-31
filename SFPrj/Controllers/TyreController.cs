@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var tyres = await _repository.Tyre.GetAll();
+            var tyres = await _repository.Tyre.GetAllAsync();
             var tyresResult = _mapper.Map<IEnumerable<TyreDto>>(tyres);
             return Ok(tyresResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var tyre = await _repository.Tyre.GetById(id);
+            var tyre = await _repository.Tyre.GetByIdAsync(id);
             var tyreResult = _mapper.Map<TyreDto>(tyre);
             return Ok(tyreResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TyreCreateDto tyre)
+        public async Task<IActionResult> Post(TyreCreateDto tyre)
         {
             var tyreEntity = _mapper.Map<Tyre>(tyre);
-            await _repository.Tyre.Create(tyreEntity);
-            await _repository.SaveAsync();
+            await _repository.Tyre.AddAsync(tyreEntity);
             var tyreCreate = _mapper.Map<TyreDto>(tyreEntity);
             return CreatedAtRoute("GetById", new { id = tyreCreate.Id }, tyreCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,  TyreUpdateDto tyre)
+        public async Task<IActionResult> Put(Guid id,  TyreUpdateDto tyre)
         {
-            var tyreEntity = await _repository.Tyre.GetById(id);
+            var tyreEntity = await _repository.Tyre.GetByIdAsync(id);
             tyreEntity = _mapper.Map(tyre, tyreEntity);
-            _repository.Tyre.Update(tyreEntity);
-            await _repository.SaveAsync();
+            await _repository.Tyre.UpdateAsync(tyreEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var tyreEntity = await _repository.Tyre.GetById(id);
-            _repository.Tyre.Delete(tyreEntity);
-            await _repository.SaveAsync();
+            var tyreEntity = await _repository.Tyre.GetByIdAsync(id);
+            await _repository.Tyre.DeleteAsync(tyreEntity);
             return NoContent();
         }
     }

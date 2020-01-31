@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailingService", "MailingService\MailingService.csproj", "{C52C7BFC-4BD5-4D73-9548-DE79F63650C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockData", "MockData\MockData.csproj", "{F874E10A-C789-437B-B3D1-B18614CB8446}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C52C7BFC-4BD5-4D73-9548-DE79F63650C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C52C7BFC-4BD5-4D73-9548-DE79F63650C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C52C7BFC-4BD5-4D73-9548-DE79F63650C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F874E10A-C789-437B-B3D1-B18614CB8446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F874E10A-C789-437B-B3D1-B18614CB8446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F874E10A-C789-437B-B3D1-B18614CB8446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F874E10A-C789-437B-B3D1-B18614CB8446}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

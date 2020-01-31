@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var engines = await _repository.Engine.GetAll();
+            var engines = await _repository.Engine.GetAllAsync();
             var enginesResult = _mapper.Map<IEnumerable<EngineDto>>(engines);
             return Ok(enginesResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var engine = await _repository.Engine.GetById(id);
+            var engine = await _repository.Engine.GetByIdAsync(id);
             var engineResult = _mapper.Map<EngineDto>(engine);
             return Ok(engineResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EngineCreateDto engine)
+        public async Task<IActionResult> Post(EngineCreateDto engine)
         {
             var engineEntity = _mapper.Map<Engine>(engine);
-            await _repository.Engine.Create(engineEntity);
-            await _repository.SaveAsync();
+            await _repository.Engine.AddAsync(engineEntity);
             var engineCreate = _mapper.Map<EngineDto>(engineEntity);
             return CreatedAtRoute("EngineById", new { id = engineCreate.Id}, engineCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, EngineUpdateDto engine)
+        public async Task<IActionResult> Put(Guid id, EngineUpdateDto engine)
         {
-            var engineEntity = await _repository.Engine.GetById(id);
+            var engineEntity = await _repository.Engine.GetByIdAsync(id);
             engineEntity = _mapper.Map(engine, engineEntity);
-            _repository.Engine.Update(engineEntity);
-            await _repository.SaveAsync();
+            await _repository.Engine.UpdateAsync(engineEntity);
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var engineEntity = await _repository.Engine.GetById(id);
-            _repository.Engine.Delete(engineEntity);
-            await _repository.SaveAsync();
+            var engineEntity = await _repository.Engine.GetByIdAsync(id);
+            await _repository.Engine.DeleteAsync(engineEntity);
             return NoContent();
         }
     }

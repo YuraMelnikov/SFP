@@ -26,9 +26,9 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var images = await _repository.Image.GetAll();
+            var images = await _repository.Image.GetAllAsync();
             var imagesResult = _mapper.Map<IEnumerable<ImageDto>>(images);
             return Ok(imagesResult);
         }
@@ -36,37 +36,34 @@ namespace SFPrj.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var image = await _repository.Image.GetById(id);
+            var image = await _repository.Image.GetByIdAsync(id);
             var imageResult = _mapper.Map<ImageDto>(image);
             return Ok(imageResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ImageForCreationDto image)
+        public async Task<IActionResult> Post(ImageForCreationDto image)
         {
             var imageEntity = _mapper.Map<Image>(image);
-            await _repository.Image.Create(imageEntity);
-            await _repository.SaveAsync();
+            await _repository.Image.AddAsync(imageEntity);
             var createImage = _mapper.Map<ImageDto>(imageEntity);
             return CreatedAtRoute("ImageById", new { id = createImage.Id }, createImage);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, ImageForUpdateDto image)
+        public async Task<IActionResult> Put(Guid id, ImageForUpdateDto image)
         {
-            var imageEntity = await _repository.Image.GetById(id);
+            var imageEntity = await _repository.Image.GetByIdAsync(id);
             imageEntity = _mapper.Map(image, imageEntity);
-            _repository.Image.Update(imageEntity);
-            await _repository.SaveAsync();
+            await _repository.Image.UpdateAsync(imageEntity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var image = await _repository.Image.GetById(id);
-            _repository.Image.Delete(image);
-            await _repository.SaveAsync();
+            var image = await _repository.Image.GetByIdAsync(id);
+            await _repository.Image.DeleteAsync(image);
             return NoContent();
         }
     }
