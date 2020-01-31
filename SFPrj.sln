@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailingService", "MailingService\MailingService.csproj", "{C52C7BFC-4BD5-4D73-9548-DE79F63650C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockData", "MockData\MockData.csproj", "{F874E10A-C789-437B-B3D1-B18614CB8446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockData", "MockData\MockData.csproj", "{F874E10A-C789-437B-B3D1-B18614CB8446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,7 @@ namespace Repository
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private RepositoryContext _repoContext;
+        private readonly RepositoryContext _repoContext;
         private IChassiRepository _chassi;
         private ICountryRepository _country;
         private IDescriptionGPResultRepository _descriptionGPResult;
