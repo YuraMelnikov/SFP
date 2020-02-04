@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Contracts;
 
@@ -37,36 +35,136 @@ namespace MockData.Repositories
         private ITypeFinishRepository _typeFinish;
         private ITyreRepository _tyre;
 
-        public IChassiRepository Chassi => throw new NotImplementedException();
 
-        public ICountryRepository Country => throw new NotImplementedException();
+        public IChassiRepository Chassi
+        {
+            get
+            {
+                if (_chassi == null)
+                {
+                    _chassi = new ChassiFakeRepository();
+                }
 
-        public IDescriptionGPResultRepository DescriptionGPResult => throw new NotImplementedException();
+                return _chassi;
+            }
+        }
 
-        public IDNQRepository DNQ => throw new NotImplementedException();
+        public ICountryRepository Country
+        {
+            get
+            {
+                if (_country == null)
+                {
+                    _country = new CountryFakeRepository();
+                }
 
-        public IEngineRepository Engine => throw new NotImplementedException();
+                return _country;
+            }
+        }
 
-        public IFailRepository Fail => throw new NotImplementedException();
+        public IDescriptionGPResultRepository DescriptionGPResult
+        {
+            get
+            {
+                if (_descriptionGPResult == null)
+                {
+                    _descriptionGPResult = new DescriptionGPResultFakeRepository();
+                }
 
-        public IFastLapRepository FastLap => throw new NotImplementedException();
+                return _descriptionGPResult;
+            }
+        }
 
-        public IFineRepository Fine => throw new NotImplementedException();
+        public IDNQRepository DNQ
+        {
+            get
+            {
+                if (_dNQ == null)
+                {
+                    _dNQ = new DNQFakeRepository();
+                }
 
-        public IGPRepository GP => throw new NotImplementedException();
+                return _dNQ;
+            }
+        }
 
-        public IGPResultRepository GPResult => throw new NotImplementedException();
+        public IEngineRepository Engine
+        {
+            get
+            {
+                if (_engine == null)
+                {
+                    _engine = new EngineFakeRepository();
+                }
 
+                return _engine;
+            }
+        }
 
+        public IFailRepository Fail
+        {
+            get
+            {
+                if (_fail == null)
+                {
+                    _fail = new FailFakeRepository();
+                }
 
+                return _fail;
+            }
+        }
 
+        public IFastLapRepository FastLap
+        {
+            get
+            {
+                if (_fastLap == null)
+                {
+                    _fastLap = new FastLapFakeRepository();
+                }
 
+                return _fastLap;
+            }
+        }
 
+        public IFineRepository Fine
+        {
+            get
+            {
+                if (_fine == null)
+                {
+                    _fine = new FineFakeRepository();
+                }
 
+                return _fine;
+            }
+        }
 
+        public IGPRepository GP
+        {
+            get
+            {
+                if (_gP == null)
+                {
+                    _gP = new GPFakeRepository();
+                }
 
+                return _gP;
+            }
+        }
 
+        public IGPResultRepository GPResult
+        {
+            get
+            {
+                if (_gPResult == null)
+                {
+                    _gPResult = new GPResultFakeRepository();
+                }
 
+                return _gPResult;
+            }
+        }
 
         public IImageRepository Image
         {
@@ -81,49 +179,226 @@ namespace MockData.Repositories
             }
         }
 
+        public ILeaderLapRepository LeaderLap
+        {
+            get
+            {
+                if (_leaderLap == null)
+                {
+                    _leaderLap = new LeaderLapFakeRepository();
+                }
 
+                return _leaderLap;
+            }
+        }
 
+        public ILiveryRepository Livery
+        {
+            get
+            {
+                if (_livery == null)
+                {
+                    _livery = new LiveryFakeRepository();
+                }
 
+                return _livery;
+            }
+        }
 
+        public IManufacturerRepository Manufacturer
+        {
+            get
+            {
+                if (_manufacturer == null)
+                {
+                    _manufacturer = new ManufacturerFakeRepository();
+                }
 
+                return _manufacturer;
+            }
+        }
 
+        public IParticipantRepository Participant
+        {
+            get
+            {
+                if (_participant == null)
+                {
+                    _participant = new ParticipantFakeRepository();
+                }
 
+                return _participant;
+            }
+        }
 
+        public IPitRepository Pit
+        {
+            get
+            {
+                if (_pit == null)
+                {
+                    _pit = new PitFakeRepository();
+                }
 
+                return _pit;
+            }
+        }
 
-        public ILeaderLapRepository LeaderLap => throw new NotImplementedException();
+        public IQualificationRepository Qualification
+        {
+            get
+            {
+                if (_qualification == null)
+                {
+                    _qualification = new QualificationFakeRepository();
+                }
 
-        public ILiveryRepository Livery => throw new NotImplementedException();
+                return _qualification;
+            }
+        }
 
-        public IManufacturerRepository Manufacturer => throw new NotImplementedException();
+        public IRacerRepository Racer
+        {
+            get
+            {
+                if (_racer == null)
+                {
+                    _racer = new RacerFakeRepository();
+                }
 
-        public IParticipantRepository Participant => throw new NotImplementedException();
+                return _racer;
+            }
+        }
 
-        public IPitRepository Pit => throw new NotImplementedException();
+        public ISeasonRepository Season
+        {
+            get
+            {
+                if (_season == null)
+                {
+                    _season = new SeasonFakeRepository();
+                }
 
-        public IQualificationRepository Qualification => throw new NotImplementedException();
+                return _season;
+            }
+        }
 
-        public IRacerRepository Racer => throw new NotImplementedException();
+        public ITeamNameRepository TeamName
+        {
+            get
+            {
+                if (_teamName == null)
+                {
+                    _teamName = new TeamNameFakeRepository();
+                }
 
-        public ISeasonRepository Season => throw new NotImplementedException();
+                return _teamName;
+            }
+        }
 
-        public ITeamNameRepository TeamName => throw new NotImplementedException();
+        public ITeamRepository Team
+        {
+            get
+            {
+                if (_team == null)
+                {
+                    _team = new TeamFakeRepository();
+                }
 
-        public ITeamRepository Team => throw new NotImplementedException();
+                return _team;
+            }
+        }
 
-        public ITrackConfigurationRepository TrackConfiguration => throw new NotImplementedException();
+        public ITrackConfigurationRepository TrackConfiguration
+        {
+            get
+            {
+                if (_trackConfiguration == null)
+                {
+                    _trackConfiguration = new TrackСonfigurationFakeRepository();
+                }
 
-        public ITrackRepository Track => throw new NotImplementedException();
+                return _trackConfiguration;
+            }
+        }
 
-        public ITypeCalculateRepository TypeCalculate => throw new NotImplementedException();
+        public ITrackRepository Track
+        {
+            get
+            {
+                if (_track == null)
+                {
+                    _track = new TrackFakeRepository();
+                }
 
-        public ITypeDNQRepository TypeDNQ => throw new NotImplementedException();
+                return _track;
+            }
+        }
 
-        public ITypeFailRepository TypeFail => throw new NotImplementedException();
+        public ITypeCalculateRepository TypeCalculate
+        {
+            get
+            {
+                if (_typeCalculate == null)
+                {
+                    _typeCalculate = new TypeCalculateFakeRepository();
+                }
 
-        public ITypeFinishRepository TypeFinish => throw new NotImplementedException();
+                return _typeCalculate;
+            }
+        }
 
-        public ITyreRepository Tyre => throw new NotImplementedException();
+        public ITypeDNQRepository TypeDNQ
+        {
+            get
+            {
+                if (_typeDNQ == null)
+                {
+                    _typeDNQ = new TypeDNQFakeRepository();
+                }
+
+                return _typeDNQ;
+            }
+        }
+
+        public ITypeFailRepository TypeFail
+        {
+            get
+            {
+                if (_typeFail == null)
+                {
+                    _typeFail = new TypeFailFakeRepository();
+                }
+
+                return _typeFail;
+            }
+        }
+
+        public ITypeFinishRepository TypeFinish
+        {
+            get
+            {
+                if (_typeFinish == null)
+                {
+                    _typeFinish = new TypeFinishFakeRepository();
+                }
+
+                return _typeFinish;
+            }
+        }
+
+        public ITyreRepository Tyre
+        {
+            get
+            {
+                if (_tyre == null)
+                {
+                    _tyre = new TyreFakeRepository();
+                }
+
+                return _tyre;
+            }
+        }
 
         public Task SaveAsync()
         {
