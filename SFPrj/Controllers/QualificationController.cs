@@ -11,7 +11,6 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [Route("api/qualification")]
     [ApiController]
     public class QualificationController : ControllerBase

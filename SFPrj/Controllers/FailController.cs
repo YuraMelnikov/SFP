@@ -11,7 +11,6 @@ using SFPrj.ActionFilters;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [Route("api/fail")]
     [ApiController]
     public class FailController : ControllerBase

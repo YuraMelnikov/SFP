@@ -32,7 +32,6 @@ namespace SFPrj
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ModelValidationAttribute>();
-            services.AddScoped<ModelNullAttribute>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)

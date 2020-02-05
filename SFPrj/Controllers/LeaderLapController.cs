@@ -12,7 +12,6 @@ using Entities.Models;
 
 namespace SFPrj.Controllers
 {
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [ServiceFilter(typeof(ModelValidationAttribute))]
     [Route("api/leaderlap")]
     [ApiController]

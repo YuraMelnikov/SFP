@@ -11,7 +11,6 @@ using SFPrj.ActionFilters;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [Route("api/country")]
     [ApiController]
     public class CountryController : ControllerBase

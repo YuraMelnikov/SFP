@@ -1,29 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Contracts;
+using System.Threading.Tasks;
 
 namespace SFPrj.ActionFilters
 {
-    public class ModelValidationAttribute : ActionFilterAttribute
+    public class ModelValidationAttribute : IAsyncActionFilter
     {
-        private ILoggerManager _logger;
-
-        public ModelValidationAttribute(ILoggerManager logger)
+        public async Task OnActionExecuting(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            _logger = logger;
-        }
-
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
+            if (context.Result == null)
+            {
+                context.Result = new NotFoundResult();
+            }
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"Invalid model {context.ActionDescriptor.DisplayName}.");
-                context.Result = new BadRequestObjectResult(context.ModelState);
+                context.Result = new NotFoundResult();
             }
-            else
+            await next();
+        }
+
+        public async Task OnActionExecuted(ActionExecutedContext context, ActionExecutionDelegate next)
+        {
+            if (context.Result == null)
             {
-                _logger.LogInfo($"Valid model {context.ActionDescriptor.DisplayName}.");
+                context.Result = new NotFoundResult();
             }
+            if (!context.ModelState.IsValid)
+            {
+                context.Result = new NotFoundResult();
+            }
+            await next();
+        }
+
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            await next();
         }
     }
 }

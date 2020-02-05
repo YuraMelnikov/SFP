@@ -10,7 +10,6 @@ using System.Collections.Generic;
 
 namespace SFPrj.Controllers
 {
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [ServiceFilter(typeof(ModelValidationAttribute))]
     [Route("api/trackconfiguration")]
     [ApiController]

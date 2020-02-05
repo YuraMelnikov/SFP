@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [Route("api/image")]
     [ApiController]
     public class ImageController : ControllerBase
@@ -28,26 +27,46 @@ namespace SFPrj.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var images = await _repository.Image.GetAllAsync();
-            var imagesResult = _mapper.Map<IEnumerable<ImageDto>>(images);
-            return Ok(imagesResult);
+            try
+            {
+                var images = await _repository.Image.GetAllAsync();
+                var imagesResult = _mapper.Map<IEnumerable<ImageDto>>(images);
+                return Ok(imagesResult);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var image = await _repository.Image.GetByIdAsync(id);
-            var imageResult = _mapper.Map<ImageDto>(image);
-            return Ok(imageResult);
+            try
+            {
+                var image = await _repository.Image.GetByIdAsync(id);
+                var imageResult = _mapper.Map<ImageDto>(image);
+                return Ok(imageResult);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(ImageForCreationDto image)
         {
-            var imageEntity = _mapper.Map<Image>(image);
-            await _repository.Image.AddAsync(imageEntity);
-            var createImage = _mapper.Map<ImageDto>(imageEntity);
-            return CreatedAtRoute("ImageById", new { id = createImage.Id }, createImage);
+            try
+            {
+                var imageEntity = _mapper.Map<Image>(image);
+                await _repository.Image.AddAsync(imageEntity);
+                return StatusCode(201, await _repository.Image.GetByIdAsync(imageEntity.Id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         [HttpPut("{id}")]

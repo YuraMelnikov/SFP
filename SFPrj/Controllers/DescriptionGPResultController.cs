@@ -11,7 +11,6 @@ using Contracts;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [Route("api/descriptiongpresult")]
     [ApiController]
     public class DescriptionGPResultController : ControllerBase

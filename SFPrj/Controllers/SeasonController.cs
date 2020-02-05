@@ -12,7 +12,6 @@ namespace SFPrj.Controllers
 {
     [Route("api/season")]
     [ApiController]
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [ServiceFilter(typeof(ModelValidationAttribute))]
     public class SeasonController : ControllerBase
     {

@@ -9,7 +9,6 @@ using Entities.Models;
 
 namespace SFPrj.Controllers
 {
-    [ServiceFilter(typeof(ModelNullAttribute))]
     [ServiceFilter(typeof(ModelValidationAttribute))]
     [Route("api/fine")]
     [ApiController]
