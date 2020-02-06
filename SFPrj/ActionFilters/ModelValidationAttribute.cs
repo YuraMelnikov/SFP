@@ -4,37 +4,38 @@ using System.Threading.Tasks;
 
 namespace SFPrj.ActionFilters
 {
-    public class ModelValidationAttribute : IAsyncActionFilter
+    public class ModelValidationAttribute : IActionFilter
     {
-        public async Task OnActionExecuting(ActionExecutingContext context, ActionExecutionDelegate next)
+        public void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Result == null)
             {
                 context.Result = new NotFoundResult();
+                return;
             }
             if (!context.ModelState.IsValid)
             {
                 context.Result = new NotFoundResult();
+                return;
             }
-            await next();
         }
 
-        public async Task OnActionExecuted(ActionExecutedContext context, ActionExecutionDelegate next)
+        public void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.Result == null)
-            {
-                context.Result = new NotFoundResult();
-            }
-            if (!context.ModelState.IsValid)
-            {
-                context.Result = new NotFoundResult();
-            }
-            await next();
         }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        {
-            await next();
-        }
+        //public void OnActionExecuting(ActionExecutingContext context)
+        //{
+        //    if (context.Result == null)
+        //    {
+        //        context.Result = new NotFoundResult();
+        //        return;
+        //    }
+        //    if (!context.ModelState.IsValid)
+        //    {
+        //        context.Result = new NotFoundResult();
+        //        return;
+        //    }
+        //}
     }
 }

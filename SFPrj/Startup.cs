@@ -42,7 +42,7 @@ namespace SFPrj
             }
             if (env.IsProduction() || env.IsStaging() || env.IsEnvironment("Staging_2"))
             {
-                app.UseExceptionHandler("/Error");
+                //app.UseExceptionHandler("/Error");
             }
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();

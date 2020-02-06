@@ -15,18 +15,30 @@ namespace MockData.Repositories
         {
             _list = new List<Image>
             {
-                new Image { Id = Guid.Parse("75078E17-0D1B-11E6-8B6F-0050569977A1"), 
-                    Description = "desc1", 
-                    Link = "/link/1" },
-                new Image { Id = Guid.Parse("CDF12109-10D3-11E6-8B6F-0050569977A1"), 
-                    Description = "desc2", 
-                    Link = "/link/2" },
-                new Image { Id = Guid.Parse("ED3103B6-15F5-11E6-8B6F-0050569977A1"), 
-                    Description = "desc3", 
-                    Link = "/link/3" },
-                new Image { Id = Guid.Parse("EC1C9706-18FE-11E6-8B6F-0050569977A1"), 
-                    Description = "desc4", 
-                    Link = "/link/4" }
+                new Image
+                {
+                    Id = Guid.Parse("75078E17-0D1B-11E6-8B6F-0050569977A1"),
+                    Description = "desc1",
+                    Link = "/link/1"
+                },
+                new Image
+                {
+                    Id = Guid.Parse("CDF12109-10D3-11E6-8B6F-0050569977A1"),
+                    Description = "desc2",
+                    Link = "/link/2"
+                },
+                new Image
+                {
+                    Id = Guid.Parse("ED3103B6-15F5-11E6-8B6F-0050569977A1"),
+                    Description = "desc3",
+                    Link = "/link/3"
+                },
+                new Image
+                {
+                    Id = Guid.Parse("EC1C9706-18FE-11E6-8B6F-0050569977A1"),
+                    Description = "desc4",
+                    Link = "/link/4"
+                }
             };
         }
 
