@@ -11,7 +11,7 @@ using SFPrj.ActionFilters;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/country")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CountryController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var country = await _repository.Country.GetByIdAsync(id);
             var countryResult = _mapper.Map<CountryDto>(country);

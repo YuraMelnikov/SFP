@@ -11,7 +11,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/fastlap")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FastLapController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var fastLap = await _repository.FastLap.GetByIdAsync(id);
             var fastLapResult = _mapper.Map<FastLapDto>(fastLap);

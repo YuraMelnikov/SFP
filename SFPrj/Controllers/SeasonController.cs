@@ -10,7 +10,7 @@ using Entities.Models;
 
 namespace SFPrj.Controllers
 {
-    [Route("api/season")]
+    [Route("api/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(ModelValidationAttribute))]
     public class SeasonController : ControllerBase
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var season = await _repository.Season.GetByIdAsync(id);
             var seasonResult = _mapper.Map<SeasonDto>(season);

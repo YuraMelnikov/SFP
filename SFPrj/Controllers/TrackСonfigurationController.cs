@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/trackconfiguration")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TrackСonfigurationController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var trackConfiguration = await _repository.TrackConfiguration.GetByIdAsync(id);
             var trackConfigurationResult = _mapper.Map<TrackСonfigurationDto>(trackConfiguration);

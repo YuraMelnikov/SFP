@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/image")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ImageController : ControllerBase
     {
@@ -40,7 +40,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             try
             {

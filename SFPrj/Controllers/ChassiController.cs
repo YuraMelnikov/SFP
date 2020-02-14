@@ -11,7 +11,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/chassi")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ChassiController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var chassi = await _repository.Chassi.GetByIdAsync(id);
             var chassiResult = _mapper.Map<ChassiDto>(chassi);

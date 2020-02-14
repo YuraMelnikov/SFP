@@ -10,7 +10,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/fine")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FineController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var fine = await _repository.Fine.GetByIdAsync(id);
             var fineResult = _mapper.Map<FineDto>(fine);

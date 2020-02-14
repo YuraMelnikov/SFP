@@ -23,19 +23,5 @@ namespace SFPrj.ActionFilters
         public void OnActionExecuting(ActionExecutingContext context)
         {
         }
-
-        //public void OnActionExecuting(ActionExecutingContext context)
-        //{
-        //    if (context.Result == null)
-        //    {
-        //        context.Result = new NotFoundResult();
-        //        return;
-        //    }
-        //    if (!context.ModelState.IsValid)
-        //    {
-        //        context.Result = new NotFoundResult();
-        //        return;
-        //    }
-        //}
     }
 }

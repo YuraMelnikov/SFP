@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/typefinish")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TypeFinishController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var type = await _repository.TypeFinish.GetByIdAsync(id);
             var typeResult = _mapper.Map<TypeFinishDto>(type);

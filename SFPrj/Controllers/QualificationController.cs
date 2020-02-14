@@ -11,7 +11,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/qualification")]
+    [Route("api/[controller]")]
     [ApiController]
     public class QualificationController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var qualification = await _repository.Qualification.GetByIdAsync(id);
             var qualificationReasult = _mapper.Map<QualificationDto>(qualification);

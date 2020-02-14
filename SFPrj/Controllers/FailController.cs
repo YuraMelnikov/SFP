@@ -11,7 +11,7 @@ using SFPrj.ActionFilters;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/fail")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FailController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var fail = await _repository.Fail.GetByIdAsync(id);
             var failResult = _mapper.Map<FailDto>(fail);

@@ -11,7 +11,7 @@ using SFPrj.ActionFilters;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/engine")]
+    [Route("api/[controller]")]
     [ApiController]
     public class EngineController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var engine = await _repository.Engine.GetByIdAsync(id);
             var engineResult = _mapper.Map<EngineDto>(engine);

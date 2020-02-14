@@ -12,7 +12,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/livery")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LiveryController : ControllerBase
     {
@@ -34,7 +34,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var livery = await _repository.Livery.GetByIdAsync(id);
             var liveryResult = _mapper.Map<LiveryDto>(livery);

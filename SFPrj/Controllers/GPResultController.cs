@@ -11,7 +11,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/gpresult")]
+    [Route("api/[controller]")]
     [ApiController]
     public class GPResultController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var result = await _repository.GPResult.GetByIdAsync(id);
             var resultResult = _mapper.Map<GPResultDto>(result);

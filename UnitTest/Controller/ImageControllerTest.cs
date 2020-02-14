@@ -6,7 +6,6 @@ using Xunit;
 using Microsoft.AspNetCore.Mvc;
 using Entities.DataTransferObjects;
 using System;
-using SFPrj.ActionFilters;
 
 namespace UnitTest.Controller
 {
@@ -21,6 +20,7 @@ namespace UnitTest.Controller
             _controller = new ImageController(_repository, AutomapperSingleton.Mapper);
         }
 
+        //Testing the Get Method
         [Fact]
         public void Get_WhenCalled_ReturnsOkResult()
         {
@@ -38,17 +38,15 @@ namespace UnitTest.Controller
             var okResult = _controller.Get().Result as OkObjectResult;
 
             // Assert
-            var items = Assert.IsType<List<ImageDto>>(okResult.Value);
-            Assert.Equal(4, items.Count);
+            Assert.Equal(4, GetCountImagesInRepositoryes(_controller.Get().Result as OkObjectResult));
         }
 
+        //Testing the GetById method
         [Fact]
-        [ServiceFilter(typeof(ModelValidationAttribute))]
         public void GetById_UnknownGuidPassed_ReturnsNotFoundResult()
         {
-            Guid guid = new Guid("55078E17-0D1B-11E6-8B6F-005056997700");
             // Act
-            var notFoundResult = _controller.GetById(guid);
+            var notFoundResult = _controller.Get(Guid.NewGuid());
 
             // Assert
             Assert.IsType<NotFoundResult>(notFoundResult.Result);
@@ -58,10 +56,10 @@ namespace UnitTest.Controller
         public void GetById_ExistingGuidPassed_ReturnsOkResult()
         {
             // Arrange
-            var testGuid = new Guid("EC1C9706-18FE-11E6-8B6F-0050569977A1");
+            var testGuid = new Guid("75078E17-0D1B-11E6-8B6F-0050569977A1");
 
             // Act
-            var okResult = _controller.GetById(testGuid);
+            var okResult = _controller.Get(testGuid);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult.Result);
@@ -74,20 +72,22 @@ namespace UnitTest.Controller
             var testGuid = new Guid("75078E17-0D1B-11E6-8B6F-0050569977A1");
 
             // Act
-            var okResult = _controller.GetById(testGuid).Result as OkObjectResult;
+            var okResult = _controller.Get(testGuid).Result as OkObjectResult;
 
             // Assert
             Assert.IsType<ImageDto>(okResult.Value);
             Assert.Equal(testGuid, (okResult.Value as ImageDto).Id);
         }
 
+        //Testing the Add Method
         [Fact]
-        public void Post_InvalidObjectPassed_ReturnsBadRequest()
+        public void Add_InvalidObjectPassed_ReturnsBadRequest()
         {
             // Arrange
             var nameMissingItem = new ImageForCreationDto()
             {
-                Description = "descNew"
+                Link = "LinkTest",
+                Description = "DescriptionTest"
             };
             _controller.ModelState.AddModelError("Name", "Required");
 
@@ -98,43 +98,85 @@ namespace UnitTest.Controller
             Assert.IsType<BadRequestObjectResult>(badResponse);
         }
 
-
         [Fact]
-        public void Post_ValidObjectPassed_ReturnsCreatedResponse()
+        public void Add_ValidObjectPassed_ReturnsCreatedResponse()
         {
             // Arrange
             ImageForCreationDto testItem = new ImageForCreationDto()
             {
-                Description = "descNew",
-                Link = "//linkNew"
+                Link = "LinkTest",
+                Description = "DescriptionTest"
             };
 
             // Act
             var createdResponse = _controller.Post(testItem);
 
             // Assert
-            Assert.IsType<ImageDto>(createdResponse);
+            Assert.IsType<CreatedAtActionResult>(createdResponse);
         }
 
+        [Fact]
+        public void Add_ValidObjectPassed_ReturnedResponseHasCreatedItem()
+        {
+            // Arrange
+            var testItem = new ImageForCreationDto()
+            {
+                Link = "LinkTest",
+                Description = "DescriptionTest"
+            };
 
-        //[Fact]
-        //public void Post_ValidObjectPassed_ReturnedResponseHasCreatedItem()
-        //{
-        //    // Arrange
-        //    var testItem = new ImageForCreationDto()
-        //    {
-        //        Description = "descNew",
-        //        Link = "//linkNew"
-        //    };
+            // Act
+            var createdResponse = _controller.Post(testItem).Result as ImageForCreationDto;
+            var item = createdResponse as ImageForCreationDto;
 
-        //    // Act
-        //    var createdResponse = _controller.Post(testItem);
-        //    var item = createdResponse as ImageDto;
+            // Assert
+            Assert.IsType<ImageForCreationDto>(item);
+            Assert.Equal("LinkTest", item.Link);
+        }
 
-        //    // Assert
-        //    Assert.IsType<ImageDto>(item);
-        //    Assert.Equal("descNew", item.Description);
-        //    Assert.Equal("//linkNew", item.Link);
-        //}
+        //Remove method
+        [Fact]
+        public void Remove_NotExistingGuidPassed_ReturnsNotFoundResponse()
+        {
+            // Arrange
+            var notExistingGuid = Guid.NewGuid();
+
+            // Act
+            var badResponse = _controller.Delete(notExistingGuid);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(badResponse);
+        }
+
+        [Fact]
+        public void Remove_ExistingGuidPassed_ReturnsOkResult()
+        {
+            // Arrange
+            var existingGuid = new Guid("75078E17-0D1B-11E6-8B6F-0050569977A1");
+
+            // Act
+            var okResponse = _controller.Delete(existingGuid).Result;
+
+            // Assert
+            Assert.IsType<OkResult>(okResponse);
+        }
+        [Fact]
+        public void Remove_ExistingGuidPassed_RemovesOneItem()
+        {
+            // Arrange
+            var existingGuid = new Guid("75078E17-0D1B-11E6-8B6F-0050569977A1");
+
+            // Act
+            var okResponse = _controller.Delete(existingGuid);
+
+            // Assert
+            Assert.Equal(3, GetCountImagesInRepositoryes(_controller.Get().Result as OkObjectResult));
+        }
+
+        private int GetCountImagesInRepositoryes(OkObjectResult okObjectResult)
+        {
+            var items = Assert.IsType<List<ImageDto>>(okObjectResult.Value);
+            return items.Count;
+        }
     }
 }

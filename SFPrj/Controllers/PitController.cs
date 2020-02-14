@@ -11,7 +11,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/pit")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PitController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var pit = await _repository.Pit.GetByIdAsync(id);
             var pitResult = _mapper.Map<PitDto>(pit);

@@ -11,7 +11,7 @@ using SFPrj.ActionFilters;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/dnq")]
+    [Route("api/[controller]")]
     [ApiController]
     public class DNQController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var dnq = await _repository.DNQ.GetByIdAsync(id);
             var dnqResult = _mapper.Map<DNQDto>(dnq);

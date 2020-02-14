@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/typefail")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TypeFailController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var type = await _repository.TypeFail.GetByIdAsync(id);
             var typeResult = _mapper.Map<TypeFailDto>(type);

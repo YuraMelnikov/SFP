@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/teamname")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TeamNameController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var teamName = await _repository.TeamName.GetByIdAsync(id);
             var teamNameResult = _mapper.Map<TeamNameDto>(teamName);

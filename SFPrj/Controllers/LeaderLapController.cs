@@ -13,7 +13,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/leaderlap")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LeaderLapController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var leader = await _repository.LeaderLap.GetByIdAsync(id);
             var leaderResult = _mapper.Map<LeaderLapDto>(leader);

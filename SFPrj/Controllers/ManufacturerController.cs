@@ -11,7 +11,7 @@ using Entities.Models;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/manufacturer")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ManufacturerController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var manufacturer = await _repository.Manufacturer.GetByIdAsync(id);
             var manufacturerResult = _mapper.Map<IEnumerable<ManufacturerDto>>(manufacturer);

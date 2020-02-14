@@ -11,7 +11,7 @@ using Contracts;
 namespace SFPrj.Controllers
 {
     [ServiceFilter(typeof(ModelValidationAttribute))]
-    [Route("api/descriptiongpresult")]
+    [Route("api/[controller]")]
     [ApiController]
     public class DescriptionGPResultController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var description = await _repository.DescriptionGPResult.GetByIdAsync(id);
             var descriptionResult = _mapper.Map<DescriptionGPResultDto>(description);
