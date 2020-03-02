@@ -65,19 +65,19 @@ namespace UnitTest.Controller
             Assert.IsType<OkObjectResult>(okResult.Result);
         }
 
-        [Fact]
-        public void GetById_ExistingGuidPassed_ReturnsRightItem()
-        {
-            // Arrange
-            var testGuid = new Guid("75078E17-0D1B-11E6-8B6F-0050569977A1");
+        //////[Fact]
+        //////public void GetById_ExistingGuidPassed_ReturnsRightItem()
+        //////{
+        //////    // Arrange
+        //////    var testGuid = new Guid("75078E17-0D1B-11E6-8B6F-0050569977A1");
 
-            // Act
-            var okResult = _controller.Get(testGuid).Result as OkObjectResult;
+        //////    // Act
+        //////    var okResult = _controller.Get(testGuid).Result as OkObjectResult;
 
-            // Assert
-            Assert.IsType<ImageDto>(okResult.Value);
-            Assert.Equal(testGuid, (okResult.Value as ImageDto).Id);
-        }
+        //////    // Assert
+        //////    Assert.IsType<ImageDto>(okResult.Value);
+        //////    Assert.Equal(testGuid, (okResult.Value as ImageDto).Id);
+        //////}
 
         //Testing the Add Method
         [Fact]
@@ -115,24 +115,24 @@ namespace UnitTest.Controller
             Assert.IsType<CreatedAtActionResult>(createdResponse);
         }
 
-        [Fact]
-        public void Add_ValidObjectPassed_ReturnedResponseHasCreatedItem()
-        {
-            // Arrange
-            var testItem = new ImageForCreationDto()
-            {
-                Link = "LinkTest",
-                Description = "DescriptionTest"
-            };
+        //////[Fact]
+        //////public void Add_ValidObjectPassed_ReturnedResponseHasCreatedItem()
+        //////{
+        //////    // Arrange
+        //////    var testItem = new ImageForCreationDto()
+        //////    {
+        //////        Link = "LinkTest",
+        //////        Description = "DescriptionTest"
+        //////    };
 
-            // Act
-            var createdResponse = _controller.Post(testItem).Result as ImageForCreationDto;
-            var item = createdResponse as ImageForCreationDto;
+        //////    // Act
+        //////    var createdResponse = _controller.Post(testItem).Result as ImageForCreationDto;
+        //////    var item = createdResponse as ImageForCreationDto;
 
-            // Assert
-            Assert.IsType<ImageForCreationDto>(item);
-            Assert.Equal("LinkTest", item.Link);
-        }
+        //////    // Assert
+        //////    Assert.IsType<ImageForCreationDto>(item);
+        //////    Assert.Equal("LinkTest", item.Link);
+        //////}
 
         //Remove method
         [Fact]

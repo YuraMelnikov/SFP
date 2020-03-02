@@ -40,11 +40,10 @@ namespace SFPrj
             {
                 app.UseDeveloperExceptionPage();
             }
-            if (env.IsProduction() || env.IsStaging() || env.IsEnvironment("Staging_2"))
+            else
             {
-                //app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
-            app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");
@@ -57,6 +56,13 @@ namespace SFPrj
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            //app.ConfigureExceptionHandler(logger);
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Image}/{action=Index}/{Get()}");
             });
         }
     }

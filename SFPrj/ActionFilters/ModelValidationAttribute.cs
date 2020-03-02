@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace SFPrj.ActionFilters
 {

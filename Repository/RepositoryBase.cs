@@ -18,7 +18,7 @@ namespace Repository
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await RepositoryContext.Set<T>().ToListAsync();
+            return await RepositoryContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(Guid id)
