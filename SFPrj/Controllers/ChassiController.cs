@@ -1,68 +1,87 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SFPrj.ActionFilters;
 using Contracts;
 using AutoMapper;
-using Entities.DataTransferObjects;
 using Entities.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Entities.DataTransferObjects;
+
 
 namespace SFPrj.Controllers
 {
-    [ServiceFilter(typeof(ModelValidationAttribute))]
     [Route("api/[controller]")]
     [ApiController]
     public class ChassiController : ControllerBase
     {
-        private readonly IRepositoryWrapper _repository;
+        private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public ChassiController(IRepositoryWrapper repository, IMapper mapper)
+        public ChassiController(IRepositoryManager repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetChassis()
         {
-            var chassi = await _repository.Chassi.GetAllAsync();
-            var chassisResult = _mapper.Map<IEnumerable<ChassiDto>>(chassi);
-            return Ok(chassisResult);
+            var chassies = await _repository.Chassi.GetAllChassisAsync(trackChanges: false);
+            var chassiesDto = _mapper.Map<IEnumerable<ChassiDto>>(chassies);
+            return Ok(chassiesDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetChassi(Guid id)
         {
-            var chassi = await _repository.Chassi.GetByIdAsync(id);
-            var chassiResult = _mapper.Map<ChassiDto>(chassi);
-            return Ok(chassiResult);
+            var chassi = await _repository.Chassi.GetChassiAsync(id, trackChanges: false);
+            if (chassi == null)
+                return NotFound();
+            else
+            {
+                var chassiDTO = _mapper.Map<ChassiDto>(chassi);
+                return Ok(chassiDTO);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(ChassiCreateDto chassi)
+        public async Task<IActionResult> CreateChassi([FromBody]ChassiCreateDto chassi)
         {
-            var chassiEntity = _mapper.Map<Chassi>(chassi);
-            await _repository.Chassi.AddAsync(chassiEntity);
-            var createChassi = _mapper.Map<ChassiDto>(chassiEntity);
-            return CreatedAtRoute("ChassiById", new { id = createChassi.Id }, createChassi);
-        }
-
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> Put(Guid id, ChassiUpdateDto chassi)
-        {
-            var chassiEntity = await _repository.Chassi.GetByIdAsync(id);
-            chassiEntity = _mapper.Map(chassi, chassiEntity);
-            await _repository.Chassi.UpdateAsync(chassiEntity);
-            return NoContent();
+            if (chassi == null)
+                return BadRequest("ChassiCreateDto object is null.");
+            else
+            {
+                var chassiEntity = _mapper.Map<Chassi>(chassi);
+                _repository.Chassi.CreateChassi(chassiEntity);
+                await _repository.SaveAsync();
+                var chassiToReturn = _mapper.Map<ChassiDto>(chassiEntity);
+                return CreatedAtRoute("GetChassi", new { id = chassiToReturn.Id }, chassiToReturn);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteChassi(Guid id)
         {
-            var chassi = await _repository.Chassi.GetByIdAsync(id);
-            await _repository.Chassi.DeleteAsync(chassi);
+            var chassi = await _repository.Chassi.GetChassiAsync(id, trackChanges: false);
+            if (chassi == null)
+            {
+                return NotFound();
+            }
+            _repository.Chassi.DeleteChassi(chassi);
+            await _repository.SaveAsync();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateChassi([FromBody] ChassiUpdateDto chassi)
+        {
+            if (chassi == null)
+                return BadRequest("ChassiUpdateDto object is null");
+            var chassiEntity = await _repository.Chassi.GetChassiAsync(chassi.Id, trackChanges: true);
+            if (chassiEntity == null)
+                return NotFound();
+            _mapper.Map(chassi, chassiEntity);
+            await _repository.SaveAsync();
             return NoContent();
         }
     }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class RepositoryWrapper : IRepositoryWrapper
+    public class RepositoryManager : IRepositoryManager
     {
         private readonly RepositoryContext _repoContext;
         private IChassiRepository _chassi;
@@ -28,7 +28,7 @@ namespace Repository
         private ISeasonRepository _season;
         private ITeamNameRepository _teamName;
         private ITeamRepository _team;
-        private ITrackConfigurationRepository _trackConfiguration;
+        private ITrackСonfigurationRepository _trackConfiguration;
         private ITrackRepository _track;
         private ITypeCalculateRepository _typeCalculate;
         private ITypeDNQRepository _typeDNQ;
@@ -36,7 +36,7 @@ namespace Repository
         private ITypeFinishRepository _typeFinish;
         private ITyreRepository _tyre;
 
-        public RepositoryWrapper(RepositoryContext repositoryContext)
+        public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repoContext = repositoryContext;
         }
@@ -46,10 +46,7 @@ namespace Repository
             get
             {
                 if (_chassi == null)
-                {
                     _chassi = new ChassiRepository(_repoContext);
-                }
-
                 return _chassi;
             }
         }
@@ -59,10 +56,7 @@ namespace Repository
             get
             {
                 if(_country == null)
-                {
                     _country = new CountryRepository(_repoContext);
-                }
-
                 return _country;
             }
         }
@@ -72,10 +66,7 @@ namespace Repository
             get
             {
                 if(_descriptionGPResult == null)
-                {
                     _descriptionGPResult = new DescriptionGPResultRepository(_repoContext);
-                }
-
                 return _descriptionGPResult;
             }
         }
@@ -85,10 +76,7 @@ namespace Repository
             get 
             {
                 if(_dNQ == null)
-                {
                     _dNQ = new DNQRepository(_repoContext);
-                }
-
                 return _dNQ;
             }
         }
@@ -98,10 +86,7 @@ namespace Repository
             get 
             {
                 if(_engine == null)
-                {
                     _engine = new EngineRepository(_repoContext);
-                }
-
                 return _engine;
             }
         }
@@ -111,10 +96,7 @@ namespace Repository
             get
             {
                 if(_fail == null)
-                {
                     _fail = new FailRepository(_repoContext);
-                }
-
                 return _fail;
             }
         }
@@ -124,10 +106,7 @@ namespace Repository
             get 
             { 
                 if(_fastLap == null)
-                {
                     _fastLap = new FastLapRepository(_repoContext);
-                }
-
                 return _fastLap;
             }
         }
@@ -137,10 +116,7 @@ namespace Repository
             get
             {
                 if(_fine == null)
-                {
                     _fine = new FineRepository(_repoContext);
-                }
-
                 return _fine;
             }
         }
@@ -150,10 +126,7 @@ namespace Repository
             get
             {
                 if(_gP == null)
-                {
                     _gP = new GPRepository(_repoContext);
-                }
-
                 return _gP;
             }
         }
@@ -163,10 +136,7 @@ namespace Repository
             get
             {
                 if(_gPResult == null)
-                {
                     _gPResult = new GPResultRepository(_repoContext);
-                }
-
                 return _gPResult;
             }
         }
@@ -176,10 +146,7 @@ namespace Repository
             get 
             { 
                 if(_image == null)
-                {
                     _image = new ImageRepository(_repoContext);
-                }
-
                 return _image;
             }
         }
@@ -189,10 +156,7 @@ namespace Repository
             get 
             {
                 if(_leaderLap == null)
-                {
                     _leaderLap = new LeaderLapRepository(_repoContext);
-                }
-
                 return _leaderLap;
             }
         }
@@ -202,10 +166,7 @@ namespace Repository
             get
             {
                 if(_livery == null)
-                {
                     _livery = new LiveryRepository(_repoContext);
-                }
-
                 return _livery;
             }
         }
@@ -215,10 +176,7 @@ namespace Repository
             get 
             { 
                 if(_manufacturer == null)
-                {
                     _manufacturer = new ManufacturerRepository(_repoContext);
-                }
-
                 return _manufacturer;
             }
         }
@@ -228,10 +186,7 @@ namespace Repository
             get
             {
                 if(_participant == null)
-                {
                     _participant = new ParticipantRepository(_repoContext);
-                }
-
                 return _participant;
             }
         }
@@ -241,10 +196,7 @@ namespace Repository
             get
             {
                 if(_pit == null)
-                {
                     _pit = new PitRepository(_repoContext);
-                }
-
                 return _pit;
             }
         }
@@ -254,10 +206,7 @@ namespace Repository
             get
             {
                 if(_qualification == null)
-                {
                     _qualification = new QualificationRepository(_repoContext);
-                }
-
                 return _qualification;
             }
         }
@@ -267,10 +216,7 @@ namespace Repository
             get
             {
                 if(_racer == null)
-                {
                     _racer = new RacerRepository(_repoContext);
-                }
-
                 return _racer;
             }
         }
@@ -280,10 +226,7 @@ namespace Repository
             get
             {
                 if(_season == null)
-                {
                     _season = new SeasonRepository(_repoContext);
-                }
-
                 return _season;
             }
         }
@@ -293,10 +236,7 @@ namespace Repository
             get
             {
                 if (_teamName == null)
-                {
                     _teamName = new TeamNameRepository(_repoContext);
-                }
-
                 return _teamName;
             }
         }
@@ -306,23 +246,17 @@ namespace Repository
             get
             {
                 if(_team == null)
-                {
                     _team = new TeamRepository(_repoContext);
-                }
-
                 return _team;
             }
         }
 
-        public ITrackConfigurationRepository TrackConfiguration
+        public ITrackСonfigurationRepository TrackConfiguration
         {
             get
             {
                 if(_trackConfiguration == null)
-                {
                     _trackConfiguration = new TrackConfigurationRepository(_repoContext);
-                }
-
                 return _trackConfiguration;
             }
         }
@@ -332,10 +266,7 @@ namespace Repository
             get
             {
                 if(_track == null)
-                {
                     _track = new TrackRepository(_repoContext);
-                }
-
                 return _track;
             }
         }
@@ -345,10 +276,7 @@ namespace Repository
             get
             {
                 if(_typeCalculate == null)
-                {
                     _typeCalculate = new TypeCalculateRepository(_repoContext);
-                }
-
                 return _typeCalculate;
             }
         }
@@ -358,10 +286,7 @@ namespace Repository
             get
             {
                 if(_typeDNQ == null)
-                {
                     _typeDNQ = new TypeDNQRepository(_repoContext);
-                }
-
                 return _typeDNQ;
             }
         }
@@ -371,10 +296,7 @@ namespace Repository
             get
             {
                 if(_typeFail == null)
-                {
                     _typeFail = new TypeFailRepository(_repoContext);
-                }
-
                 return _typeFail;
             }
         }
@@ -384,10 +306,7 @@ namespace Repository
             get
             {
                 if(_typeFinish == null)
-                {
                     _typeFinish = new TypeFinishRepository(_repoContext);
-                }
-
                 return _typeFinish;
             }
         }
@@ -397,17 +316,11 @@ namespace Repository
             get
             {
                 if(_tyre == null)
-                {
                     _tyre = new TyreRepository(_repoContext);
-                }
-
                 return _tyre;
             }
         }
 
-        public async Task SaveAsync()
-        {
-            await _repoContext.SaveChangesAsync();
-        }
+        public Task SaveAsync() => _repoContext.SaveChangesAsync();
     }
 }

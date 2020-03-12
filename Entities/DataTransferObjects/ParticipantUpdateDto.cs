@@ -4,6 +4,7 @@ namespace Entities.DataTransferObjects
 {
     public class ParticipantUpdateDto
     {
+        public Guid Id { get; set; }
         public Guid IdGp { get; set; }
         public string Num { get; set; }
         public Guid IdTeam { get; set; }

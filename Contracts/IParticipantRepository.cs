@@ -1,16 +1,15 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IParticipantRepository : IRepositoryBase<Participant>
+    public interface IParticipantRepository
     {
-        //IEnumerable<Participant> ParticipantsByGP(Guid gpId);
-        //IEnumerable<Participant> ParticipantsByTeam(Guid teamId);
-        //IEnumerable<Participant> ParticipantsByChassi(Guid chassiId);
-        //IEnumerable<Participant> ParticipantsByEngine(Guid engineId);
-        //IEnumerable<Participant> ParticipantsByRacer(Guid racerId);
-        //IEnumerable<Participant> ParticipantsByTyre(Guid tyreId);
+        Task<IEnumerable<Participant>> GetAllParticipantAsync(bool trackChanges);
+        Task<Participant> GetParticipantAsync(Guid participantId, bool trackChanges);
+        void CreateParticipant(Participant participant);
+        void DeleteParticipant(Participant participant);
     }
 }

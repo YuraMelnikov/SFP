@@ -6,63 +6,81 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using AutoMapper;
-using SFPrj.ActionFilters;
 
 namespace SFPrj.Controllers
 {
-    [ServiceFilter(typeof(ModelValidationAttribute))]
     [Route("api/[controller]")]
     [ApiController]
     public class DNQController : ControllerBase
     {
-        private readonly IRepositoryWrapper _repository;
+        private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public DNQController(IRepositoryWrapper repository, IMapper mapper)
+        public DNQController(IRepositoryManager repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetDNQs()
         {
-            var dnqList = await _repository.DNQ.GetAllAsync();
-            var dnqListResult = _mapper.Map<IEnumerable<DNQDto>>(dnqList);
-            return Ok(dnqListResult);
+            var dnqs = await _repository.DNQ.GetAllDNQAsync(trackChanges: false);
+            var dnqsDTO = _mapper.Map<IEnumerable<DNQDto>>(dnqs);
+            return Ok(dnqsDTO);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetDNQ(Guid id)
         {
-            var dnq = await _repository.DNQ.GetByIdAsync(id);
-            var dnqResult = _mapper.Map<DNQDto>(dnq);
-            return Ok(dnqResult);
+            var dnq = await _repository.DNQ.GetDNQAsync(id, trackChanges: false);
+            if (dnq == null)
+                return NotFound();
+            else
+            {
+                var dnqDTO = _mapper.Map<DNQDto>(dnq);
+                return Ok(dnqDTO);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(DNQCreateDto dnq)
+        public async Task<IActionResult> CreateDNQ([FromBody]DNQCreateDto dnq)
         {
-            var dnqEntity = _mapper.Map<DNQ>(dnq);
-            await _repository.DNQ.AddAsync(dnqEntity);
-            var dnqCreate = _mapper.Map<DNQDto>(dnqEntity);
-            return CreatedAtRoute("DNQById", new { id = dnqCreate.Id }, dnqCreate);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, DNQUpdateDto dnq)
-        {
-            var dnqEntity = await _repository.DNQ.GetByIdAsync(id);
-            dnqEntity = _mapper.Map(dnq, dnqEntity);
-            await _repository.DNQ.UpdateAsync(dnqEntity);
-            return NoContent();
+            if (dnq == null)
+                return BadRequest("DNQCreateDto object is null.");
+            else
+            {
+                var dnqEntity = _mapper.Map<DNQ>(dnq);
+                _repository.DNQ.CreateDNQ(dnqEntity);
+                await _repository.SaveAsync();
+                var dnqToReturn = _mapper.Map<DNQDto>(dnqEntity);
+                return CreatedAtRoute("GetDNQ", new { id = dnqToReturn.Id }, dnqToReturn);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteDNQ(Guid id)
         {
-            var dnqEntity = await _repository.DNQ.GetByIdAsync(id);
-            await _repository.DNQ.DeleteAsync(dnqEntity);
+            var dnq = await _repository.DNQ.GetDNQAsync(id, trackChanges: false);
+            if (dnq == null)
+            {
+                return NotFound();
+            }
+            _repository.DNQ.DeleteDNQ(dnq);
+            await _repository.SaveAsync();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDNQ([FromBody] DNQUpdateDto dnq)
+        {
+            if (dnq == null)
+                return BadRequest("DNQUpdateDto object is null");
+            var dnqEntity = await _repository.DNQ.GetDNQAsync(dnq.Id, trackChanges: true);
+            if (dnqEntity == null)
+                return NotFound();
+            _mapper.Map(dnq, dnqEntity);
+            await _repository.SaveAsync();
             return NoContent();
         }
     }

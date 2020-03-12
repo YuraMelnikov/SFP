@@ -4,6 +4,7 @@ namespace Entities.DataTransferObjects
 {
     public class GPUpdateDto
     {
+        public Guid Id { get; set; }
         public Guid IdTrackСonfiguration { get; set; }
         public int Num { get; set; }
         public int NumInSeason { get; set; }

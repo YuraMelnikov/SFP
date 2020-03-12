@@ -2,49 +2,27 @@
 using Entities;
 using System;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Repository
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        protected RepositoryContext RepositoryContext { get; set; }
-
+        protected RepositoryContext RepositoryContext;
         public RepositoryBase(RepositoryContext repositoryContext)
         {
             RepositoryContext = repositoryContext;
         }
-
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await RepositoryContext.Set<T>().AsNoTracking().ToListAsync();
-        }
-
-        public async Task<T> GetByIdAsync(Guid id)
-        {
-            return await RepositoryContext.Set<T>().FindAsync(id);
-        }
-
-        public async Task<T> AddAsync(T entity)
-        {
-            _ = RepositoryContext.Set<T>().AddAsync(entity);
-            await RepositoryContext.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task<bool> UpdateAsync(T entity)
-        {
+        public IQueryable<T> FindAll(bool trackChanges) =>
+            !trackChanges ? RepositoryContext.Set<T>().AsNoTracking() : RepositoryContext.Set<T>();
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
+            !trackChanges ? RepositoryContext.Set<T>().Where(expression).AsNoTracking() : RepositoryContext.Set<T>().Where(expression);
+        public void Create(T entity) =>
+            RepositoryContext.Set<T>().Add(entity);
+        public void Update(T entity) =>
             RepositoryContext.Set<T>().Update(entity);
-            await RepositoryContext.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(T entity)
-        {
+        public void Delete(T entity) =>
             RepositoryContext.Set<T>().Remove(entity);
-            await RepositoryContext.SaveChangesAsync();
-            return true;
-        }
     }
 }

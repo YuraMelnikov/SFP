@@ -1,12 +1,15 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IEngineRepository : IRepositoryBase<Engine>
+    public interface IEngineRepository 
     {
-        //IEnumerable<Engine> EnginesByManufacturer(Guid manufacturerId);
-        //IEnumerable<Engine> EnginesByImage(Guid imageId);
+        Task<IEnumerable<Engine>> GetAllEngineAsync(bool trackChanges);
+        Task<Engine> GetEngineAsync(Guid engineId, bool trackChanges);
+        void CreateEngine(Engine engine);
+        void DeleteEngine(Engine engine);
     }
 }

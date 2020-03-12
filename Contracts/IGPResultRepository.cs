@@ -1,12 +1,15 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IGPResultRepository : IRepositoryBase<GPResult>
+    public interface IGPResultRepository 
     {
-        //IEnumerable<GPResult> GPResultsByParticipant(Guid participantId);
-        //IEnumerable<GPResult> GPResultsByTypeFinish(Guid typeFinishId);
+        Task<IEnumerable<GPResult>> GetAllGPResultAsync(bool trackChanges);
+        Task<GPResult> GetGPResultAsync(Guid gPResultId, bool trackChanges);
+        void CreateGPResult(GPResult gPResult);
+        void DeleteGPResult(GPResult gPResult);
     }
 }

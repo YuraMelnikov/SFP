@@ -1,12 +1,15 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IDNQRepository : IRepositoryBase<DNQ>
+    public interface IDNQRepository
     {
-        //IEnumerable<DNQ> DNQsByGPResult(Guid gpResultId);
-        //IEnumerable<DNQ> DNQsByTypeDNQ(Guid typeDNQId);
+        Task<IEnumerable<DNQ>> GetAllDNQAsync(bool trackChanges);
+        Task<DNQ> GetDNQAsync(Guid dnqId, bool trackChanges);
+        void CreateDNQ(DNQ dnq);
+        void DeleteDNQ(DNQ dnq);
     }
 }

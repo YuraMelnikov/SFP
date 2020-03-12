@@ -1,12 +1,15 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IFailRepository : IRepositoryBase<Fail>
+    public interface IFailRepository
     {
-        //IEnumerable<Fail> FailsByGPResult(Guid gpResult);
-        //IEnumerable<Fail> FailsByTypeFails(Guid typeFailId);
+        Task<IEnumerable<Fail>> GetAllFailAsync(bool trackChanges);
+        Task<Fail> GetFailAsync(Guid failId, bool trackChanges);
+        void CreateFail(Fail fail);
+        void DeleteFail(Fail fail);
     }
 }

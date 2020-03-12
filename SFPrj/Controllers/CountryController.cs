@@ -6,63 +6,81 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using AutoMapper;
-using SFPrj.ActionFilters;
 
 namespace SFPrj.Controllers
 {
-    [ServiceFilter(typeof(ModelValidationAttribute))]
     [Route("api/[controller]")]
     [ApiController]
     public class CountryController : ControllerBase
     {
-        private readonly IRepositoryWrapper _repository;
+        private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public CountryController(IRepositoryWrapper repository, IMapper mapper)
+        public CountryController(IRepositoryManager repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetCountries()
         {
-            var countryes = await _repository.Country.GetAllAsync();
-            var countryesResult = _mapper.Map<IEnumerable<CountryDto>>(countryes);
-            return Ok(countryesResult);
+            var countries = await _repository.Country.GetAllCountriesAsync(trackChanges: false);
+            var countriesDto = _mapper.Map<IEnumerable<CountryDto>>(countries);
+            return Ok(countriesDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetCountry(Guid id)
         {
-            var country = await _repository.Country.GetByIdAsync(id);
-            var countryResult = _mapper.Map<CountryDto>(country);
-            return Ok(countryResult);
+            var country = await _repository.Country.GetCountryAsync(id, trackChanges: false);
+            if (country == null)
+                return NotFound();
+            else
+            {
+                var countryDTO = _mapper.Map<CountryDto>(country);
+                return Ok(countryDTO);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(CountryCreateDto country)
+        public async Task<IActionResult> CreateCountry([FromBody]CountryCreateDto country)
         {
-            var countryEntity = _mapper.Map<Country>(country);
-            await _repository.Country.AddAsync(countryEntity);
-            var createCountry = _mapper.Map<CountryDto>(countryEntity);
-            return CreatedAtRoute("CountryById", new { id = createCountry.Id }, createCountry);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, CountryUpdateDto country)
-        {
-            var countryEntity = await _repository.Country.GetByIdAsync(id);
-            countryEntity = _mapper.Map(country, countryEntity);
-            await _repository.Country.UpdateAsync(countryEntity);
-            return NoContent();
+            if (country == null)
+                return BadRequest("CountryCreateDto object is null.");
+            else
+            {
+                var countryEntity = _mapper.Map<Country>(country);
+                _repository.Country.CreateCountry(countryEntity);
+                await _repository.SaveAsync();
+                var countryToReturn = _mapper.Map<ChassiDto>(countryEntity);
+                return CreatedAtRoute("GetCountry", new { id = countryToReturn.Id }, countryToReturn);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteCountry(Guid id)
         {
-            var country = await _repository.Country.GetByIdAsync(id);
-            await _repository.Country.DeleteAsync(country);
+            var country = await _repository.Country.GetCountryAsync(id, trackChanges: false);
+            if (country == null)
+            {
+                return NotFound();
+            }
+            _repository.Country.DeleteCountry(country);
+            await _repository.SaveAsync();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCountry([FromBody] CountryUpdateDto country)
+        {
+            if (country == null)
+                return BadRequest("CountryUpdateDto object is null");
+            var countryEntity = await _repository.Country.GetCountryAsync(country.Id, trackChanges: true);
+            if (countryEntity == null)
+                return NotFound();
+            _mapper.Map(country, countryEntity);
+            await _repository.SaveAsync();
             return NoContent();
         }
     }

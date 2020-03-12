@@ -4,6 +4,7 @@ namespace Entities.DataTransferObjects
 {
     public class RacerUpdateDto
     {
+        public Guid Id { get; set; }
         public Guid IdCountry { get; set; }
         public DateTime Born { get; set; }
         public string BornIn { get; set; }

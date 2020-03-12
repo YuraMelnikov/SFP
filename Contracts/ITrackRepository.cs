@@ -1,12 +1,15 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface ITrackRepository : IRepositoryBase<Track>
+    public interface ITrackRepository
     {
-        //IEnumerable<Track> TracksByCountry(Guid countryId);
-        //IEnumerable<Track> TracksByImage(Guid imageId);
+        Task<IEnumerable<Track>> GetAllTrackAsync(bool trackChanges);
+        Task<Track> GetTrackAsync(Guid trackId, bool trackChanges);
+        void CreateTrack(Track track);
+        void DeleteTrack(Track track);
     }
 }

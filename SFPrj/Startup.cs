@@ -4,12 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFPrj.Extensions;
-using NLog;
-using System.IO;
 using Microsoft.AspNetCore.HttpOverrides;
 using AutoMapper;
-using Contracts;
-using SFPrj.ActionFilters;
 
 namespace SFPrj
 {
@@ -17,7 +13,6 @@ namespace SFPrj
     {
         public Startup(IConfiguration configuration)
         {
-            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -27,14 +22,16 @@ namespace SFPrj
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigurePostgreSqlContext(Configuration);
-            services.ConfigureRepositoryWrapper();
-            services.ConfigureLoggerService();
             services.AddControllers();
+            services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<ModelValidationAttribute>();
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ClientApp/dist";
+            //});
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -44,6 +41,7 @@ namespace SFPrj
             {
                 app.UseHsts();
             }
+            //app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");
@@ -57,13 +55,14 @@ namespace SFPrj
             {
                 endpoints.MapControllers();
             });
-            //app.ConfigureExceptionHandler(logger);
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Image}/{action=Index}/{Get()}");
-            });
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "ClientApp";
+            //    if (env.IsDevelopment())
+            //    {
+            //        spa.UseAngularCliServer(npmScript: "start");
+            //    }
+            //});
         }
     }
 }

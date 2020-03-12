@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface IRepositoryWrapper
+    public interface IRepositoryManager
     {
         IChassiRepository Chassi { get; }
         ICountryRepository Country { get; }
@@ -25,7 +25,7 @@ namespace Contracts
         ISeasonRepository Season { get; }
         ITeamNameRepository TeamName { get; }
         ITeamRepository Team { get; }
-        ITrackConfigurationRepository TrackConfiguration { get; }
+        ITrackСonfigurationRepository TrackConfiguration { get; }
         ITrackRepository Track { get; }
         ITypeCalculateRepository TypeCalculate { get; }
         ITypeDNQRepository TypeDNQ { get; }
