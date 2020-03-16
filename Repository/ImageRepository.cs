@@ -30,5 +30,9 @@ namespace Repository
         public async Task<Image> GetImageAsync(Guid imageId, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(imageId), trackChanges)
             .SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<Image>> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+            await FindByCondition(a => ids.Contains(a.Id), trackChanges)
+            .ToListAsync();
     }
 }

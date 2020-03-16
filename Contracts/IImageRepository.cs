@@ -11,5 +11,6 @@ namespace Contracts
         Task<Image> GetImageAsync(Guid imageId, bool trackChanges);
         void CreateImage(Image image);
         void DeleteImage(Image image);
+        Task<IEnumerable<Image>> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
     }
 }

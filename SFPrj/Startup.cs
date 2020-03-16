@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using SFPrj.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SFPrj
 {
@@ -25,6 +26,10 @@ namespace SFPrj
             services.AddControllers();
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             //services.AddSpaStaticFiles(configuration =>
             //{
             //    configuration.RootPath = "ClientApp/dist";

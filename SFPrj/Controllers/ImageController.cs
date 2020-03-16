@@ -6,6 +6,8 @@ using Entities.DataTransferObjects;
 using System;
 using Entities.Models;
 using System.Threading.Tasks;
+using System.Linq;
+using SFPrj.ModelBinders;
 
 namespace SFPrj.Controllers
 {
@@ -82,6 +84,34 @@ namespace SFPrj.Controllers
             _mapper.Map(image, imageEntity);
             await _repository.SaveAsync();
             return NoContent();
+        }
+
+        [HttpGet("collection/({ids})", Name = "ImagesCollections")]
+        public async Task<IActionResult> GetImagesCollections([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
+        {
+            if (ids == null)
+                return BadRequest("Parameter ids is null");
+            var imagesEntity = await _repository.Image.GetByIds(ids, false);
+            if (ids.Count() != imagesEntity.Count())
+                return NotFound();
+            var imagesToReturn = _mapper.Map<IEnumerable<Image>>(imagesEntity);
+            return Ok(imagesToReturn);
+        }
+
+        [HttpPost("collection")]
+        public async Task<IActionResult> CreateImagesCollections([FromBody] IEnumerable<ImageForCreationDto> imagesCollection)
+        {
+            if (imagesCollection == null)
+                return BadRequest("Images collection is null");
+            var imagesEntity = _mapper.Map<IEnumerable<Image>>(imagesCollection);
+            foreach (var image in imagesEntity)
+            {
+                _repository.Image.CreateImage(image);
+            }
+            await _repository.SaveAsync();
+            var imagesCollectionToReturn = _mapper.Map<IEnumerable<ImageDto>>(imagesEntity);
+            var ids = string.Join(",", imagesCollectionToReturn.Select(a => a.Id));
+            return CreatedAtRoute("ImagesCollections", new { ids }, imagesCollectionToReturn);
         }
     }
 }
