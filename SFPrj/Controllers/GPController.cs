@@ -21,5 +21,67 @@ namespace SFPrj.Controllers
             _repository = repository;
             _mapper = mapper;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetGP()
+        {
+            var gp = await _repository.GP.GetAllGPAsync(trackChanges: false);
+            var gpDTO = _mapper.Map<IEnumerable<GPDto>>(gp);
+            return Ok(gpDTO);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetGP(Guid id)
+        {
+            var gp = await _repository.GP.GetGPAsync(id, trackChanges: false);
+            if (gp == null)
+                return NotFound();
+            else
+            {
+                var gpDTO = _mapper.Map<GPDto>(gp);
+                return Ok(gpDTO);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGP([FromBody]GPCreateDto gp)
+        {
+            if (gp == null)
+                return BadRequest("GPDto object is null.");
+            else
+            {
+                var gpEntity = _mapper.Map<GP>(gp);
+                _repository.GP.CreateGP(gpEntity);
+                await _repository.SaveAsync();
+                var gpToReturn = _mapper.Map<GPDto>(gpEntity);
+                return CreatedAtRoute("GetGP", new { id = gpToReturn.Id }, gpToReturn);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteGP(Guid id)
+        {
+            var gp = await _repository.GP.GetGPAsync(id, trackChanges: false);
+            if (gp == null)
+            {
+                return NotFound();
+            }
+            _repository.GP.DeleteGP(gp);
+            await _repository.SaveAsync();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateGP([FromBody] GPDto gp)
+        {
+            if (gp == null)
+                return BadRequest("GPDto object is null");
+            var gpEntity = await _repository.GP.GetGPAsync(gp.Id, trackChanges: true);
+            if (gpEntity == null)
+                return NotFound();
+            _mapper.Map(gp, gpEntity);
+            await _repository.SaveAsync();
+            return NoContent();
+        }
     }
 }
