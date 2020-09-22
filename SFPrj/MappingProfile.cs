@@ -117,7 +117,7 @@ namespace SFPrj
             CreateMap<TypeFinishUpdateDto, TypeFinish>();
 
             CreateMap<Tyre, TyreDto>();
-            CreateMap<TyreCreateDto, Tyre>();
+            CreateMap<TyreCreateDto, Tyre>(); 
             CreateMap<TyreUpdateDto, Tyre>();
         }
     }
