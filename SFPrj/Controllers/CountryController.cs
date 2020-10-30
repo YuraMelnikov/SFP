@@ -44,7 +44,7 @@ namespace SFPrj.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCountry([FromBody]CountryCreateDto country)
+        public async Task<IActionResult> CreateCountry(CountryCreateDto country)
         {
             if (country == null)
                 return BadRequest("CountryCreateDto object is null.");
@@ -53,7 +53,7 @@ namespace SFPrj.Controllers
                 var countryEntity = _mapper.Map<Country>(country);
                 _repository.Country.CreateCountry(countryEntity);
                 await _repository.SaveAsync();
-                var countryToReturn = _mapper.Map<ChassiDto>(countryEntity);
+                var countryToReturn = _mapper.Map<CountryDto>(countryEntity);
                 return CreatedAtRoute("GetCountry", new { id = countryToReturn.Id }, countryToReturn);
             }
         }

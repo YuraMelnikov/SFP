@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{02CCBE23-56A8-48B4-9513-6FD4969F8E4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProjectSFPrj", "XUnitTestProjectSFPrj\XUnitTestProjectSFPrj.csproj", "{2978EFA6-F873-41DF-A6FE-DA203873460A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProjectSFPrj", "XUnitTestProjectSFPrj\XUnitTestProjectSFPrj.csproj", "{2978EFA6-F873-41DF-A6FE-DA203873460A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserApp", "ParserApp\ParserApp.csproj", "{D299EA21-16CF-4345-9AA6-1288986568C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2978EFA6-F873-41DF-A6FE-DA203873460A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2978EFA6-F873-41DF-A6FE-DA203873460A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2978EFA6-F873-41DF-A6FE-DA203873460A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D299EA21-16CF-4345-9AA6-1288986568C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D299EA21-16CF-4345-9AA6-1288986568C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D299EA21-16CF-4345-9AA6-1288986568C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D299EA21-16CF-4345-9AA6-1288986568C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
