@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("Chassi")]
-    public class Chassi : EntityId
+    [Table("Chassis")]
+    public class Chassis : EntityId
     {
         [Required(ErrorMessage = "Manufacturer is required")]
         public Guid IdManufacturer { get; set; }
@@ -21,6 +21,6 @@ namespace Entities.Models
         [ForeignKey("IdImage")]
         public Image Image { get; set; }
         [ForeignKey("IdLivery")]
-        public Livery Livery { get; set; }
+        public Image Livery { get; set; }
     }
 }

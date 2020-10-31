@@ -50,7 +50,7 @@ namespace SFPrj.Controllers
                 return BadRequest("GPResultDto object is null.");
             else
             {
-                var gpEntity = _mapper.Map<GPResult>(gp);
+                var gpEntity = _mapper.Map<GrandPrixResult>(gp);
                 _repository.GPResult.CreateGPResult(gpEntity);
                 await _repository.SaveAsync();
                 var gpToReturn = _mapper.Map<GPResultDto>(gpEntity);

@@ -8,7 +8,5 @@ namespace Entities.Models
     {
         [Required]
         public string Link { get; set; }
-        [Required]
-        public string Description { get; set; }
     }
 }

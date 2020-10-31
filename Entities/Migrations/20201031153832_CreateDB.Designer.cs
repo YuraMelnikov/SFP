@@ -10,18 +10,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20200114123531_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201031153832_CreateDB")]
+    partial class CreateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Entities.Models.Chassi", b =>
+            modelBuilder.Entity("Entities.Models.Chassis", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,28 @@ namespace Entities.Migrations
 
                     b.HasIndex("IdManufacturer");
 
-                    b.ToTable("Chassi");
+                    b.ToTable("Chassis");
+                });
+
+            modelBuilder.Entity("Entities.Models.ChassisImg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdChassi")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdImage")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdChassi");
+
+                    b.HasIndex("IdImage");
+
+                    b.ToTable("ChassisImg");
                 });
 
             modelBuilder.Entity("Entities.Models.Country", b =>
@@ -77,43 +98,18 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("IdGpResult")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("IdTypeDnq")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("IdGpResult");
-
-                    b.HasIndex("IdTypeDnq");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("DNQ");
-                });
-
-            modelBuilder.Entity("Entities.Models.DescriptionGPResult", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IdGpResult")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdGpResult");
-
-                    b.ToTable("DescriptionGPResult");
                 });
 
             modelBuilder.Entity("Entities.Models.Engine", b =>
@@ -141,25 +137,46 @@ namespace Entities.Migrations
                     b.ToTable("Engine");
                 });
 
+            modelBuilder.Entity("Entities.Models.EngineImg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdEngine")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdImage")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdEngine");
+
+                    b.HasIndex("IdImage");
+
+                    b.ToTable("EngineImg");
+                });
+
             modelBuilder.Entity("Entities.Models.Fail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IdGpResult")
+                    b.Property<Guid>("IdGrandPrixResult")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdTypeFail")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdGpResult");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.HasIndex("IdTypeFail");
 
@@ -175,7 +192,7 @@ namespace Entities.Migrations
                     b.Property<float>("AverageSpeed")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("IdGpResult")
+                    b.Property<Guid>("IdGrandPrixResult")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Lap")
@@ -186,7 +203,7 @@ namespace Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdGpResult");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("FastLap");
                 });
@@ -197,21 +214,21 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("IdGpResult")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("IdGpResult");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("Fine");
                 });
 
-            modelBuilder.Entity("Entities.Models.GP", b =>
+            modelBuilder.Entity("Entities.Models.GrandPrix", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,10 +247,10 @@ namespace Entities.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Num")
+                    b.Property<int>("Number")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumInSeason")
+                    b.Property<int>("NumberInSeason")
                         .HasColumnType("integer");
 
                     b.Property<float>("PercentDistance")
@@ -249,10 +266,31 @@ namespace Entities.Migrations
 
                     b.HasIndex("IdTrackСonfiguration");
 
-                    b.ToTable("GP");
+                    b.ToTable("GrandPrix");
                 });
 
-            modelBuilder.Entity("Entities.Models.GPResult", b =>
+            modelBuilder.Entity("Entities.Models.GrandPrixImg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdGrandPrix")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdImage")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdGrandPrix");
+
+                    b.HasIndex("IdImage");
+
+                    b.ToTable("GPImg");
+                });
+
+            modelBuilder.Entity("Entities.Models.GrandPrixResult", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -264,10 +302,14 @@ namespace Entities.Migrations
                     b.Property<Guid>("IdParticipant")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdTypeFinish")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Lap")
+                        .HasColumnType("integer");
+
+                    b.Property<float>("Points")
+                        .HasColumnType("real");
+
+                    b.Property<int?>("Position")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<TimeSpan>("Time")
@@ -277,9 +319,27 @@ namespace Entities.Migrations
 
                     b.HasIndex("IdParticipant");
 
-                    b.HasIndex("IdTypeFinish");
-
                     b.ToTable("GPResult");
+                });
+
+            modelBuilder.Entity("Entities.Models.GrandPrixResultNote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdGrandPrixResult");
+
+                    b.ToTable("DescriptionGPResult");
                 });
 
             modelBuilder.Entity("Entities.Models.Image", b =>
@@ -287,10 +347,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("Link")
                         .IsRequired()
@@ -310,7 +366,7 @@ namespace Entities.Migrations
                     b.Property<int>("First")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("IdGpResult")
+                    b.Property<Guid>("IdGrandPrixResult")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Last")
@@ -318,24 +374,9 @@ namespace Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdGpResult");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("LeaderLap");
-                });
-
-            modelBuilder.Entity("Entities.Models.Livery", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Livery");
                 });
 
             modelBuilder.Entity("Entities.Models.Manufacturer", b =>
@@ -363,19 +404,40 @@ namespace Entities.Migrations
                     b.ToTable("Manufacturer");
                 });
 
+            modelBuilder.Entity("Entities.Models.ManufacturerImg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdImage")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdManufacturer")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdImage");
+
+                    b.HasIndex("IdManufacturer");
+
+                    b.ToTable("ManufacturerImg");
+                });
+
             modelBuilder.Entity("Entities.Models.Participant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdChassi")
+                    b.Property<Guid>("IdChassis")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdEngine")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdGp")
+                    b.Property<Guid>("IdGrandPrixResult")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdRacer")
@@ -387,17 +449,17 @@ namespace Entities.Migrations
                     b.Property<Guid>("IdTyre")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Num")
+                    b.Property<string>("Number")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdChassi");
+                    b.HasIndex("IdChassis");
 
                     b.HasIndex("IdEngine");
 
-                    b.HasIndex("IdGp");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.HasIndex("IdRacer");
 
@@ -414,7 +476,7 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdGpResult")
+                    b.Property<Guid>("IdGrandPrixResult")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Lap")
@@ -425,7 +487,7 @@ namespace Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdGpResult");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("Pit");
                 });
@@ -441,6 +503,9 @@ namespace Entities.Migrations
 
                     b.Property<Guid>("IdParticipant")
                         .HasColumnType("uuid");
+
+                    b.Property<float>("Points")
+                        .HasColumnType("real");
 
                     b.Property<int>("Position")
                         .HasColumnType("integer");
@@ -502,6 +567,27 @@ namespace Entities.Migrations
                     b.ToTable("Racer");
                 });
 
+            modelBuilder.Entity("Entities.Models.RacerImg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdImage")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdRacer")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdImage");
+
+                    b.HasIndex("IdRacer");
+
+                    b.ToTable("RacerImg");
+                });
+
             modelBuilder.Entity("Entities.Models.Season", b =>
                 {
                     b.Property<Guid>("Id")
@@ -511,17 +597,12 @@ namespace Entities.Migrations
                     b.Property<Guid>("IdImage")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdTypeCalculate")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Year")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdImage");
-
-                    b.HasIndex("IdTypeCalculate");
 
                     b.ToTable("Season");
                 });
@@ -538,7 +619,7 @@ namespace Entities.Migrations
                     b.Property<Guid>("IdImage")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ShortName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -551,27 +632,48 @@ namespace Entities.Migrations
                     b.ToTable("Team");
                 });
 
+            modelBuilder.Entity("Entities.Models.TeamImg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdImage")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdTeam")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdImage");
+
+                    b.HasIndex("IdTeam");
+
+                    b.ToTable("TeamImg");
+                });
+
             modelBuilder.Entity("Entities.Models.TeamName", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdSeasonFinish")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("IdSeasonStart")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("LongName")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("IdSeason")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdTeam")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdSeasonFinish");
+                    b.HasIndex("IdSeason");
 
-                    b.HasIndex("IdSeasonStart");
+                    b.HasIndex("IdTeam");
 
                     b.ToTable("TeamName");
                 });
@@ -607,7 +709,7 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdImageGpConfiguration")
+                    b.Property<Guid>("IdImage")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdTrack")
@@ -622,45 +724,11 @@ namespace Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdImageGpConfiguration");
+                    b.HasIndex("IdImage");
 
                     b.HasIndex("IdTrack");
 
                     b.ToTable("TrackСonfiguration");
-                });
-
-            modelBuilder.Entity("Entities.Models.TypeCalculate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypeCalculate");
-                });
-
-            modelBuilder.Entity("Entities.Models.TypeDNQ", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypeDNQ");
                 });
 
             modelBuilder.Entity("Entities.Models.TypeFail", b =>
@@ -676,25 +744,6 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TypeFail");
-                });
-
-            modelBuilder.Entity("Entities.Models.TypeFinish", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShortName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypeFinish");
                 });
 
             modelBuilder.Entity("Entities.Models.Tyre", b =>
@@ -722,7 +771,7 @@ namespace Entities.Migrations
                     b.ToTable("Tyre");
                 });
 
-            modelBuilder.Entity("Entities.Models.Chassi", b =>
+            modelBuilder.Entity("Entities.Models.Chassis", b =>
                 {
                     b.HasOne("Entities.Models.Image", "Image")
                         .WithMany()
@@ -730,7 +779,7 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Livery", "Livery")
+                    b.HasOne("Entities.Models.Image", "Livery")
                         .WithMany()
                         .HasForeignKey("IdLivery")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -743,10 +792,25 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Entities.Models.ChassisImg", b =>
+                {
+                    b.HasOne("Entities.Models.Chassis", "Chassi")
+                        .WithMany()
+                        .HasForeignKey("IdChassi")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("IdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Models.Country", b =>
                 {
                     b.HasOne("Entities.Models.Image", "Image")
-                        .WithMany("Countries")
+                        .WithMany()
                         .HasForeignKey("IdImage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -754,24 +818,9 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.DNQ", b =>
                 {
-                    b.HasOne("Entities.Models.GPResult", "Result")
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdGpResult")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.TypeDNQ", "TypeDnq")
-                        .WithMany()
-                        .HasForeignKey("IdTypeDnq")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.DescriptionGPResult", b =>
-                {
-                    b.HasOne("Entities.Models.GPResult", "Result")
-                        .WithMany()
-                        .HasForeignKey("IdGpResult")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -791,15 +840,30 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.Fail", b =>
+            modelBuilder.Entity("Entities.Models.EngineImg", b =>
                 {
-                    b.HasOne("Entities.Models.GPResult", "Result")
+                    b.HasOne("Entities.Models.Engine", "Engine")
                         .WithMany()
-                        .HasForeignKey("IdGpResult")
+                        .HasForeignKey("IdEngine")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.TypeFail", "TFail")
+                    b.HasOne("Entities.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("IdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Fail", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
+                        .WithMany()
+                        .HasForeignKey("IdGrandPrixResult")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.TypeFail", "TypeFail")
                         .WithMany()
                         .HasForeignKey("IdTypeFail")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -808,23 +872,23 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.FastLap", b =>
                 {
-                    b.HasOne("Entities.Models.GPResult", "Result")
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdGpResult")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.Fine", b =>
                 {
-                    b.HasOne("Entities.Models.GPResult", "Result")
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdGpResult")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.GP", b =>
+            modelBuilder.Entity("Entities.Models.GrandPrix", b =>
                 {
                     b.HasOne("Entities.Models.Image", "Image")
                         .WithMany()
@@ -839,33 +903,51 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.GPResult", b =>
+            modelBuilder.Entity("Entities.Models.GrandPrixImg", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrix", "GrandPrix")
+                        .WithMany()
+                        .HasForeignKey("IdGrandPrix")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("IdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.GrandPrixResult", b =>
                 {
                     b.HasOne("Entities.Models.Participant", "Participant")
                         .WithMany()
                         .HasForeignKey("IdParticipant")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("Entities.Models.TypeFinish", "TypeFinish")
+            modelBuilder.Entity("Entities.Models.GrandPrixResultNote", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdTypeFinish")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.LeaderLap", b =>
                 {
-                    b.HasOne("Entities.Models.GPResult", "Result")
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdGpResult")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.Manufacturer", b =>
                 {
-                    b.HasOne("Entities.Models.Country", "Countr")
+                    b.HasOne("Entities.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("IdCountry")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -878,11 +960,26 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Entities.Models.ManufacturerImg", b =>
+                {
+                    b.HasOne("Entities.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("IdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Manufacturer", "Manufacturer")
+                        .WithMany()
+                        .HasForeignKey("IdManufacturer")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Models.Participant", b =>
                 {
-                    b.HasOne("Entities.Models.Chassi", "Chassi")
+                    b.HasOne("Entities.Models.Chassis", "Chassis")
                         .WithMany()
-                        .HasForeignKey("IdChassi")
+                        .HasForeignKey("IdChassis")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -892,9 +989,9 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.GP", "Gp")
+                    b.HasOne("Entities.Models.GrandPrix", "GrandPrix")
                         .WithMany()
-                        .HasForeignKey("IdGp")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -919,9 +1016,9 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Pit", b =>
                 {
-                    b.HasOne("Entities.Models.GPResult", "Result")
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdGpResult")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -937,7 +1034,7 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Racer", b =>
                 {
-                    b.HasOne("Entities.Models.Country", "Countr")
+                    b.HasOne("Entities.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("IdCountry")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -946,6 +1043,21 @@ namespace Entities.Migrations
                     b.HasOne("Entities.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("IdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.RacerImg", b =>
+                {
+                    b.HasOne("Entities.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("IdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Racer", "Racer")
+                        .WithMany()
+                        .HasForeignKey("IdRacer")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -957,17 +1069,11 @@ namespace Entities.Migrations
                         .HasForeignKey("IdImage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Entities.Models.TypeCalculate", "TypeCalculat")
-                        .WithMany()
-                        .HasForeignKey("IdTypeCalculate")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.Team", b =>
                 {
-                    b.HasOne("Entities.Models.Country", "Cournt")
+                    b.HasOne("Entities.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("IdCountry")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -980,24 +1086,39 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.TeamName", b =>
+            modelBuilder.Entity("Entities.Models.TeamImg", b =>
                 {
-                    b.HasOne("Entities.Models.Season", "SeasonFinish")
+                    b.HasOne("Entities.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("IdSeasonFinish")
+                        .HasForeignKey("IdImage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Season", "SeasonStart")
+                    b.HasOne("Entities.Models.Team", "Team")
                         .WithMany()
-                        .HasForeignKey("IdSeasonStart")
+                        .HasForeignKey("IdTeam")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.TeamName", b =>
+                {
+                    b.HasOne("Entities.Models.Season", "Season")
+                        .WithMany()
+                        .HasForeignKey("IdSeason")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("IdTeam")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.Track", b =>
                 {
-                    b.HasOne("Entities.Models.Country", "Countr")
+                    b.HasOne("Entities.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("IdCountry")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1014,7 +1135,7 @@ namespace Entities.Migrations
                 {
                     b.HasOne("Entities.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("IdImageGpConfiguration")
+                        .HasForeignKey("IdImage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

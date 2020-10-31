@@ -9,8 +9,8 @@ namespace Entities.Models
     {
         [Required(ErrorMessage = "Country is required")]
         public Guid IdCountry { get; set; }
-        [Required(ErrorMessage = "Shortname is required")]
-        public string ShortName { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; }
         [Required(ErrorMessage = "Image is required")]
         public Guid IdImage { get; set; }
 

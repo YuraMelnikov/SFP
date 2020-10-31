@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Entities.Models
 {
     [Table("GPResult")]
-    public class GPResult : EntityId
+    public class GrandPrixResult : EntityId
     {
         [Required(ErrorMessage = "Participant is required")]
         public Guid IdParticipant { get; set; }
@@ -13,14 +13,14 @@ namespace Entities.Models
         public TimeSpan Time { get; set; }
         [Required(ErrorMessage = "Average speed is required")]
         public float AverageSpeed { get; set; }
-        [Required(ErrorMessage = "Type finish is required")]
-        public Guid IdTypeFinish { get; set; }
         [Required(ErrorMessage = "Lap is required")]
         public int Lap { get; set; }
+        [Required(ErrorMessage = "Points is required")]
+        public float Points { get; set; }
+        [Required(ErrorMessage = "Position is required")]
+        public int? Position { get; set; }
 
         [ForeignKey("IdParticipant")]
         public  Participant Participant { get; set; }
-        [ForeignKey("IdTypeFinish")]
-        public TypeFinish TypeFinish { get; set; }
     }
 }

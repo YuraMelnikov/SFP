@@ -9,25 +9,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
-    public class ChassiRepository : RepositoryBase<Chassi>, IChassiRepository
+    public class ChassiRepository : RepositoryBase<Chassis>, IChassiRepository
     {
         public ChassiRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }
 
-        public void CreateChassi(Chassi chassi) =>
+        public void CreateChassi(Chassis chassi) =>
             Create(chassi);
 
-        public void DeleteChassi(Chassi chassi) =>
+        public void DeleteChassi(Chassis chassi) =>
             Delete(chassi);
 
-        public async Task<IEnumerable<Chassi>> GetAllChassisAsync(bool trackChanges) =>
+        public async Task<IEnumerable<Chassis>> GetAllChassisAsync(bool trackChanges) =>
             await FindAll(trackChanges)
             .OrderBy(c => c.Name)
             .ToListAsync();
 
-        public async Task<Chassi> GetChassiAsync(Guid chassiId, bool trackChanges) =>
+        public async Task<Chassis> GetChassiAsync(Guid chassiId, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(chassiId), trackChanges)
             .SingleOrDefaultAsync();
     }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class CreateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,49 +12,11 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Link = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Image", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Livery",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
                     Link = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Livery", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TypeCalculate",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TypeCalculate", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TypeDNQ",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TypeDNQ", x => x.Id);
+                    table.PrimaryKey("PK_Image", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,19 +29,6 @@ namespace Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TypeFail", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TypeFinish",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    ShortName = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TypeFinish", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,8 +56,7 @@ namespace Entities.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Year = table.Column<int>(nullable: false),
-                    IdImage = table.Column<Guid>(nullable: false),
-                    IdTypeCalculate = table.Column<Guid>(nullable: false)
+                    IdImage = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,12 +65,6 @@ namespace Entities.Migrations
                         name: "FK_Season_Image_IdImage",
                         column: x => x.IdImage,
                         principalTable: "Image",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Season_TypeCalculate_IdTypeCalculate",
-                        column: x => x.IdTypeCalculate,
-                        principalTable: "TypeCalculate",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -191,7 +133,7 @@ namespace Entities.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IdCountry = table.Column<Guid>(nullable: false),
-                    ShortName = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     IdImage = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -238,33 +180,7 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamName",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IdSeasonStart = table.Column<Guid>(nullable: false),
-                    IdSeasonFinish = table.Column<Guid>(nullable: false),
-                    LongName = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TeamName", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TeamName_Season_IdSeasonFinish",
-                        column: x => x.IdSeasonFinish,
-                        principalTable: "Season",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TeamName_Season_IdSeasonStart",
-                        column: x => x.IdSeasonStart,
-                        principalTable: "Season",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Chassi",
+                name: "Chassis",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -275,21 +191,21 @@ namespace Entities.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chassi", x => x.Id);
+                    table.PrimaryKey("PK_Chassis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chassi_Image_IdImage",
+                        name: "FK_Chassis_Image_IdImage",
                         column: x => x.IdImage,
                         principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Chassi_Livery_IdLivery",
+                        name: "FK_Chassis_Image_IdLivery",
                         column: x => x.IdLivery,
-                        principalTable: "Livery",
+                        principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Chassi_Manufacturer_IdManufacturer",
+                        name: "FK_Chassis_Manufacturer_IdManufacturer",
                         column: x => x.IdManufacturer,
                         principalTable: "Manufacturer",
                         principalColumn: "Id",
@@ -323,6 +239,31 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ManufacturerImg",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
+                    IdManufacturer = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ManufacturerImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ManufacturerImg_Image_IdImage",
+                        column: x => x.IdImage,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ManufacturerImg_Manufacturer_IdManufacturer",
+                        column: x => x.IdManufacturer,
+                        principalTable: "Manufacturer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tyre",
                 columns: table => new
                 {
@@ -349,12 +290,88 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RacerImg",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
+                    IdRacer = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RacerImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RacerImg_Image_IdImage",
+                        column: x => x.IdImage,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RacerImg_Racer_IdRacer",
+                        column: x => x.IdRacer,
+                        principalTable: "Racer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamImg",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
+                    IdTeam = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeamImg_Image_IdImage",
+                        column: x => x.IdImage,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamImg_Team_IdTeam",
+                        column: x => x.IdTeam,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamName",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdTeam = table.Column<Guid>(nullable: false),
+                    IdSeason = table.Column<Guid>(nullable: false),
+                    FullName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamName", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeamName_Season_IdSeason",
+                        column: x => x.IdSeason,
+                        principalTable: "Season",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamName_Team_IdTeam",
+                        column: x => x.IdTeam,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrackСonfiguration",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IdTrack = table.Column<Guid>(nullable: false),
-                    IdImageGpConfiguration = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
                     Length = table.Column<float>(nullable: false),
                     Name = table.Column<string>(nullable: false)
                 },
@@ -362,8 +379,8 @@ namespace Entities.Migrations
                 {
                     table.PrimaryKey("PK_TrackСonfiguration", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrackСonfiguration_Image_IdImageGpConfiguration",
-                        column: x => x.IdImageGpConfiguration,
+                        name: "FK_TrackСonfiguration_Image_IdImage",
+                        column: x => x.IdImage,
                         principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -376,13 +393,63 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GP",
+                name: "ChassisImg",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
+                    IdChassi = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChassisImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChassisImg_Chassis_IdChassi",
+                        column: x => x.IdChassi,
+                        principalTable: "Chassis",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChassisImg_Image_IdImage",
+                        column: x => x.IdImage,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EngineImg",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
+                    IdEngine = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EngineImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EngineImg_Engine_IdEngine",
+                        column: x => x.IdEngine,
+                        principalTable: "Engine",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EngineImg_Image_IdImage",
+                        column: x => x.IdImage,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GrandPrix",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IdTrackСonfiguration = table.Column<Guid>(nullable: false),
-                    Num = table.Column<int>(nullable: false),
-                    NumInSeason = table.Column<int>(nullable: false),
+                    Number = table.Column<int>(nullable: false),
+                    NumberInSeason = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     IdImage = table.Column<Guid>(nullable: false),
@@ -391,17 +458,42 @@ namespace Entities.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GP", x => x.Id);
+                    table.PrimaryKey("PK_GrandPrix", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GP_Image_IdImage",
+                        name: "FK_GrandPrix_Image_IdImage",
                         column: x => x.IdImage,
                         principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GP_TrackСonfiguration_IdTrackСonfiguration",
+                        name: "FK_GrandPrix_TrackСonfiguration_IdTrackСonfiguration",
                         column: x => x.IdTrackСonfiguration,
                         principalTable: "TrackСonfiguration",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GPImg",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IdImage = table.Column<Guid>(nullable: false),
+                    IdGrandPrix = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GPImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GPImg_GrandPrix_IdGrandPrix",
+                        column: x => x.IdGrandPrix,
+                        principalTable: "GrandPrix",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GPImg_Image_IdImage",
+                        column: x => x.IdImage,
+                        principalTable: "Image",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -411,10 +503,10 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGp = table.Column<Guid>(nullable: false),
-                    Num = table.Column<string>(nullable: false),
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
+                    Number = table.Column<string>(nullable: false),
                     IdTeam = table.Column<Guid>(nullable: false),
-                    IdChassi = table.Column<Guid>(nullable: false),
+                    IdChassis = table.Column<Guid>(nullable: false),
                     IdEngine = table.Column<Guid>(nullable: false),
                     IdRacer = table.Column<Guid>(nullable: false),
                     IdTyre = table.Column<Guid>(nullable: false)
@@ -423,9 +515,9 @@ namespace Entities.Migrations
                 {
                     table.PrimaryKey("PK_Participant", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Participant_Chassi_IdChassi",
-                        column: x => x.IdChassi,
-                        principalTable: "Chassi",
+                        name: "FK_Participant_Chassis_IdChassis",
+                        column: x => x.IdChassis,
+                        principalTable: "Chassis",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -435,9 +527,9 @@ namespace Entities.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Participant_GP_IdGp",
-                        column: x => x.IdGp,
-                        principalTable: "GP",
+                        name: "FK_Participant_GrandPrix_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
+                        principalTable: "GrandPrix",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -468,8 +560,9 @@ namespace Entities.Migrations
                     IdParticipant = table.Column<Guid>(nullable: false),
                     Time = table.Column<TimeSpan>(nullable: false),
                     AverageSpeed = table.Column<float>(nullable: false),
-                    IdTypeFinish = table.Column<Guid>(nullable: false),
-                    Lap = table.Column<int>(nullable: false)
+                    Lap = table.Column<int>(nullable: false),
+                    Points = table.Column<float>(nullable: false),
+                    Position = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -478,12 +571,6 @@ namespace Entities.Migrations
                         name: "FK_GPResult_Participant_IdParticipant",
                         column: x => x.IdParticipant,
                         principalTable: "Participant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GPResult_TypeFinish_IdTypeFinish",
-                        column: x => x.IdTypeFinish,
-                        principalTable: "TypeFinish",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -496,7 +583,8 @@ namespace Entities.Migrations
                     IdParticipant = table.Column<Guid>(nullable: false),
                     Position = table.Column<int>(nullable: false),
                     Time = table.Column<TimeSpan>(nullable: false),
-                    AverageSpeed = table.Column<float>(nullable: false)
+                    AverageSpeed = table.Column<float>(nullable: false),
+                    Points = table.Column<float>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -514,15 +602,15 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
+                    Note = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DescriptionGPResult", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DescriptionGPResult_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_DescriptionGPResult_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -533,23 +621,16 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
-                    IdTypeDnq = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
+                    Note = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DNQ", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DNQ_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_DNQ_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DNQ_TypeDNQ_IdTypeDnq",
-                        column: x => x.IdTypeDnq,
-                        principalTable: "TypeDNQ",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -559,16 +640,16 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
                     IdTypeFail = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Note = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Fail_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_Fail_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -585,7 +666,7 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
                     Lap = table.Column<int>(nullable: false),
                     Time = table.Column<TimeSpan>(nullable: false),
                     AverageSpeed = table.Column<float>(nullable: false)
@@ -594,8 +675,8 @@ namespace Entities.Migrations
                 {
                     table.PrimaryKey("PK_FastLap", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FastLap_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_FastLap_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -606,15 +687,15 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
+                    Note = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fine", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Fine_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_Fine_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -625,7 +706,7 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
                     First = table.Column<int>(nullable: false),
                     Last = table.Column<int>(nullable: false)
                 },
@@ -633,8 +714,8 @@ namespace Entities.Migrations
                 {
                     table.PrimaryKey("PK_LeaderLap", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LeaderLap_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_LeaderLap_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -645,7 +726,7 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IdGpResult = table.Column<Guid>(nullable: false),
+                    IdGrandPrixResult = table.Column<Guid>(nullable: false),
                     Lap = table.Column<int>(nullable: false),
                     Time = table.Column<TimeSpan>(nullable: false)
                 },
@@ -653,27 +734,37 @@ namespace Entities.Migrations
                 {
                     table.PrimaryKey("PK_Pit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pit_GPResult_IdGpResult",
-                        column: x => x.IdGpResult,
+                        name: "FK_Pit_GPResult_IdGrandPrixResult",
+                        column: x => x.IdGrandPrixResult,
                         principalTable: "GPResult",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chassi_IdImage",
-                table: "Chassi",
+                name: "IX_Chassis_IdImage",
+                table: "Chassis",
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chassi_IdLivery",
-                table: "Chassi",
+                name: "IX_Chassis_IdLivery",
+                table: "Chassis",
                 column: "IdLivery");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chassi_IdManufacturer",
-                table: "Chassi",
+                name: "IX_Chassis_IdManufacturer",
+                table: "Chassis",
                 column: "IdManufacturer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChassisImg_IdChassi",
+                table: "ChassisImg",
+                column: "IdChassi");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChassisImg_IdImage",
+                table: "ChassisImg",
+                column: "IdImage");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Country_IdImage",
@@ -681,19 +772,14 @@ namespace Entities.Migrations
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DescriptionGPResult_IdGpResult",
+                name: "IX_DescriptionGPResult_IdGrandPrixResult",
                 table: "DescriptionGPResult",
-                column: "IdGpResult");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DNQ_IdGpResult",
+                name: "IX_DNQ_IdGrandPrixResult",
                 table: "DNQ",
-                column: "IdGpResult");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DNQ_IdTypeDnq",
-                table: "DNQ",
-                column: "IdTypeDnq");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Engine_IdImage",
@@ -706,9 +792,19 @@ namespace Entities.Migrations
                 column: "IdManufacturer");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fail_IdGpResult",
+                name: "IX_EngineImg_IdEngine",
+                table: "EngineImg",
+                column: "IdEngine");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EngineImg_IdImage",
+                table: "EngineImg",
+                column: "IdImage");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fail_IdGrandPrixResult",
                 table: "Fail",
-                column: "IdGpResult");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Fail_IdTypeFail",
@@ -716,24 +812,24 @@ namespace Entities.Migrations
                 column: "IdTypeFail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastLap_IdGpResult",
+                name: "IX_FastLap_IdGrandPrixResult",
                 table: "FastLap",
-                column: "IdGpResult");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fine_IdGpResult",
+                name: "IX_Fine_IdGrandPrixResult",
                 table: "Fine",
-                column: "IdGpResult");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GP_IdImage",
-                table: "GP",
+                name: "IX_GPImg_IdGrandPrix",
+                table: "GPImg",
+                column: "IdGrandPrix");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GPImg_IdImage",
+                table: "GPImg",
                 column: "IdImage");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GP_IdTrackСonfiguration",
-                table: "GP",
-                column: "IdTrackСonfiguration");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GPResult_IdParticipant",
@@ -741,14 +837,19 @@ namespace Entities.Migrations
                 column: "IdParticipant");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GPResult_IdTypeFinish",
-                table: "GPResult",
-                column: "IdTypeFinish");
+                name: "IX_GrandPrix_IdImage",
+                table: "GrandPrix",
+                column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaderLap_IdGpResult",
+                name: "IX_GrandPrix_IdTrackСonfiguration",
+                table: "GrandPrix",
+                column: "IdTrackСonfiguration");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaderLap_IdGrandPrixResult",
                 table: "LeaderLap",
-                column: "IdGpResult");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Manufacturer_IdCountry",
@@ -761,9 +862,19 @@ namespace Entities.Migrations
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participant_IdChassi",
+                name: "IX_ManufacturerImg_IdImage",
+                table: "ManufacturerImg",
+                column: "IdImage");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ManufacturerImg_IdManufacturer",
+                table: "ManufacturerImg",
+                column: "IdManufacturer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Participant_IdChassis",
                 table: "Participant",
-                column: "IdChassi");
+                column: "IdChassis");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Participant_IdEngine",
@@ -771,9 +882,9 @@ namespace Entities.Migrations
                 column: "IdEngine");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participant_IdGp",
+                name: "IX_Participant_IdGrandPrixResult",
                 table: "Participant",
-                column: "IdGp");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Participant_IdRacer",
@@ -791,9 +902,9 @@ namespace Entities.Migrations
                 column: "IdTyre");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pit_IdGpResult",
+                name: "IX_Pit_IdGrandPrixResult",
                 table: "Pit",
-                column: "IdGpResult");
+                column: "IdGrandPrixResult");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Qualification_IdParticipant",
@@ -811,14 +922,19 @@ namespace Entities.Migrations
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Season_IdImage",
-                table: "Season",
+                name: "IX_RacerImg_IdImage",
+                table: "RacerImg",
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Season_IdTypeCalculate",
+                name: "IX_RacerImg_IdRacer",
+                table: "RacerImg",
+                column: "IdRacer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Season_IdImage",
                 table: "Season",
-                column: "IdTypeCalculate");
+                column: "IdImage");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Team_IdCountry",
@@ -831,14 +947,24 @@ namespace Entities.Migrations
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamName_IdSeasonFinish",
-                table: "TeamName",
-                column: "IdSeasonFinish");
+                name: "IX_TeamImg_IdImage",
+                table: "TeamImg",
+                column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamName_IdSeasonStart",
+                name: "IX_TeamImg_IdTeam",
+                table: "TeamImg",
+                column: "IdTeam");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamName_IdSeason",
                 table: "TeamName",
-                column: "IdSeasonStart");
+                column: "IdSeason");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamName_IdTeam",
+                table: "TeamName",
+                column: "IdTeam");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Track_IdCountry",
@@ -851,9 +977,9 @@ namespace Entities.Migrations
                 column: "IdImage");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrackСonfiguration_IdImageGpConfiguration",
+                name: "IX_TrackСonfiguration_IdImage",
                 table: "TrackСonfiguration",
-                column: "IdImageGpConfiguration");
+                column: "IdImage");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TrackСonfiguration_IdTrack",
@@ -874,10 +1000,16 @@ namespace Entities.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ChassisImg");
+
+            migrationBuilder.DropTable(
                 name: "DescriptionGPResult");
 
             migrationBuilder.DropTable(
                 name: "DNQ");
+
+            migrationBuilder.DropTable(
+                name: "EngineImg");
 
             migrationBuilder.DropTable(
                 name: "Fail");
@@ -889,7 +1021,13 @@ namespace Entities.Migrations
                 name: "Fine");
 
             migrationBuilder.DropTable(
+                name: "GPImg");
+
+            migrationBuilder.DropTable(
                 name: "LeaderLap");
+
+            migrationBuilder.DropTable(
+                name: "ManufacturerImg");
 
             migrationBuilder.DropTable(
                 name: "Pit");
@@ -898,10 +1036,13 @@ namespace Entities.Migrations
                 name: "Qualification");
 
             migrationBuilder.DropTable(
-                name: "TeamName");
+                name: "RacerImg");
 
             migrationBuilder.DropTable(
-                name: "TypeDNQ");
+                name: "TeamImg");
+
+            migrationBuilder.DropTable(
+                name: "TeamName");
 
             migrationBuilder.DropTable(
                 name: "TypeFail");
@@ -916,19 +1057,13 @@ namespace Entities.Migrations
                 name: "Participant");
 
             migrationBuilder.DropTable(
-                name: "TypeFinish");
-
-            migrationBuilder.DropTable(
-                name: "TypeCalculate");
-
-            migrationBuilder.DropTable(
-                name: "Chassi");
+                name: "Chassis");
 
             migrationBuilder.DropTable(
                 name: "Engine");
 
             migrationBuilder.DropTable(
-                name: "GP");
+                name: "GrandPrix");
 
             migrationBuilder.DropTable(
                 name: "Racer");
@@ -938,9 +1073,6 @@ namespace Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tyre");
-
-            migrationBuilder.DropTable(
-                name: "Livery");
 
             migrationBuilder.DropTable(
                 name: "TrackСonfiguration");

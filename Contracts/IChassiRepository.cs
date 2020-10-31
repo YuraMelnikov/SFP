@@ -7,9 +7,9 @@ namespace Contracts
 {
     public interface IChassiRepository
     {
-        Task<IEnumerable<Chassi>> GetAllChassisAsync(bool trackChanges);
-        Task<Chassi> GetChassiAsync(Guid chassiId, bool trackChanges);
-        void CreateChassi(Chassi chassi);
-        void DeleteChassi(Chassi chassi);
+        Task<IEnumerable<Chassis>> GetAllChassisAsync(bool trackChanges);
+        Task<Chassis> GetChassiAsync(Guid chassiId, bool trackChanges);
+        void CreateChassi(Chassis chassi);
+        void DeleteChassi(Chassis chassi);
     }
 }

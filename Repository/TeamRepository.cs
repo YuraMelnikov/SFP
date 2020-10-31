@@ -24,7 +24,7 @@ namespace Repository
 
         public async Task<IEnumerable<Team>> GetAllTeamAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(c => c.ShortName)
+            .OrderBy(c => c.Name)
             .ToListAsync();
 
         public async Task<Team> GetTeamAsync(Guid teamId, bool trackChanges) =>

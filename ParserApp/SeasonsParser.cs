@@ -19,8 +19,7 @@ namespace ParserApp
                         Season season = new Season
                         {
                             IdImage = Guid.Parse("7785471e-79af-4892-bd56-07ea29f5e8a2"),
-                            Year = Convert.ToInt32(data.InnerHtml),
-                            IdTypeCalculate = Guid.Parse("0285471e-79af-4892-bd56-07ea29f5e8a2")
+                            Year = Convert.ToInt32(data.InnerHtml)
                         };
                         repository.Seasons.Add(season);
                         repository.SaveChanges();

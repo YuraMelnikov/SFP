@@ -51,7 +51,7 @@ namespace SFPrj.Controllers
                 return BadRequest("ChassiCreateDto object is null.");
             else
             {
-                var chassiEntity = _mapper.Map<Chassi>(chassi);
+                var chassiEntity = _mapper.Map<Chassis>(chassi);
                 _repository.Chassi.CreateChassi(chassiEntity);
                 await _repository.SaveAsync();
                 var chassiToReturn = _mapper.Map<ChassiDto>(chassiEntity);

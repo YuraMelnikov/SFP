@@ -19,7 +19,6 @@ namespace Repository
         private IGPResultRepository _gPResult;
         private IImageRepository _image;
         private ILeaderLapRepository _leaderLap;
-        private ILiveryRepository _livery;
         private IManufacturerRepository _manufacturer;
         private IParticipantRepository _participant;
         private IPitRepository _pit;
@@ -30,10 +29,7 @@ namespace Repository
         private ITeamRepository _team;
         private ITrackСonfigurationRepository _trackConfiguration;
         private ITrackRepository _track;
-        private ITypeCalculateRepository _typeCalculate;
-        private ITypeDNQRepository _typeDNQ;
         private ITypeFailRepository _typeFail;
-        private ITypeFinishRepository _typeFinish;
         private ITyreRepository _tyre;
 
         public RepositoryManager(RepositoryContext repositoryContext)
@@ -161,16 +157,6 @@ namespace Repository
             }
         }
 
-        public ILiveryRepository Livery 
-        {
-            get
-            {
-                if(_livery == null)
-                    _livery = new LiveryRepository(_repoContext);
-                return _livery;
-            }
-        }
-
         public IManufacturerRepository Manufacturer 
         {
             get 
@@ -271,26 +257,6 @@ namespace Repository
             }
         }
 
-        public ITypeCalculateRepository TypeCalculate
-        {
-            get
-            {
-                if(_typeCalculate == null)
-                    _typeCalculate = new TypeCalculateRepository(_repoContext);
-                return _typeCalculate;
-            }
-        }
-
-        public ITypeDNQRepository TypeDNQ
-        {
-            get
-            {
-                if(_typeDNQ == null)
-                    _typeDNQ = new TypeDNQRepository(_repoContext);
-                return _typeDNQ;
-            }
-        }
-
         public ITypeFailRepository TypeFail
         {
             get
@@ -298,16 +264,6 @@ namespace Repository
                 if(_typeFail == null)
                     _typeFail = new TypeFailRepository(_repoContext);
                 return _typeFail;
-            }
-        }
-
-        public ITypeFinishRepository TypeFinish
-        {
-            get
-            {
-                if(_typeFinish == null)
-                    _typeFinish = new TypeFinishRepository(_repoContext);
-                return _typeFinish;
             }
         }
 

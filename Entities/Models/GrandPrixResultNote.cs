@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("Fine")]
-    public class Fine : EntityId
+    [Table("DescriptionGPResult")]
+    public class GrandPrixResultNote : EntityId
     {
-        [Required(ErrorMessage = "Grand prix result is required")]
+        [Required(ErrorMessage = "Result Grand prix is required")]
         public Guid IdGrandPrixResult { get; set; }
         [Required(ErrorMessage = "Note is required")]
         public string Note { get; set; }

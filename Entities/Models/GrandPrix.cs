@@ -4,15 +4,15 @@ using System;
 
 namespace Entities.Models
 {
-    [Table("GP")]
-    public class GP : EntityId
+    [Table("GrandPrix")]
+    public class GrandPrix : EntityId
     {
         [Required(ErrorMessage = "Track configuration is required")]
         public Guid IdTrackСonfiguration { get; set; }
-        [Required(ErrorMessage = "Num is required")]
-        public int Num { get; set; }
-        [Required(ErrorMessage = "Num in season is required")]
-        public int NumInSeason { get; set; }
+        [Required(ErrorMessage = "Number is required")]
+        public int Number { get; set; }
+        [Required(ErrorMessage = "Number in season is required")]
+        public int NumberInSeason { get; set; }
         [Required(ErrorMessage = "Date is required")]
         public DateTime Date { get; set; }
         [Required(ErrorMessage = "Name is required")]

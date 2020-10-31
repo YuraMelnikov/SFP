@@ -12,17 +12,17 @@ namespace SFPrj
             CreateMap<ImageForCreationDto, Image>();
             CreateMap<ImageForUpdateDto, Image>();
 
-            CreateMap<Chassi, ChassiDto>();
-            CreateMap<ChassiCreateDto, Chassi>();
-            CreateMap<ChassiUpdateDto, Chassi>();
+            CreateMap<Chassis, ChassiDto>();
+            CreateMap<ChassiCreateDto, Chassis>();
+            CreateMap<ChassiUpdateDto, Chassis>();
 
             CreateMap<Country, CountryDto>();
             CreateMap<CountryCreateDto, Country>();
             CreateMap<CountryUpdateDto, Country>();
 
-            CreateMap<DescriptionGPResult, DescriptionGPResultDto>();
-            CreateMap<DescriptionGPResultCreateDto, DescriptionGPResult>();
-            CreateMap<DescriptionGPResultUpdateDto, DescriptionGPResult>();
+            CreateMap<GrandPrixResultNote, DescriptionGPResultDto>();
+            CreateMap<DescriptionGPResultCreateDto, GrandPrixResultNote>();
+            CreateMap<DescriptionGPResultUpdateDto, GrandPrixResultNote>();
 
             CreateMap<DNQ, DNQDto>();
             CreateMap<DNQCreateDto, DNQ>();
@@ -44,21 +44,17 @@ namespace SFPrj
             CreateMap<FineCreateDto, Fine>();
             CreateMap<FineUpdateDto, Fine>();
 
-            CreateMap<GP, GPDto>();
-            CreateMap<GPCreateDto, GP>();
-            CreateMap<GPUpdateDto, GP>();
+            CreateMap<GrandPrix, GPDto>();
+            CreateMap<GPCreateDto, GrandPrix>();
+            CreateMap<GPUpdateDto, GrandPrix>();
 
-            CreateMap<GPResult, GPResultDto>();
-            CreateMap<GPResultCreateDto, GPResult>();
-            CreateMap<GPResultUpdateDto, GPResult>();
+            CreateMap<GrandPrixResult, GPResultDto>();
+            CreateMap<GPResultCreateDto, GrandPrixResult>();
+            CreateMap<GPResultUpdateDto, GrandPrixResult>();
 
             CreateMap<LeaderLap, LeaderLapDto>();
             CreateMap<LeaderLapCreateDto, LeaderLap>();
             CreateMap<LeaderLapUpdateDto, LeaderLap>();
-
-            CreateMap<Livery, LiveryDto>();
-            CreateMap<LiveryCreateDto, Livery>();
-            CreateMap<LiveryUpdateDto, Livery>();
 
             CreateMap<Manufacturer, ManufacturerDto>();
             CreateMap<ManufacturerCreateDto, Manufacturer>();
@@ -100,21 +96,9 @@ namespace SFPrj
             CreateMap<TrackСonfigurationCreateDto, TrackСonfiguration>();
             CreateMap<TrackСonfigurationUpdateDto, TrackСonfiguration>();
 
-            CreateMap<TypeCalculate, TypeCalculateDto>();
-            CreateMap<TypeCalculateCreateDto, TypeCalculate>();
-            CreateMap<TypeCalculateUpdateDto, TypeCalculate>();
-
-            CreateMap<TypeDNQ, TypeDNQDto>();
-            CreateMap<TypeDNQCreateDto, TypeDNQ>();
-            CreateMap<TypeDNQUpdateDto, TypeDNQ>();
-
             CreateMap<TypeFail, TypeFailDto>();
             CreateMap<TypeFailCreateDto, TypeFail>();
             CreateMap<TypeFailUpdateDto, TypeFail>();
-
-            CreateMap<TypeFinish, TypeFinishDto>();
-            CreateMap<TypeFinishCreateDto, TypeFinish>();
-            CreateMap<TypeFinishUpdateDto, TypeFinish>();
 
             CreateMap<Tyre, TyreDto>();
             CreateMap<TyreCreateDto, Tyre>(); 

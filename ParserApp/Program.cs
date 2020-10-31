@@ -9,11 +9,13 @@ namespace ParserApp
         static async Task Main()
         {
             List<IElement> list;
-            Sharp sharp = new Sharp("https://wildsoft.motorsport.com/");
-            list = await sharp.GetElementsOfOptionsAsync("option", "cnt.php?id=");
+            Sharp sharp = new Sharp();
+            list = await sharp.GetElementsOfOptionsAsync("https://wildsoft.motorsport.com/", "option", "cnt.php?id=");
             new CountriesParser(list);
-            list = await sharp.GetElementsOfOptionsAsync("option", "gp.php?y=");
+            list = await sharp.GetElementsOfOptionsAsync("https://wildsoft.motorsport.com/", "option", "gp.php?y=");
             new SeasonsParser(list);
+            ManufacturingAndChassie parserManufChassi = new ManufacturingAndChassie();
+            parserManufChassi.SaveData();
         }
     }
 }

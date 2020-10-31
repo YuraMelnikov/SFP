@@ -7,16 +7,12 @@ namespace Entities.Models
     [Table("DNQ")]
     public class DNQ : EntityId
     {
-        [Required(ErrorMessage = "Result GP is required")]
-        public Guid IdGpResult { get; set; }
-        [Required(ErrorMessage = "Type DNQ is required")]
-        public Guid IdTypeDnq { get; set; }
-        [Required(ErrorMessage = "Description is required")]
-        public string Description { get; set; }
+        [Required(ErrorMessage = "Result Grand prix is required")]
+        public Guid IdGrandPrixResult { get; set; }
+        [Required(ErrorMessage = "Note is required")]
+        public string Note { get; set; }
 
-        [ForeignKey("IdGpResult")]
-        public GPResult GPResult { get; set; }
-        [ForeignKey("IdTypeDnq")]
-        public  TypeDNQ TypeDnq { get; set; }
+        [ForeignKey("IdGrandPrixResult")]
+        public GrandPrixResult GrandPrixResult { get; set; }
     }
 }

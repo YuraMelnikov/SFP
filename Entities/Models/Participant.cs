@@ -7,14 +7,14 @@ namespace Entities.Models
     [Table("Participant")]
     public class Participant : EntityId
     {
-        [Required(ErrorMessage = "GP is required")]
-        public Guid IdGp { get; set; }
-        [Required(ErrorMessage = "Num is required")]
-        public string Num { get; set; }
+        [Required(ErrorMessage = "Grand prix is required")]
+        public Guid IdGrandPrixResult { get; set; }
+        [Required(ErrorMessage = "Number is required")]
+        public string Number { get; set; }
         [Required(ErrorMessage = "Team is required")]
         public Guid IdTeam { get; set; }
-        [Required(ErrorMessage = "Chassi is required")]
-        public Guid IdChassi { get; set; }
+        [Required(ErrorMessage = "Chassis is required")]
+        public Guid IdChassis { get; set; }
         [Required(ErrorMessage = "Engine is required")]
         public Guid IdEngine { get; set; }
         [Required(ErrorMessage = "Racer is required")]
@@ -22,12 +22,12 @@ namespace Entities.Models
         [Required(ErrorMessage = "Tyre is required")]
         public Guid IdTyre { get; set; }
 
-        [ForeignKey("IdGp")]
-        public  GP Gp { get; set; }
+        [ForeignKey("IdGrandPrixResult")]
+        public  GrandPrix GrandPrix { get; set; }
         [ForeignKey("IdTeam")]
         public  Team Team { get; set; }
-        [ForeignKey("IdChassi")]
-        public  Chassi Chassi { get; set; }
+        [ForeignKey("IdChassis")]
+        public  Chassis Chassis { get; set; }
         [ForeignKey("IdEngine")]
         public  Engine Engine { get; set; }
         [ForeignKey("IdRacer")]

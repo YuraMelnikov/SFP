@@ -9,25 +9,25 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class DescriptionGPResultRepository : RepositoryBase<DescriptionGPResult>, IDescriptionGPResultRepository
+    public class DescriptionGPResultRepository : RepositoryBase<GrandPrixResultNote>, IDescriptionGPResultRepository
     {
         public DescriptionGPResultRepository(RepositoryContext repositoryContext) 
             : base(repositoryContext)
         {
         }
 
-        public void CreateDescriptionGPResult(DescriptionGPResult descriptionGPResult) =>
+        public void CreateDescriptionGPResult(GrandPrixResultNote descriptionGPResult) =>
             Create(descriptionGPResult);
 
-        public void DeleteDescriptionGPResult(DescriptionGPResult descriptionGPResult) =>
+        public void DeleteDescriptionGPResult(GrandPrixResultNote descriptionGPResult) =>
             Delete(descriptionGPResult);
 
-        public async Task<IEnumerable<DescriptionGPResult>> GetAllDescriptionGPResultAsync(bool trackChanges) =>
+        public async Task<IEnumerable<GrandPrixResultNote>> GetAllDescriptionGPResultAsync(bool trackChanges) =>
             await FindAll(trackChanges)
             .OrderBy(c => c.Id)
             .ToListAsync();
 
-        public async Task<DescriptionGPResult> GetDescriptionGPResultAsync(Guid descriptionGPResultId, bool trackChanges) =>
+        public async Task<GrandPrixResultNote> GetDescriptionGPResultAsync(Guid descriptionGPResultId, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(descriptionGPResultId), trackChanges)
             .SingleOrDefaultAsync();
     }

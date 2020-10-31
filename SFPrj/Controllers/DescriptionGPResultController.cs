@@ -50,10 +50,10 @@ namespace SFPrj.Controllers
                 return BadRequest("DescriptionGPResultCreateDto object is null.");
             else
             {
-                var descriptionEntity = _mapper.Map<DescriptionGPResult>(description);
+                var descriptionEntity = _mapper.Map<GrandPrixResultNote>(description);
                 _repository.DescriptionGPResult.CreateDescriptionGPResult(descriptionEntity);
                 await _repository.SaveAsync();
-                var descriptionToReturn = _mapper.Map<DescriptionGPResult>(descriptionEntity);
+                var descriptionToReturn = _mapper.Map<GrandPrixResultNote>(descriptionEntity);
                 return CreatedAtRoute("GetDescriptionGPResult", new { id = descriptionToReturn.Id }, descriptionToReturn);
             }
         }

@@ -7,9 +7,9 @@ namespace Contracts
 {
     public interface IGPResultRepository 
     {
-        Task<IEnumerable<GPResult>> GetAllGPResultAsync(bool trackChanges);
-        Task<GPResult> GetGPResultAsync(Guid gPResultId, bool trackChanges);
-        void CreateGPResult(GPResult gPResult);
-        void DeleteGPResult(GPResult gPResult);
+        Task<IEnumerable<GrandPrixResult>> GetAllGPResultAsync(bool trackChanges);
+        Task<GrandPrixResult> GetGPResultAsync(Guid gPResultId, bool trackChanges);
+        void CreateGPResult(GrandPrixResult gPResult);
+        void DeleteGPResult(GrandPrixResult gPResult);
     }
 }

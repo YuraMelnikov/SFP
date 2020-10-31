@@ -11,7 +11,7 @@ namespace Entities.Models
         public Guid IdTrack { get; set; }
         [Required(ErrorMessage = "Image configuration is required")]
         public Guid IdImage { get; set; }
-        [Required(ErrorMessage = "Lenght is required")]
+        [Required(ErrorMessage = "Length is required")]
         public float Length { get; set; }
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
@@ -19,6 +19,6 @@ namespace Entities.Models
         [ForeignKey("IdImage")]
         public Image Image { get; set; }
         [ForeignKey("IdTrack")]
-        public  Track Track { get; set; }
+        public Track Track { get; set; }
     }
 }

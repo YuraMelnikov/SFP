@@ -16,7 +16,6 @@ namespace Contracts
         IGPResultRepository GPResult { get; }
         IImageRepository Image { get; }
         ILeaderLapRepository LeaderLap { get; }
-        ILiveryRepository Livery { get; }
         IManufacturerRepository Manufacturer { get; }
         IParticipantRepository Participant { get; }
         IPitRepository Pit { get; }
@@ -27,10 +26,7 @@ namespace Contracts
         ITeamRepository Team { get; }
         ITrackСonfigurationRepository TrackConfiguration { get; }
         ITrackRepository Track { get; }
-        ITypeCalculateRepository TypeCalculate { get; }
-        ITypeDNQRepository TypeDNQ { get; }
         ITypeFailRepository TypeFail { get; }
-        ITypeFinishRepository TypeFinish { get; }
         ITyreRepository Tyre { get; }
         Task SaveAsync();
     }

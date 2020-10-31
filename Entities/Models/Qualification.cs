@@ -13,8 +13,10 @@ namespace Entities.Models
         public int Position { get; set; }
         [Required(ErrorMessage = "Time is required")]
         public TimeSpan Time { get; set; }
-        [Required(ErrorMessage = "Average speed is reqiured")]
+        [Required(ErrorMessage = "Average speed is required")]
         public float AverageSpeed { get; set; }
+        [Required(ErrorMessage = "Points is required")]
+        public float Points { get; set; }
 
         [ForeignKey("IdParticipant")]
         public  Participant Participant { get; set; }

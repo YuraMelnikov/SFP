@@ -11,25 +11,22 @@ namespace ParserApp
     {
         private IConfiguration config;
         private IBrowsingContext context;
-        private IDocument document;
-        private string _link;
 
-        public Sharp(string link)
+        public Sharp()
         {
-            _link = link;
             config = Configuration.Default.WithDefaultLoader();
             context = BrowsingContext.New(config);
         }
 
-        public async Task<List<IElement>> GetElementsOfOptionsAsync(string selector)
+        public async Task<List<IElement>> GetElementsOfOptionsAsync(string link, string selector)
         {
-            document = await context.OpenAsync(_link);
+            IDocument document = await context.OpenAsync(link);
             return document.QuerySelectorAll(selector).ToList();
         }
 
-        public async Task<List<IElement>> GetElementsOfOptionsAsync(string selector, string outerhtmlContains)
+        public async Task<List<IElement>> GetElementsOfOptionsAsync(string link, string selector, string outerhtmlContains)
         {
-            document = await context.OpenAsync(_link);
+            IDocument document = await context.OpenAsync(link);
             return document.QuerySelectorAll(selector).Where(a => a.OuterHtml.Contains(outerhtmlContains)).ToList();
         }
     }
