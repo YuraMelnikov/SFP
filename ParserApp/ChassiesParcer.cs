@@ -39,7 +39,6 @@ namespace ParserApp
                     repository.Chassis.Add(chassis);
                     repository.SaveChanges();
                 }
-
             }
         }
     }
