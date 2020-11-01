@@ -10,9 +10,9 @@ using AngleSharp.Dom;
 
 namespace ParserApp
 {
-    public class ManufacturingAndChassie
+    public class ManufacturingParcer
     {
-        public ManufacturingAndChassie(List<IElement> countryDMO)
+        public ManufacturingParcer(List<IElement> countryDMO)
         {
             using (var repository = new RepositoryParcer())
             {

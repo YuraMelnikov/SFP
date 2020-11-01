@@ -21,7 +21,7 @@ namespace ParserApp
                 string link = "https://wildsoft.motorsport.com/cha.php?l=" + charForLink;
                 list = await sharp.GetElementsOfOptionsAsync(link, "a", "cha.php?id=");
                 if (list.Count > 0)
-                    new ManufacturingAndChassie(list);
+                    new ManufacturingParcer(list);
             }
 
 

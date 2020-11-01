@@ -1,10 +1,7 @@
 ﻿using Entities.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Text;
 
 namespace ParserApp
 {
@@ -26,8 +23,8 @@ namespace ParserApp
             godLikeClient.DownloadFile(link, Path.Combine(@"C:\Users\Zianon\source\repos\SFP\ParserApp\wwwroot\img\", Path.GetFileName(link)));
             Image image = new Image();
             image.Link = folder + Path.GetFileName(link);
-            repository.Images.Add(image);
-            repository.SaveChanges();
+            //repository.Images.Add(image);
+            //repository.SaveChanges();
             return image.Id;
         }
     }
