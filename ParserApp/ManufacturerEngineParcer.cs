@@ -17,6 +17,7 @@ namespace ParserApp
                 foreach (var data in listElements)
                 {
                     string name = data.Text().Replace("   ", "");
+                    string link = "https://wildsoft.motorsport.com/" + data.Attributes[0].Value;
                     if (repository.Manufacturers.Count(a => a.Name == name) == 0)
                     {
                         Manufacturer manufacturer = new Manufacturer
@@ -27,8 +28,12 @@ namespace ParserApp
                         };
                         //repository.Manufacturers.Add(manufacturer);
                         //repository.SaveChanges();
-                        string linkChassies = "https://wildsoft.motorsport.com/" + data.Attributes[0].Value;
-                        manufacturersLinks.Add(new ManufacturersLink { Id = manufacturer.Id, Link = linkChassies });
+                        manufacturersLinks.Add(new ManufacturersLink { Id = manufacturer.Id, Link = link });
+                    }
+                    else
+                    {
+                        var man = repository.Manufacturers.First(a => a.Name == name);
+                        manufacturersLinks.Add(new ManufacturersLink { Id = man.Id, Link = link });
                     }
                 }
             }
