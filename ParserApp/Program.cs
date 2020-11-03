@@ -1,6 +1,8 @@
-﻿using AngleSharp.Dom;
+﻿using AngleSharp;
+using AngleSharp.Dom;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ParserApp
@@ -29,6 +31,21 @@ namespace ParserApp
                 //        new ChassiesParcer(list, man.Id);
                 //    }
                 //}
+
+                //link = "https://wildsoft.motorsport.com/eng.php?l=" + charForLink;
+                //list = await sharp.GetElementsOfOptionsAsync(link, "a", "eng.php?id=");
+                //if (list.Count > 0)
+                //{
+                //    ManufacturerEngineParcer manufacturing = new ManufacturerEngineParcer(list);
+                //    foreach (var man in manufacturing.manufacturersLinks)
+                //    {
+                //        list = await sharp.GetElementsOfOptionsAsync(man.Link, "table > tbody > tr > td.cell_cla_br-rt:nth-child(2)");
+                //        IEnumerable<string> titles = list.Select(m => m.TextContent);
+                //        new EngineParcer(titles, man.Id);
+                //        Console.WriteLine("Complited: {0}", man.Id);
+                //    }
+                //}
+
                 link = "https://wildsoft.motorsport.com/eng.php?l=" + charForLink;
                 list = await sharp.GetElementsOfOptionsAsync(link, "a", "eng.php?id=");
                 if (list.Count > 0)
@@ -36,8 +53,10 @@ namespace ParserApp
                     ManufacturerEngineParcer manufacturing = new ManufacturerEngineParcer(list);
                     foreach (var man in manufacturing.manufacturersLinks)
                     {
-                        list = await sharp.GetElementsOfOptionsAsync(man.Link, "td", "cell_cla_br-rt");
-                        new EngineParcer(list, man.Id);
+                        list = await sharp.GetElementsOfOptionsAsync(man.Link, "table > tbody > tr > td.cell_cla_br-rt:nth-child(2)");
+                        IEnumerable<string> titles = list.Select(m => m.TextContent);
+                        new EngineParcer(titles, man.Id);
+                        Console.WriteLine("Complited: {0}", man.Id);
                     }
                 }
             }

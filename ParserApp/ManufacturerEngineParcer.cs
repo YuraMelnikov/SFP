@@ -26,8 +26,8 @@ namespace ParserApp
                             Name = name,
                             IdImage = Guid.Parse("7785471e-79af-4892-bd56-07ea29f5e8a2")
                         };
-                        //repository.Manufacturers.Add(manufacturer);
-                        //repository.SaveChanges();
+                        repository.Manufacturers.Add(manufacturer);
+                        repository.SaveChanges();
                         manufacturersLinks.Add(new ManufacturersLink { Id = manufacturer.Id, Link = link });
                     }
                     else
