@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Entities.Models;
 using System.Linq;
 using AngleSharp.Dom;
-using AngleSharp;
 
 namespace ParserApp
 {

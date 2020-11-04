@@ -28,5 +28,10 @@ namespace ParserApp
             IDocument document = await context.OpenAsync(link);
             return document.QuerySelectorAll(selector).Where(a => a.OuterHtml.Contains(outerhtmlContains)).ToList();
         }
+
+        public async Task<IDocument> GetIDocumentAsync(string link)
+        {
+            return await context.OpenAsync(link);
+        }
     }
 }
