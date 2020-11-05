@@ -21,6 +21,10 @@ namespace Entities.Models
         [Required(ErrorMessage = "Second name is required")]
         public string SecondName { get; set; }
         [Required(ErrorMessage = "Image is required")]
+        public string FirstNameRus { get; set; }
+        [Required(ErrorMessage = "Second name is required")]
+        public string SecondNameRus { get; set; }
+        [Required(ErrorMessage = "Image is required")]
         public Guid IdImage { get; set; }
         [Required(ErrorMessage = "Text data is required")]
         public string TextData { get; set; }

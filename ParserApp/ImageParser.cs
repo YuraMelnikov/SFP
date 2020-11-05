@@ -20,11 +20,11 @@ namespace ParserApp
         public Guid SaveObject()
         {
             WebClient godLikeClient = new WebClient();
-            godLikeClient.DownloadFile(link, Path.Combine(@"C:\Users\Zianon\source\repos\SFP\ParserApp\" + folder, Path.GetFileName(link)));
+            godLikeClient.DownloadFile(link, Path.Combine(@"C:\Users\myi\source\repos\SFP\ParserApp\" + folder, Path.GetFileName(link)));
             Image image = new Image();
             image.Link = folder + Path.GetFileName(link);
-            //repository.Images.Add(image);
-            //repository.SaveChanges();
+            repository.Images.Add(image);
+            repository.SaveChanges();
             return image.Id;
         }
     }

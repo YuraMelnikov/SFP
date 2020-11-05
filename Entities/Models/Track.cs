@@ -13,6 +13,8 @@ namespace Entities.Models
         public Guid IdImage { get; set; }
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "NameRus is required")]
+        public string NameRus { get; set; }
 
         [ForeignKey("IdCountry")]
         public  Country Country { get; set; }

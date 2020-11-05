@@ -17,6 +17,8 @@ namespace Entities.Models
         public DateTime Date { get; set; }
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Fullname is required")]
+        public string FullName { get; set; }
         [Required(ErrorMessage = "Image is required")]
         public Guid IdImage { get; set; }
         [Required(ErrorMessage = "Weather is required")]

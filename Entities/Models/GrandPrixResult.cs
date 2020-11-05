@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("GPResult")]
+    [Table("GrandPrixResult")]
     public class GrandPrixResult : EntityId
     {
         [Required(ErrorMessage = "Participant is required")]

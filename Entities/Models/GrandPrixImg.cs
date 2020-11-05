@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("GPImg")]
+    [Table("GrandPrixImg")]
     public class GrandPrixImg : EntityImg
     {
         [Required(ErrorMessage = "Grand prix is required")]

@@ -23,9 +23,7 @@ namespace Repository
             Delete(trackСonfiguration);
 
         public async Task<IEnumerable<TrackСonfiguration>> GetAllTrackСonfigurationAsync(bool trackChanges) =>
-            await FindAll(trackChanges)
-            .OrderBy(c => c.Name)
-            .ToListAsync();
+            await FindAll(trackChanges).ToListAsync();
 
         public async Task<TrackСonfiguration> GetTrackСonfigurationAsync(Guid trackСonfigurationId, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(trackСonfigurationId), trackChanges)

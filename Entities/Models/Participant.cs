@@ -8,7 +8,7 @@ namespace Entities.Models
     public class Participant : EntityId
     {
         [Required(ErrorMessage = "Grand prix is required")]
-        public Guid IdGrandPrixResult { get; set; }
+        public Guid IdGrandPrix { get; set; }
         [Required(ErrorMessage = "Number is required")]
         public string Number { get; set; }
         [Required(ErrorMessage = "Team is required")]
@@ -22,7 +22,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "Tyre is required")]
         public Guid IdTyre { get; set; }
 
-        [ForeignKey("IdGrandPrixResult")]
+        [ForeignKey("IdGrandPrix")]
         public  GrandPrix GrandPrix { get; set; }
         [ForeignKey("IdTeam")]
         public  Team Team { get; set; }
