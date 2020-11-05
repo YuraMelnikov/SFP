@@ -2,6 +2,7 @@
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Entities.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -219,80 +220,40 @@ namespace ParserApp
                 //    }
                 //}
             }
+            document = await context.OpenAsync("https://wildsoft.motorsport.com/cir.php?id=0");
+            var trackLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
+            foreach (var t in trackLinks)
+            {
+                document = await context.OpenAsync(t);
+                string nameTrack = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
+                if(repository.Tracks.Count(a => a.NameRus == nameTrack) == 0)
+                {
+                    string nameTrackEng = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
+                    string countryName = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[3].Value;
+                    Guid countryTrack = repository.Countries.First(a => a.NameRu == countryName).Id;
+                    string imgTrack = startPage + document.QuerySelectorAll("#cir_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(2) > a > img").First().Attributes[0].Value.Replace("/small", "");
+                    //new ImageParser(imgTrack, folderImg).SaveObject(), 
+
+                    Guid guidTrack = repository.Tracks.First(a => a.Name == nameTrack).Id;
+                    var confList = document.QuerySelectorAll("#eng_column_2 > table:nth-child(5) > tbody > tr > td.cell_cla_br-rt:nth-child(2)");
+                    IEnumerable<string> titles = confList.Select(m => m.TextContent);
+                    //foreach (var e in titles)
+                    //{
+                    //    if (repository.Engines.Count(a => a.Name == e && a.IdManufacturer == guidMan) == 0)
+                    //    {
+                    //        Engine engine = new Engine
+                    //        {
+                    //            IdManufacturer = guidMan,
+                    //            Name = e,
+                    //            IdImage = getDefGuid
+                    //        };
+                    //        repository.Engines.Add(engine);
+                    //        repository.SaveChanges();
+                    //    }
+                    //}
+                }
+            }
             Console.ReadKey();
-
-
-
-
-
-
-
-
-            //    link = "https://wildsoft.motorsport.com/gpr.php?l=" + charForLink;
-            //    list = await sharp.GetElementsOfOptionsAsync(link, "#links > div > a");
-            //    if (list.Count > 0)
-            //    {
-            //        var links = list.Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
-            //        foreach (var l in links)
-            //        {
-            //            using (var repository = new RepositoryParcer())
-            //            {
-            //                var document = await sharp.GetIDocumentAsync(l);
-            //                Racer racer = new Racer();
-            //                string countryName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[3].Value;
-            //                racer.Born = DateTime.Parse(document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(2) > p").First().InnerHtml);
-            //                racer.BornIn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(3) > p").First().InnerHtml;
-            //                try
-            //                {
-            //                    racer.Dead = DateTime.Parse(document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > p").First().InnerHtml);
-            //                    racer.DeadIn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(3) > p").First().InnerHtml;
-            //                }
-            //                catch
-            //                {
-            //                    racer.DeadIn = "";
-            //                }
-            //                racer.IdCountry = repository.Countries.First(a => a.Name == countryName).Id;
-            //                racer.FirstName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
-            //                racer.SecondName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
-            //                racer.IdImage = new ImageParser("https://wildsoft.motorsport.com/" + document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value, @"wwwroot/img/").SaveObject();
-            //                var texData = document.QuerySelectorAll("p.text_mb-5_i-10");
-            //                foreach (var d in texData)
-            //                {
-            //                    racer.TextData += d.InnerHtml;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-
-            ////list = await sharp.GetElementsOfOptionsAsync("https://wildsoft.motorsport.com/cir.php?id=61", "#links > div > a");
-            ////var tracksLink = list.Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
-            ////foreach (var l in tracksLink)
-            ////{
-            ////    using (var repository = new RepositoryParcer())
-            ////    {
-            ////        var document = await sharp.GetIDocumentAsync(l);
-            ////        Track track = new Track();
-            ////        string countryTrack = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[3].Value;
-            ////        //track.IdCountry = repository.Countries.First(a => a.Name == countryTrack).Id;
-            ////        //track.IdImage = new ImageParser("https://wildsoft.motorsport.com/" + document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[0].Value, @"wwwroot/img/").SaveObject();
-            ////        track.Name = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
-
-            ////        var trackConf = document.QuerySelectorAll("#cir_column_2 > table:nth-child(6)");
-
-
-            ////        //# cir_column_2 > table:nth-child(6) > tbody > tr:nth-child(2) > td:nth-child(1) > a > img
-            ////        //# cir_column_2 > table:nth-child(6) > tbody > tr:nth-child(3) > td:nth-child(1) > a > img
-
-            ////        //# cir_column_2 > table:nth-child(6) > tbody > tr:nth-child(2) > td:nth-child(2)
-            ////        //# cir_column_2 > table:nth-child(6) > tbody > tr:nth-child(3) > td:nth-child(2)
-
-            ////        //# cir_column_2 > table:nth-child(6) > tbody > tr:nth-child(2) > td.cell_cla_br-t
-            ////        //# cir_column_2 > table:nth-child(6) > tbody > tr:nth-child(3) > td.cell_cla_br-t
-
-            ////    }
-            ////}
         }
     }
 }
