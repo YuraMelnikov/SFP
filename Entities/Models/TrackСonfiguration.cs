@@ -13,6 +13,8 @@ namespace Entities.Models
         public Guid IdImage { get; set; }
         [Required(ErrorMessage = "Length is required")]
         public float Length { get; set; }
+        [Required(ErrorMessage = "Note is required")]
+        public string Note { get; set; }
 
         [ForeignKey("IdImage")]
         public Image Image { get; set; }
