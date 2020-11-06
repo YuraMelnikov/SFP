@@ -3,15 +3,17 @@ using System;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20201106090840_Update2020_11_06_05")]
+    partial class Update2020_11_06_05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -354,26 +356,6 @@ namespace Entities.Migrations
                     b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("GrandPrixResultNote");
-                });
-
-            modelBuilder.Entity("Entities.Models.GrandprixNote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("IdGrandPrix")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdGrandPrix");
-
-                    b.ToTable("GrandprixNote");
                 });
 
             modelBuilder.Entity("Entities.Models.Image", b =>
@@ -984,15 +966,6 @@ namespace Entities.Migrations
                     b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
                         .HasForeignKey("IdGrandPrixResult")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.GrandprixNote", b =>
-                {
-                    b.HasOne("Entities.Models.GrandPrix", "GrandPrix")
-                        .WithMany()
-                        .HasForeignKey("IdGrandPrix")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

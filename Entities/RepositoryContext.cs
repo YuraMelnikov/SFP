@@ -24,6 +24,7 @@ namespace Entities
         public DbSet<FastLap> FastLaps { get; set; }
         public DbSet<Fine> Fines { get; set; }
         public DbSet<GrandPrix> GrandPrixes { get; set; }
+        public DbSet<GrandprixNote> GrandprixNotes { get; set; }
         public DbSet<GrandPrixImg> GrandPrixImgs { get; set; }
         public DbSet<GrandPrixResult> GrandPrixResults { get; set; }
         public DbSet<GrandPrixResultNote> GrandPrixResultNotes { get; set; }

@@ -3,15 +3,17 @@ using System;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20201106082655_Update2020_11_06_02")]
+    partial class Update2020_11_06_02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,9 +248,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("IdImage")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdSeason")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("IdTrackСonfiguration")
                         .HasColumnType("uuid");
 
@@ -275,8 +274,6 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdImage");
-
-                    b.HasIndex("IdSeason");
 
                     b.HasIndex("IdTrackСonfiguration");
 
@@ -353,27 +350,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("IdGrandPrixResult");
 
-                    b.ToTable("GrandPrixResultNote");
-                });
-
-            modelBuilder.Entity("Entities.Models.GrandprixNote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("IdGrandPrix")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdGrandPrix");
-
-                    b.ToTable("GrandprixNote");
+                    b.ToTable("DescriptionGPResult");
                 });
 
             modelBuilder.Entity("Entities.Models.Image", b =>
@@ -942,12 +919,6 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Season", "Season")
-                        .WithMany()
-                        .HasForeignKey("IdSeason")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Entities.Models.TrackСonfiguration", "TrackСonfiguration")
                         .WithMany()
                         .HasForeignKey("IdTrackСonfiguration")
@@ -984,15 +955,6 @@ namespace Entities.Migrations
                     b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
                         .HasForeignKey("IdGrandPrixResult")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.GrandprixNote", b =>
-                {
-                    b.HasOne("Entities.Models.GrandPrix", "GrandPrix")
-                        .WithMany()
-                        .HasForeignKey("IdGrandPrix")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

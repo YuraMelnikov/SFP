@@ -7,6 +7,8 @@ namespace Entities.Models
     [Table("GrandPrix")]
     public class GrandPrix : EntityId
     {
+        [Required(ErrorMessage = "Season is required")]
+        public Guid IdSeason { get; set; }
         [Required(ErrorMessage = "Track configuration is required")]
         public Guid IdTrackСonfiguration { get; set; }
         [Required(ErrorMessage = "Number is required")]
@@ -25,7 +27,11 @@ namespace Entities.Models
         public string Weather { get; set; }
         [Required(ErrorMessage = "Percent distance is required")]
         public float PercentDistance { get; set; }
+        [Required(ErrorMessage = "Number of lan is required")]
+        public int NumberOfLap { get; set; }
 
+        [ForeignKey("IdSeason")]
+        public Season Season { get; set; }
         [ForeignKey("IdTrackСonfiguration")]
         public TrackСonfiguration TrackСonfiguration { get; set; }
         [ForeignKey("IdImage")]
