@@ -1,6 +1,7 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using AngleSharp.Io;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -309,37 +310,70 @@ namespace ParserApp
             //    }
             //}
 
-            for (int i = 1950; i < 2020; i++)
-            {
-                Guid idSeason = repository.Seasons.First(a => a.Year == i).Id;
-                document = await context.OpenAsync("https://wildsoft.motorsport.com/gp.php?y=" + i.ToString());
-                var gpLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).Where(m => m.Contains("https://wildsoft.motorsport.com/gp.php?gp=")).ToList();
-                foreach(var g in gpLinks)
-                {
-                    document = await context.OpenAsync(g);
-                    Guid idImage = new ImageParser(startPage + document.QuerySelectorAll("#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value, folderImg).SaveObject();
-                    string hatDoc = document.QuerySelectorAll("#gp_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().TextContent;
-                    string ruGPName = hatDoc.Substring(hatDoc.IndexOf(". ") + 2, hatDoc.IndexOf(", "));
+            //for (int i = 1950; i < 2020; i++)
+            //{
+            //    Guid idSeason = repository.Seasons.First(a => a.Year == i).Id;
+            //    document = await context.OpenAsync("https://wildsoft.motorsport.com/gp.php?y=" + i.ToString());
+            //    var gpLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).Where(m => m.Contains("https://wildsoft.motorsport.com/gp.php?gp=")).ToList();
+            //    foreach(var g in gpLinks)
+            //    {
+            //        document = await context.OpenAsync(g);
+            //        Guid idImage = new ImageParser(startPage + document.QuerySelectorAll("#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value, folderImg).SaveObject();
+            //        string hatDoc = document.QuerySelectorAll("#gp_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().TextContent;
+            //        string ruGPName = hatDoc.Substring(hatDoc.IndexOf(". "));
+            //        ruGPName = ruGPName.Substring(2, ruGPName.IndexOf(", ") - 2);
+            //        var dategp = document.QuerySelectorAll("#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > p").First().InnerHtml.ToString();
+            //        dategp = dategp.Substring(dategp.IndexOf("кругов: ")).Replace("кругов: ", "");
+            //        DateTime dateGp = Convert.ToDateTime(hatDoc.Substring(0, 10));
+            //        string fullName = document.QuerySelectorAll("#gp_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h3").First().InnerHtml;
+            //        string trackRusName = hatDoc.Substring(hatDoc.IndexOf(",") + 2);
+            //        Guid idTrackСonfiguration = repository.TrackСonfigurations.Where(a => a.Track.NameRus == trackRusName && a.Note.Contains(i.ToString())).First().Id;
+            //        if (repository.GrandPrixes.Count(q => q.IdSeason == idSeason && q.Name == ruGPName && q.Date == dateGp) == 0)
+            //        {
+            //            GrandPrix grandPrix = new GrandPrix
+            //            {
+            //                FullName = fullName,
+            //                IdSeason = idSeason,
+            //                Number = repository.GrandPrixes.Count() + 1,
+            //                NumberInSeason = repository.GrandPrixes.Count(a => a.IdSeason == idSeason) + 1,
+            //                IdImage = idImage,
+            //                Date = dateGp,
+            //                IdTrackСonfiguration = idTrackСonfiguration,
+            //                Name = ruGPName,
+            //                NumberOfLap = Convert.ToInt32(dategp.Substring(0, dategp.IndexOf("<br>"))),
+            //                PercentDistance = 0,
+            //                Weather = dategp.Substring(dategp.IndexOf("м<br>") + 1).Replace("<br>", "")
+            //            };
+            //            repository.GrandPrixes.Add(grandPrix);
+            //            repository.SaveChanges();
+            //            Console.WriteLine(grandPrix.Number.ToString() + " - " + i.ToString());
+            //            var notesList = document.QuerySelectorAll("#gp_column_2 > p").ToList();
+            //            foreach (var nt in notesList)
+            //            {
+            //                if (nt.TextContent == "" || nt.TextContent == " " || nt.TextContent == "Примечание: ")
+            //                {
+            //                }
+            //                else
+            //                {
+            //                    GrandprixNote note = new GrandprixNote
+            //                    {
+            //                        IdGrandPrix = grandPrix.Id,
+            //                        Note = nt.TextContent
+            //                    };
+            //                    repository.GrandprixNotes.Add(note);
+            //                    repository.SaveChanges();
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
-                    GrandPrix grandPrix = new GrandPrix { 
-                        FullName = document.QuerySelectorAll("#gp_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h3").First().InnerHtml, 
-                        IdSeason = idSeason, 
-                        Number = repository.GrandPrixes.Count() + 1, 
-                        NumberInSeason = repository.GrandPrixes.Count(a => a.IdSeason == idSeason) + 1, 
-                        IdImage = idImage, 
-                        Date = Convert.ToDateTime(hatDoc.Substring(0, 10)),
-                        IdTrackСonfiguration = repository.TrackСonfigurations.Where(a => a.Track.NameRus == hatDoc.Substring(hatDoc.IndexOf(",") + 2) && a.Note.Contains(i.ToString())).First().Id, 
-                        
-                        Name = "", NumberOfLap = 0, PercentDistance = 0, Weather = ""
-                    };
-                    //#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > p:nth-child(1)
-                    var dategp = document.QuerySelectorAll("#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > p").First().InnerHtml;
-                    //#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img
-                    var note = document.QuerySelectorAll("#gp_column_2 > p");
-                    //#gp_column_2 > table > tbody > tr > td:nth-child(3) > table > tbody
-                    var leaderLap = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(3)");
-                }
-            }
+            //https://wildsoft.motorsport.com/gptable_be.php?y_be=1950&gp_be=1&t_be=c&drv_be=&cha_be=&eng_be=
+            //l parcip
+            //g st fiels
+            //с classification
+            //f bastL
+
             Console.ReadKey();
         }
     }
@@ -362,8 +396,8 @@ namespace ParserApp
             godLikeClient.DownloadFile(link, Path.Combine(@"C:\Users\myi\source\repos\SFP\ParserApp\" + folder, Path.GetFileName(link)));
             Image image = new Image();
             image.Link = folder + Path.GetFileName(link);
-            //repository.Images.Add(image);
-            //repository.SaveChanges();
+            repository.Images.Add(image);
+            repository.SaveChanges();
             return image.Id;
         }
     }
