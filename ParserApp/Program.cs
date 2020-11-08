@@ -1,9 +1,8 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using AngleSharp.Io;
 using Entities.Models;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,8 +41,10 @@ namespace ParserApp
             //        Console.WriteLine("Add counrty: {0}", name);
             //    }
             //}
+
             Guid getDefGuid = repository.Images.First(a => a.Link == "wwwroot/img/cnt_empty.gif").Id;
-            //for (int i = 1950; i < 2021; i++)
+
+            //for (int i = 1950; i < 2020; i++)
             //{
             //    if (repository.Seasons.Count(a => a.Year == i) == 0)
             //    {
@@ -53,175 +54,184 @@ namespace ParserApp
             //            IdImage = getDefGuid
             //        });
             //        repository.SaveChanges();
+            //        Console.WriteLine("Add season: {0}", i.ToString());
             //    }
             //}
 
             //for (int i = 65; i <= 90; i++)
             //{
             //    string charForLink = Convert.ToChar(i).ToString();
-            //document = await context.OpenAsync("https://wildsoft.motorsport.com/cha.php?l=" + charForLink);
-            //var manufLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
-            //if (manufLinks.Count > 0)
-            //{
-            //    foreach (var man in manufLinks)
+            //    document = await context.OpenAsync("https://wildsoft.motorsport.com/cha.php?l=" + charForLink);
+            //    var manufLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
+            //    if (manufLinks.Count > 0)
             //    {
-            //        document = await context.OpenAsync(man);
-            //        string name = document.QuerySelectorAll("#cha_column_2 > table:nth-child(1) > tbody > tr > td > h1").First().InnerHtml;
-            //        string img = startPage + document.QuerySelectorAll("#cha_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value;
-            //        var chassiesImg = document.QuerySelectorAll("#cha_column_2 > table:nth-child(5) > tbody > tr > td:nth-child(2) > img").ToList();
-            //        var chassiesA = document.QuerySelectorAll("#cha_column_2 > table:nth-child(5) > tbody > tr > td:nth-child(2) > a").ToList();
-            //        if (repository.Manufacturers.Count(a => a.Name == name) == 0)
+            //        foreach (var man in manufLinks)
             //        {
-            //            repository.Manufacturers.Add(new Manufacturer
+            //            document = await context.OpenAsync(man);
+            //            string name = document.QuerySelectorAll("#cha_column_2 > table:nth-child(1) > tbody > tr > td > h1").First().InnerHtml;
+            //            string img = startPage + document.QuerySelectorAll("#cha_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value;
+            //            var chassiesImg = document.QuerySelectorAll("#cha_column_2 > table:nth-child(5) > tbody > tr > td:nth-child(2) > img").ToList();
+            //            var chassiesA = document.QuerySelectorAll("#cha_column_2 > table:nth-child(5) > tbody > tr > td:nth-child(2) > a").ToList();
+            //            if (repository.Manufacturers.Count(a => a.Name == name) == 0)
             //            {
-            //                Name = name,
-            //                IdImage = new ImageParser(img, folderImg).SaveObject(), 
-            //                IdCountry = repository.Countries.First().Id
-            //            });
-            //            repository.SaveChanges();
-            //        }
-            //        Guid guidMan = repository.Manufacturers.First(a => a.Name == name).Id;
-            //        foreach (var ch in chassiesImg)
-            //        {
-            //            string nameCh = ch.Attributes[5].Value;
-            //            string linkCh = startPage + ch.Attributes[0].Value;
-            //            if (repository.Chassis.Count(a => a.Name == nameCh && a.IdManufacturer == guidMan) == 0)
-            //            {
-            //                Guid imgLiv = new ImageParser(linkCh, folderLivery).SaveObject();
-            //                Chassis chassis = new Chassis
+            //                repository.Manufacturers.Add(new Manufacturer
             //                {
-            //                    IdManufacturer = guidMan,
-            //                    Name = nameCh,
-            //                    IdImage = imgLiv,
-            //                    IdLivery = imgLiv
-            //                };
-            //                repository.Chassis.Add(chassis);
+            //                    Name = name,
+            //                    IdImage = new ImageParser(img, folderImg).SaveObject(),
+            //                    IdCountry = repository.Countries.First().Id
+            //                });
             //                repository.SaveChanges();
+            //                Console.WriteLine("Add Manufacturer: {0}", name);
+            //            }
+            //            Guid guidMan = repository.Manufacturers.First(a => a.Name == name).Id;
+            //            foreach (var ch in chassiesImg)
+            //            {
+            //                string nameCh = ch.Attributes[5].Value;
+            //                string linkCh = startPage + ch.Attributes[0].Value;
+            //                if (repository.Chassis.Count(a => a.Name == nameCh && a.IdManufacturer == guidMan) == 0)
+            //                {
+            //                    Guid imgLiv = new ImageParser(linkCh, folderLivery).SaveObject();
+            //                    Chassis chassis = new Chassis
+            //                    {
+            //                        IdManufacturer = guidMan,
+            //                        Name = nameCh,
+            //                        IdImage = imgLiv,
+            //                        IdLivery = imgLiv
+            //                    };
+            //                    repository.Chassis.Add(chassis);
+            //                    repository.SaveChanges();
+            //                    Console.WriteLine("Add chassi: {0}", nameCh);
+            //                }
+            //            }
+            //            foreach (var ch in chassiesA)
+            //            {
+            //                string nameCh = ch.Attributes[0].Value;
+            //                if (repository.Chassis.Count(a => a.Name == nameCh && a.IdManufacturer == guidMan) == 0)
+            //                {
+            //                    Chassis chassis = new Chassis
+            //                    {
+            //                        IdManufacturer = guidMan,
+            //                        Name = nameCh,
+            //                        IdImage = getDefGuid,
+            //                        IdLivery = getDefGuid
+            //                    };
+            //                    repository.Chassis.Add(chassis);
+            //                    repository.SaveChanges();
+            //                    Console.WriteLine("Add chassi: {0}", nameCh);
+            //                }
             //            }
             //        }
-            //        foreach (var ch in chassiesA)
-            //        {
-            //            string nameCh = ch.Attributes[0].Value;
-            //            if (repository.Chassis.Count(a => a.Name == nameCh && a.IdManufacturer == guidMan) == 0)
-            //            {
-            //                Chassis chassis = new Chassis
-            //                {
-            //                    IdManufacturer = guidMan,
-            //                    Name = nameCh,
-            //                    IdImage = getDefGuid,
-            //                    IdLivery = getDefGuid
-            //                };
-            //                repository.Chassis.Add(chassis);
-            //                repository.SaveChanges();
-            //            }
-            //        }
-            //    }
 
-            //document = await context.OpenAsync("https://wildsoft.motorsport.com/eng.php?l=" + charForLink);
-            //var engLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
-            //if (engLinks.Count > 0)
-            //{
-            //    foreach (var eng in engLinks)
-            //    {
-            //        document = await context.OpenAsync(eng);
-            //        string nameManEng = document.QuerySelectorAll("#eng_column_2 > table:nth-child(1) > tbody > tr > td > h1").First().InnerHtml;
-            //        if (repository.Manufacturers.Count(a => a.Name == nameManEng) == 0)
+            //        document = await context.OpenAsync("https://wildsoft.motorsport.com/eng.php?l=" + charForLink);
+            //        var engLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
+            //        if (engLinks.Count > 0)
             //        {
-            //            repository.Manufacturers.Add(new Manufacturer
+            //            foreach (var eng in engLinks)
             //            {
-            //                Name = nameManEng,
-            //                IdImage = getDefGuid,
-            //                IdCountry = repository.Countries.First().Id
-            //            });
-            //            repository.SaveChanges();
-            //        }
-            //        Guid guidMan = repository.Manufacturers.First(a => a.Name == nameManEng).Id;
-            //        var engList = document.QuerySelectorAll("#eng_column_2 > table:nth-child(5) > tbody > tr > td.cell_cla_br-rt:nth-child(2)");
-            //        IEnumerable<string> titles = engList.Select(m => m.TextContent);
-            //        foreach (var e in titles)
-            //        {
-            //            if (repository.Engines.Count(a => a.Name == e && a.IdManufacturer == guidMan) == 0)
-            //            {
-            //                Engine engine = new Engine
+            //                document = await context.OpenAsync(eng);
+            //                string nameManEng = document.QuerySelectorAll("#eng_column_2 > table:nth-child(1) > tbody > tr > td > h1").First().InnerHtml;
+            //                if (repository.Manufacturers.Count(a => a.Name == nameManEng) == 0)
             //                {
-            //                    IdManufacturer = guidMan,
-            //                    Name = e,
-            //                    IdImage = getDefGuid
-            //                };
-            //                repository.Engines.Add(engine);
-            //                repository.SaveChanges();
+            //                    repository.Manufacturers.Add(new Manufacturer
+            //                    {
+            //                        Name = nameManEng,
+            //                        IdImage = getDefGuid,
+            //                        IdCountry = repository.Countries.First().Id
+            //                    });
+            //                    repository.SaveChanges();
+            //                    Console.WriteLine("Add manufacturer: {0}", nameManEng);
+            //                }
+            //                Guid guidMan = repository.Manufacturers.First(a => a.Name == nameManEng).Id;
+            //                var engList = document.QuerySelectorAll("#eng_column_2 > table:nth-child(5) > tbody > tr > td.cell_cla_br-rt:nth-child(2)");
+            //                IEnumerable<string> titles = engList.Select(m => m.TextContent);
+            //                foreach (var e in titles)
+            //                {
+            //                    if (repository.Engines.Count(a => a.Name == e && a.IdManufacturer == guidMan) == 0)
+            //                    {
+            //                        Engine engine = new Engine
+            //                        {
+            //                            IdManufacturer = guidMan,
+            //                            Name = e,
+            //                            IdImage = getDefGuid
+            //                        };
+            //                        repository.Engines.Add(engine);
+            //                        repository.SaveChanges();
+            //                        Console.WriteLine("Add engine: {0}", e);
+            //                    }
+            //                }
             //            }
             //        }
-            //    }
-            //}
 
-            //document = await context.OpenAsync("https://wildsoft.motorsport.com/drv.php?l=" + charForLink);
-            //var racerLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
-            //if (racerLinks.Count > 0)
-            //{
-            //    foreach (var r in racerLinks)
-            //    {
-            //        document = await context.OpenAsync(r);
-            //        string fn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
-            //        DateTime brn;
-            //        try
+            //        document = await context.OpenAsync("https://wildsoft.motorsport.com/drv.php?l=" + charForLink);
+            //        var racerLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).ToList();
+            //        if (racerLinks.Count > 0)
             //        {
-            //            brn = DateTime.Parse(document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(2) > p").First().InnerHtml);
-            //        }
-            //        catch
-            //        {
-            //            brn = new DateTime(1900, 1, 1);
-            //        }
-            //        if (repository.Racers.Count(a => a.FirstName == fn && a.Born == brn) == 0)
-            //        {
-            //            Racer racer = new Racer();
-            //            string countryName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[3].Value;
-            //            racer.Born = brn;
-            //            try
+            //            foreach (var r in racerLinks)
             //            {
-            //                racer.BornIn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(3) > p").First().InnerHtml;
+            //                document = await context.OpenAsync(r);
+            //                string fn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
+            //                DateTime brn;
+            //                try
+            //                {
+            //                    brn = DateTime.Parse(document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(2) > p").First().InnerHtml);
+            //                }
+            //                catch
+            //                {
+            //                    brn = new DateTime(1900, 1, 1);
+            //                }
+            //                if (repository.Racers.Count(a => a.FirstName == fn && a.Born == brn) == 0)
+            //                {
+            //                    Racer racer = new Racer();
+            //                    string countryName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[3].Value;
+            //                    racer.Born = brn;
+            //                    try
+            //                    {
+            //                        racer.BornIn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(3) > p").First().InnerHtml;
+            //                    }
+            //                    catch
+            //                    {
+            //                        racer.BornIn = "";
+            //                    }
+            //                    try
+            //                    {
+            //                        racer.Dead = DateTime.Parse(document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > p").First().InnerHtml);
+            //                        racer.DeadIn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(3) > p").First().InnerHtml;
+            //                    }
+            //                    catch
+            //                    {
+            //                        racer.DeadIn = "";
+            //                    }
+            //                    try
+            //                    {
+            //                        racer.IdCountry = repository.Countries.First(a => a.Name == countryName).Id;
+            //                    }
+            //                    catch
+            //                    {
+            //                        Country country = new Country { IdImage = getDefGuid, Name = countryName, NameRu = countryName };
+            //                        repository.Countries.Add(country);
+            //                        repository.SaveChanges();
+            //                        Console.WriteLine("Add counrty: {0}", country.Name);
+            //                        racer.IdCountry = country.Id;
+            //                    }
+            //                    racer.FirstName = fn;
+            //                    racer.FirstNameRus = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
+            //                    racer.SecondName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
+            //                    racer.SecondNameRus = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
+            //                    racer.IdImage = new ImageParser("https://wildsoft.motorsport.com/" + document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value, @"wwwroot/img/").SaveObject();
+            //                    var texData = document.QuerySelectorAll("p.text_mb-5_i-10");
+            //                    foreach (var d in texData)
+            //                    {
+            //                        racer.TextData += d.InnerHtml;
+            //                    }
+            //                    if (racer.TextData == null)
+            //                        racer.TextData = "";
+            //                    repository.Racers.Add(racer);
+            //                    repository.SaveChanges();
+            //                    Console.WriteLine("Add racet: {0}", racer.FirstNameRus);
+            //                }
             //            }
-            //            catch
-            //            {
-            //                racer.BornIn = "";
-            //            }
-            //            try
-            //            {
-            //                racer.Dead = DateTime.Parse(document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(2) > p").First().InnerHtml);
-            //                racer.DeadIn = document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(3) > p").First().InnerHtml;
-            //            }
-            //            catch
-            //            {
-            //                racer.DeadIn = "";
-            //            }
-            //            try
-            //            {
-            //                racer.IdCountry = repository.Countries.First(a => a.Name == countryName).Id;
-            //            }
-            //            catch
-            //            {
-            //                Country country = new Country { IdImage = getDefGuid, Name = countryName, NameRu = countryName };
-            //                repository.Countries.Add(country);
-            //                repository.SaveChanges();
-            //                racer.IdCountry = country.Id;
-            //            }
-            //            racer.FirstName = fn;
-            //            racer.FirstNameRus = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
-            //            racer.SecondName = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
-            //            racer.SecondNameRus = document.QuerySelectorAll("#drv_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
-            //            racer.IdImage = new ImageParser("https://wildsoft.motorsport.com/" + document.QuerySelectorAll("#drv_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value, @"wwwroot/img/").SaveObject();
-            //            var texData = document.QuerySelectorAll("p.text_mb-5_i-10");
-            //            foreach (var d in texData)
-            //            {
-            //                racer.TextData += d.InnerHtml;
-            //            }
-            //            if (racer.TextData == null)
-            //                racer.TextData = "";
-            //            repository.Racers.Add(racer);
-            //            repository.SaveChanges();
             //        }
             //    }
-            //}
             //}
 
             //document = await context.OpenAsync("https://wildsoft.motorsport.com/cir.php?id=0");
@@ -230,7 +240,7 @@ namespace ParserApp
             //{
             //    document = await context.OpenAsync(t);
             //    string nameTrack = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h1").First().InnerHtml;
-            //    if(repository.Tracks.Count(a => a.NameRus == nameTrack) == 0)
+            //    if (repository.Tracks.Count(a => a.NameRus == nameTrack) == 0)
             //    {
             //        string nameTrackEng = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h2").First().InnerHtml;
             //        string countryName = document.QuerySelectorAll("#cir_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(1) > p > img").First().Attributes[3].Value;
@@ -244,6 +254,7 @@ namespace ParserApp
             //            Country country = new Country { IdImage = getDefGuid, Name = countryName, NameRu = countryName };
             //            repository.Countries.Add(country);
             //            repository.SaveChanges();
+            //            Console.WriteLine("Add counrty: {0}", country.Name);
             //            countryTrack = repository.Countries.First(a => a.NameRu == countryName).Id;
             //        }
             //        Guid imgTrack;
@@ -256,14 +267,16 @@ namespace ParserApp
             //            imgTrack = getDefGuid;
             //        }
 
-            //        Track track = new Track { 
-            //            IdCountry = countryTrack, 
-            //            IdImage = imgTrack, 
-            //            Name = nameTrackEng, 
-            //            NameRus = nameTrack 
+            //        Track track = new Track
+            //        {
+            //            IdCountry = countryTrack,
+            //            IdImage = imgTrack,
+            //            Name = nameTrackEng,
+            //            NameRus = nameTrack
             //        };
             //        repository.Tracks.Add(track);
             //        repository.SaveChanges();
+            //        Console.WriteLine("Add track: {0}", track.Name);
             //        Guid guidTrack = repository.Tracks.First(a => a.Name == nameTrackEng).Id;
             //        var confListImg = document.QuerySelectorAll("#cir_column_2 > table:nth-child(6) > tbody > tr > td:nth-child(1) > a > img");
             //        var confListDistance = document.QuerySelectorAll("#cir_column_2 > table:nth-child(6) > tbody > tr > td.cell_cla_br-rt:nth-child(2)");
@@ -271,16 +284,18 @@ namespace ParserApp
             //        List<string> titlesImg = confListImg.Select(m => startPage + m.Attributes[0].Value).ToList();
             //        List<string> titlesDistance = confListDistance.Select(m => m.InnerHtml).ToList();
             //        List<string> titlesPeriod = confListPeriod.Select(m => m.TextContent).ToList();
-            //        for(int i = 0; i < titlesImg.Count(); i++)
+            //        for (int j = 0; j < titlesImg.Count(); j++)
             //        {
-            //            TrackСonfiguration trackConf = new TrackСonfiguration { 
-            //                IdImage = new ImageParser(titlesImg[i], folderImg).SaveObject(), 
-            //                IdTrack = guidTrack, 
-            //                Length = (float)Convert.ToDouble(titlesDistance[i].Replace(" ", "")), 
-            //                Note = titlesPeriod[i]
+            //            TrackСonfiguration trackConf = new TrackСonfiguration
+            //            {
+            //                IdImage = new ImageParser(titlesImg[j], folderImg).SaveObject(),
+            //                IdTrack = guidTrack,
+            //                Length = (float)Convert.ToDouble(titlesDistance[j].Replace(" ", "")),
+            //                Note = titlesPeriod[j]
             //            };
             //            repository.TrackСonfigurations.Add(trackConf);
             //            repository.SaveChanges();
+            //            Console.WriteLine("Add track conf: {0}", trackConf.Note);
             //        }
             //    }
             //}
@@ -292,30 +307,32 @@ namespace ParserApp
             //    document = await context.OpenAsync(tyr);
             //    string tyreName = document.QuerySelectorAll("#tyr_column_2 > table:nth-child(1) > tbody > tr > td > h1").First().InnerHtml;
             //    string imgTyreLink = document.QuerySelectorAll("#tyr_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value;
-            //    Nullable <Guid> tyreImgId = null;
-            //    if(repository.Manufacturers.Count(a => a.Name == tyreName) == 0)
+            //    Nullable<Guid> tyreImgId = null;
+            //    if (repository.Manufacturers.Count(a => a.Name == tyreName) == 0)
             //    {
             //        tyreImgId = new ImageParser(startPage + imgTyreLink, folderImg).SaveObject();
             //        Manufacturer manTyre = new Manufacturer { IdCountry = repository.Countries.First().Id, Name = tyreName, IdImage = tyreImgId.Value };
             //        repository.Manufacturers.Add(manTyre);
             //        repository.SaveChanges();
+            //        Console.WriteLine("Add manufacturer: {0}", manTyre.Name);
             //    }
             //    if (repository.Tyres.Count(a => a.Name == tyreName) == 0)
             //    {
-            //        if(tyreImgId.Value == null)
+            //        if (tyreImgId.Value == null)
             //            tyreImgId = new ImageParser(startPage + imgTyreLink, folderImg).SaveObject();
             //        Tyre tyre = new Tyre { IdImage = tyreImgId.Value, IdManufacturer = repository.Manufacturers.First(a => a.Name == tyreName).Id, Name = tyreName };
             //        repository.Tyres.Add(tyre);
             //        repository.SaveChanges();
+            //        Console.WriteLine("Add tyre: {0}", tyre.Name);
             //    }
             //}
 
-            //for (int i = 1950; i < 2020; i++)
+            //for (int i = 2006; i < 2020; i++)
             //{
             //    Guid idSeason = repository.Seasons.First(a => a.Year == i).Id;
             //    document = await context.OpenAsync("https://wildsoft.motorsport.com/gp.php?y=" + i.ToString());
             //    var gpLinks = document.QuerySelectorAll("#links > div > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.Href).Where(m => m.Contains("https://wildsoft.motorsport.com/gp.php?gp=")).ToList();
-            //    foreach(var g in gpLinks)
+            //    foreach (var g in gpLinks)
             //    {
             //        document = await context.OpenAsync(g);
             //        Guid idImage = new ImageParser(startPage + document.QuerySelectorAll("#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(1) > img").First().Attributes[0].Value, folderImg).SaveObject();
@@ -324,7 +341,11 @@ namespace ParserApp
             //        ruGPName = ruGPName.Substring(2, ruGPName.IndexOf(", ") - 2);
             //        var dategp = document.QuerySelectorAll("#gp_column_2 > table:nth-child(3) > tbody > tr > td:nth-child(3) > p").First().InnerHtml.ToString();
             //        dategp = dategp.Substring(dategp.IndexOf("кругов: ")).Replace("кругов: ", "");
-            //        DateTime dateGp = Convert.ToDateTime(hatDoc.Substring(0, 10));
+            //        string dt = hatDoc.Substring(0, 10);
+            //        int year = Convert.ToInt32(dt.Substring(6, 4));
+            //        int month = Convert.ToInt32(dt.Substring(3, 2));
+            //        int day = Convert.ToInt32(dt.Substring(0, 2));
+            //        DateTime dateGp = new DateTime(year, month, day);
             //        string fullName = document.QuerySelectorAll("#gp_column_2 > table:nth-child(1) > tbody > tr > td:nth-child(2) > h3").First().InnerHtml;
             //        string trackRusName = hatDoc.Substring(hatDoc.IndexOf(",") + 2);
             //        Guid idTrackСonfiguration = repository.TrackСonfigurations.Where(a => a.Track.NameRus == trackRusName && a.Note.Contains(i.ToString())).First().Id;
@@ -346,7 +367,7 @@ namespace ParserApp
             //            };
             //            repository.GrandPrixes.Add(grandPrix);
             //            repository.SaveChanges();
-            //            Console.WriteLine(grandPrix.Number.ToString() + " - " + i.ToString());
+            //            Console.WriteLine(grandPrix.Number.ToString() + " - " + grandPrix.NumberInSeason.ToString() + " - " + i.ToString());
             //            var notesList = document.QuerySelectorAll("#gp_column_2 > p").ToList();
             //            foreach (var nt in notesList)
             //            {
@@ -362,17 +383,81 @@ namespace ParserApp
             //                    };
             //                    repository.GrandprixNotes.Add(note);
             //                    repository.SaveChanges();
+            //                    Console.WriteLine("Add nate: {0}", note.Note);
             //                }
             //            }
             //        }
             //    }
             //}
 
+
             //https://wildsoft.motorsport.com/gptable_be.php?y_be=1950&gp_be=1&t_be=c&drv_be=&cha_be=&eng_be=
             //l parcip
             //g st fiels
             //с classification
             //f bastL
+
+
+            var gpList = repository.GrandPrixes.Include(a => a.Season).AsNoTracking().ToList();
+            //foreach (var gp in gpList)
+            //{
+            //    string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=l&drv_be=&cha_be=&eng_be=";
+            //    document = await context.OpenAsync(linkForParc);
+            //    var numList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(1)").ToList().Cast<IHtmlTableDataCellElement>().Where(m => m.InnerHtml != "<p><b>№</b></p>").Select(m => m.InnerHtml).ToList();
+            //    var racerList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4) > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.InnerHtml).ToList();
+            //    var teamList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(5)").ToList().Cast<IHtmlTableDataCellElement>().Where(m => m.InnerHtml != "<p><b>Команда</b></p>").Select(m => m.InnerHtml).ToList();
+            //    var chList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(6) > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.InnerHtml).ToList();
+            //    var enList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7) > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.InnerHtml).ToList();
+            //    var tyreList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(8) > a").ToList().Cast<IHtmlAnchorElement>().Select(m => m.InnerHtml).ToList();
+            //    int columns = racerList.Count();
+            //    for (int l = 0; l < columns; l++)
+            //    {
+            //        if (racerList[l] != "")
+            //        {
+            //            Guid IdTeam = repository.Teams.First(a => a.Name == teamList[l]).Id;
+            //            Guid IdChassis = repository.Chassis.First(a => a.Name == chList[l]).Id;
+            //            Guid IdEngine = repository.Engines.First(a => a.Name == enList[l].TrimEnd(' ')).Id;
+            //            Guid IdRacer = repository.Racers.First(a => a.FirstName == racerList[l]).Id;
+            //            Guid IdTyre;
+            //            try
+            //            {
+            //                IdTyre = repository.Tyres.First(a => a.Name == tyreList[l]).Id;
+            //            }
+            //            catch
+            //            {
+            //                IdTyre = Guid.Parse("884bdf24-0829-46d8-b259-a14d8d30e556");
+            //            }
+            //            Participant participant = new Participant
+            //            {
+            //                IdGrandPrix = gp.Id,
+            //                Number = numList[l],
+            //                IdTeam = IdTeam,
+            //                IdChassis = IdChassis,
+            //                IdEngine = IdEngine,
+            //                IdRacer = IdRacer,
+            //                IdTyre = IdTyre,
+            //            };
+            //            repository.Participants.Add(participant);
+            //            repository.SaveChanges();
+            //            Console.WriteLine(gp.Season.Year + " - " + gp.Number + " - " + participant.Id);
+            //        }
+            //    }
+            //}
+
+            gpList = repository.GrandPrixes.Include(a => a.Season).AsNoTracking().ToList();
+            foreach (var gp in gpList)
+            {
+                string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=g&drv_be=&cha_be=&eng_be=";
+                document = await context.OpenAsync(linkForParc);
+                var numList = document.QuerySelectorAll("#gp_column_2 > center > table > tbody > tr > td > p").ToList().Cast<IHtmlParagraphElement>().Select(m => m.TextContent).ToList();
+                foreach(var qua in numList)
+                {
+                    if(qua != "")
+                    {
+
+                    }
+                }
+            }
 
             Console.ReadKey();
         }
@@ -392,10 +477,13 @@ namespace ParserApp
         }
         public Guid SaveObject()
         {
+            System.String controlPath = Path.GetFileName(link);
+            if (repository.Images.Count(c => c.Link == folder + controlPath) > 0)
+                controlPath = Guid.NewGuid().ToString() + Path.GetFileName(link);
             WebClient godLikeClient = new WebClient();
-            godLikeClient.DownloadFile(link, Path.Combine(@"C:\Users\myi\source\repos\SFP\ParserApp\" + folder, Path.GetFileName(link)));
+            godLikeClient.DownloadFile(link, Path.Combine(@"C:\Users\Zianon\source\repos\SFP\ParserApp\" + folder, controlPath));
             Image image = new Image();
-            image.Link = folder + Path.GetFileName(link);
+            image.Link = folder + controlPath;
             repository.Images.Add(image);
             repository.SaveChanges();
             return image.Id;
