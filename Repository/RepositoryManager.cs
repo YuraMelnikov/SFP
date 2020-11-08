@@ -10,18 +10,14 @@ namespace Repository
         private IChassiRepository _chassi;
         private ICountryRepository _country;
         private IDescriptionGPResultRepository _descriptionGPResult;
-        private IDNQRepository _dNQ;
         private IEngineRepository _engine;
-        private IFailRepository _fail;
         private IFastLapRepository _fastLap;
-        private IFineRepository _fine;
         private IGPRepository _gP;
         private IGPResultRepository _gPResult;
         private IImageRepository _image;
         private ILeaderLapRepository _leaderLap;
         private IManufacturerRepository _manufacturer;
         private IParticipantRepository _participant;
-        private IPitRepository _pit;
         private IQualificationRepository _qualification;
         private IRacerRepository _racer;
         private ISeasonRepository _season;
@@ -29,7 +25,6 @@ namespace Repository
         private ITeamRepository _team;
         private ITrackСonfigurationRepository _trackConfiguration;
         private ITrackRepository _track;
-        private ITypeFailRepository _typeFail;
         private ITyreRepository _tyre;
 
         public RepositoryManager(RepositoryContext repositoryContext)
@@ -67,16 +62,6 @@ namespace Repository
             }
         }
 
-        public IDNQRepository DNQ 
-        {
-            get 
-            {
-                if(_dNQ == null)
-                    _dNQ = new DNQRepository(_repoContext);
-                return _dNQ;
-            }
-        }
-
         public IEngineRepository Engine 
         {
             get 
@@ -87,16 +72,6 @@ namespace Repository
             }
         }
 
-        public IFailRepository Fail 
-        {
-            get
-            {
-                if(_fail == null)
-                    _fail = new FailRepository(_repoContext);
-                return _fail;
-            }
-        }
-
         public IFastLapRepository FastLap 
         {
             get 
@@ -104,16 +79,6 @@ namespace Repository
                 if(_fastLap == null)
                     _fastLap = new FastLapRepository(_repoContext);
                 return _fastLap;
-            }
-        }
-
-        public IFineRepository Fine 
-        {
-            get
-            {
-                if(_fine == null)
-                    _fine = new FineRepository(_repoContext);
-                return _fine;
             }
         }
 
@@ -174,16 +139,6 @@ namespace Repository
                 if(_participant == null)
                     _participant = new ParticipantRepository(_repoContext);
                 return _participant;
-            }
-        }
-
-        public IPitRepository Pit
-        {
-            get
-            {
-                if(_pit == null)
-                    _pit = new PitRepository(_repoContext);
-                return _pit;
             }
         }
 
@@ -254,16 +209,6 @@ namespace Repository
                 if(_track == null)
                     _track = new TrackRepository(_repoContext);
                 return _track;
-            }
-        }
-
-        public ITypeFailRepository TypeFail
-        {
-            get
-            {
-                if(_typeFail == null)
-                    _typeFail = new TypeFailRepository(_repoContext);
-                return _typeFail;
             }
         }
 

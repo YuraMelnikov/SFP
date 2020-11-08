@@ -8,6 +8,6 @@ namespace Entities.DataTransferObjects
         public string Name { get; set; }
         public ManufacturerDto ManufacturerDto { get; set; }
         public ImageDto ImageDto { get; set; }
-        public LiveryDto LiveryDto { get; set; }
+        public ImageDto LiveryDto { get; set; }
     }
 }

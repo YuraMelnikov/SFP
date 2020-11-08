@@ -12,9 +12,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "Position is required")]
         public int Position { get; set; }
         [Required(ErrorMessage = "Time is required")]
-        public TimeSpan Time { get; set; }
-        [Required(ErrorMessage = "Average speed is required")]
-        public float AverageSpeed { get; set; }
+        public string Time { get; set; }
         [Required(ErrorMessage = "Points is required")]
         public float Points { get; set; }
 

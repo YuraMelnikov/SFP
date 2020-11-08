@@ -17,12 +17,9 @@ namespace Entities
         public DbSet<Chassis> Chassis { get; set; }
         public DbSet<ChassisImg> ChassisImgs { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<DNQ> DNQs { get; set; }
         public DbSet<Engine> Engines { get; set; }
         public DbSet<EngineImg> EngineImgs { get; set; }
-        public DbSet<Fail> Fails { get; set; }
         public DbSet<FastLap> FastLaps { get; set; }
-        public DbSet<Fine> Fines { get; set; }
         public DbSet<GrandPrix> GrandPrixes { get; set; }
         public DbSet<GrandprixNote> GrandprixNotes { get; set; }
         public DbSet<GrandPrixImg> GrandPrixImgs { get; set; }
@@ -33,7 +30,6 @@ namespace Entities
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<ManufacturerImg> ManufacturerImgs { get; set; }
         public DbSet<Participant> Participants { get; set; }
-        public DbSet<Pit> Pits { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
         public DbSet<Racer> Racers { get; set; }
         public DbSet<RacerImg> RacerImgs { get; set; }

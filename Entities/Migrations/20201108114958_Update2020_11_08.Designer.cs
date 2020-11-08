@@ -3,15 +3,17 @@ using System;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20201108114958_Update2020_11_08")]
+    partial class Update2020_11_08
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,6 +96,26 @@ namespace Entities.Migrations
                     b.ToTable("Country");
                 });
 
+            modelBuilder.Entity("Entities.Models.DNQ", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdGrandPrixResult");
+
+                    b.ToTable("DNQ");
+                });
+
             modelBuilder.Entity("Entities.Models.Engine", b =>
                 {
                     b.Property<Guid>("Id")
@@ -140,6 +162,31 @@ namespace Entities.Migrations
                     b.ToTable("EngineImg");
                 });
 
+            modelBuilder.Entity("Entities.Models.Fail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdTypeFail")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdGrandPrixResult");
+
+                    b.HasIndex("IdTypeFail");
+
+                    b.ToTable("Fail");
+                });
+
             modelBuilder.Entity("Entities.Models.FastLap", b =>
                 {
                     b.Property<Guid>("Id")
@@ -163,6 +210,26 @@ namespace Entities.Migrations
                     b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("FastLap");
+                });
+
+            modelBuilder.Entity("Entities.Models.Fine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdGrandPrixResult");
+
+                    b.ToTable("Fine");
                 });
 
             modelBuilder.Entity("Entities.Models.GrandPrix", b =>
@@ -248,19 +315,11 @@ namespace Entities.Migrations
                     b.Property<float>("AverageSpeed")
                         .HasColumnType("real");
 
-                    b.Property<string>("Classification")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("IdParticipant")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Lap")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<float>("Points")
                         .HasColumnType("real");
@@ -269,9 +328,8 @@ namespace Entities.Migrations
                         .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<string>("Time")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("interval");
 
                     b.HasKey("Id");
 
@@ -446,6 +504,28 @@ namespace Entities.Migrations
                     b.HasIndex("IdTyre");
 
                     b.ToTable("Participant");
+                });
+
+            modelBuilder.Entity("Entities.Models.Pit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdGrandPrixResult")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Lap")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("interval");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdGrandPrixResult");
+
+                    b.ToTable("Pit");
                 });
 
             modelBuilder.Entity("Entities.Models.Qualification", b =>
@@ -782,6 +862,15 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Entities.Models.DNQ", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
+                        .WithMany()
+                        .HasForeignKey("IdGrandPrixResult")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Models.Engine", b =>
                 {
                     b.HasOne("Entities.Models.Image", "Image")
@@ -812,7 +901,31 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Entities.Models.Fail", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
+                        .WithMany()
+                        .HasForeignKey("IdGrandPrixResult")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.TypeFail", "TypeFail")
+                        .WithMany()
+                        .HasForeignKey("IdTypeFail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Models.FastLap", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
+                        .WithMany()
+                        .HasForeignKey("IdGrandPrixResult")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Fine", b =>
                 {
                     b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
@@ -958,6 +1071,15 @@ namespace Entities.Migrations
                     b.HasOne("Entities.Models.Tyre", "Tyre")
                         .WithMany()
                         .HasForeignKey("IdTyre")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Pit", b =>
+                {
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
+                        .WithMany()
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

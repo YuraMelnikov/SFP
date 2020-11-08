@@ -444,19 +444,100 @@ namespace ParserApp
             //    }
             //}
 
-            gpList = repository.GrandPrixes.Include(a => a.Season).AsNoTracking().ToList();
+            gpList = repository.GrandPrixes.Include(a => a.Season)
+                .AsNoTracking()
+                //.Where(a => a.Number > 551)
+                .ToList();
+            //char[] trimChars = { ' ', 'q', 'Q', 'w','W', 'E', 'e', 'R', 'r', 'T', 't', 'Y', 'y', 'U', 'u', 'I', 'i', 'O', 'o', 'P', 'p', 'a', 'A',
+            //    'S', 's', 'D', 'd', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', 'K', 'k', 'L', 'Z', 'l', 'z', 'X', 'x', 'C', 'c', 'V', 'v', 'B', 'b', 'N', 'n', 'M', 'm' };
+            //foreach (var gp in gpList)
+            //{
+            //    string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=g&drv_be=&cha_be=&eng_be=";
+            //    document = await context.OpenAsync(linkForParc);
+            //    var numList = document.QuerySelectorAll("#gp_column_2 > center > table > tbody > tr > td > p").ToList().Cast<IHtmlParagraphElement>().Select(m => m.TextContent).ToList();
+            //    foreach(var qua in numList)
+            //    {
+            //        if (qua != "")
+            //        {
+            //            if (qua != "*")
+            //            {
+            //                if (qua != " ")
+            //                {
+            //                    string time = "No time";
+            //                    try
+            //                    {
+            //                        time = qua.Substring(qua.IndexOf("'") - 1);
+            //                    }
+            //                    catch
+            //                    {
+
+            //                    }
+            //                    string dataQue = qua;
+            //                    dataQue = dataQue.Substring(dataQue.IndexOf("  ") + 2);
+            //                    string fl = dataQue.Substring(0, 1);
+            //                    string shortName = "";
+            //                    try
+            //                    {
+            //                        shortName = dataQue.Substring(dataQue.IndexOf(".") + 1, dataQue.IndexOf(" "));
+            //                        shortName = shortName.Substring(0, shortName.IndexOf(" "));
+            //                    }
+            //                    catch
+            //                    {
+            //                        shortName = dataQue.Substring(dataQue.IndexOf(".") + 1);
+            //                    }
+            //                    shortName = shortName.Trim(trimChars);
+            //                    while (repository.Participants.AsNoTracking().Count(a => a.IdGrandPrix == gp.Id && a.Racer.FirstName.Contains(shortName)) == 0)
+            //                    {
+            //                        if (shortName == "7" || shortName == "3")
+            //                        {
+            //                            shortName = "Джеки";
+            //                        }
+            //                        else
+            //                        {
+            //                            shortName = shortName.Substring(0, shortName.Length - 2);
+            //                        }
+            //                    }
+            //                    var parc = repository.Participants.AsNoTracking().First(a => a.IdGrandPrix == gp.Id && a.Racer.FirstName.Contains(shortName));
+            //                    Qualification qualification = new Qualification
+            //                    {
+            //                        IdParticipant = parc.Id,
+            //                        Points = 0,
+            //                        Position = 0,
+            //                        Time = time
+            //                    };
+            //                    repository.Qualifications.Add(qualification);
+            //                    repository.SaveChanges();
+            //                    Console.WriteLine(time);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            gpList = repository.GrandPrixes
+                .AsNoTracking()
+                .Include(a => a.Season)
+                .ToList();
             foreach (var gp in gpList)
             {
-                string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=g&drv_be=&cha_be=&eng_be=";
+                string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=c&drv_be=&cha_be=&eng_be=";
                 document = await context.OpenAsync(linkForParc);
-                var numList = document.QuerySelectorAll("#gp_column_2 > center > table > tbody > tr > td > p").ToList().Cast<IHtmlParagraphElement>().Select(m => m.TextContent).ToList();
-                foreach(var qua in numList)
-                {
-                    if(qua != "")
-                    {
 
-                    }
-                }
+                //#gp_column_2 > table > tbody > tr:nth-child(2) > td:nth-child(1)
+                //#gp_column_2 > table > tbody > tr:nth-child(11) > td:nth-child(1)
+
+                //#gp_column_2 > table > tbody > tr:nth-child(2) > td:nth-child(9)
+                //#gp_column_2 > table > tbody > tr:nth-child(11) > td:nth-child(8)
+                var resList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                GrandPrixResult result = new GrandPrixResult { 
+                    IdParticipant = Guid.NewGuid(), 
+                    Lap = 0, 
+                    Points = 0, 
+                    Position = 0, 
+                    Time = "" 
+                };
+
+
             }
 
             Console.ReadKey();
@@ -490,3 +571,31 @@ namespace ParserApp
         }
     }
 }
+
+
+//1       2       Нино Фарина	Alfa Romeo	70	2:13'23.6	146.4	9	
+//2       3       Луиджи Фаджиоли	Alfa Romeo	70	2:13'26.2	146.3	6	
+//3       4       Редж Парнелл	Alfa Romeo	70	2:14'15.6	145.4	4	
+//4       14      Ив Жиро-Кабанту	Talbot-Lago	68	2:13'25.0	142.2	3	
+//5       15      Луи Розье	Talbot-Lago	68	2:14'28.4	141.1	2	
+//6       12      Боб Джерард	ERA	67	2:13'26.4	140.1		
+//7       11      Кат Харрисон	ERA	67	2:13'26.8	140.1		
+//8       16      Филип Этанселен	Talbot-Lago	65	2:14'30.6	134.8		
+//9       6       Дэвид Хемпшир	Maserati	64	2:14'03.6	133.2		
+//10      10 = Maserati    64  2:15'00.4	132.2		
+
+//    Джо Фрай		45				Отдал автомобиль Шоуи-Тэйлору
+//	Брайан Шоуи-Тэйлор		19				Взял автомобиль Фрая
+//11		18		Джонни Клэз	Talbot-Lago	64	2:15'28.6	131.8		
+//нф 1       Хуан - Мануэль Фанхио Alfa Romeo	62				Маслопровод
+//нк	23		Джо Келли	Alta	57				
+//нф	21		Принц Бира	Maserati	49				Впрыск топлива
+//нф	5		Дэвид Марри	Maserati	44				Двигатель
+//нф	24		Джеф Кроссли	Alta	43				Трансмиссия
+//нф	20		Туло де Граффенрид	Maserati	36				Двигатель / шатун
+//нф	19		Луи Широн	Maserati	24				Утечка масла / сцепление
+//нф	17		Эжен Мартен	Talbot-Lago	8				Давление масла / двигатель
+//нф	9	=		ERA	5				Коробка передач
+//	Питер Уокер		2				Отдал автомобиль Ролту
+//	Тони Ролт		3				Взял автомобиль Уокера / коробка передач
+//нф	8		Лесли Джонсон	ERA	2				Нагнетатель турбонаддува

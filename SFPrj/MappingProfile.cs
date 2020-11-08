@@ -24,25 +24,13 @@ namespace SFPrj
             CreateMap<DescriptionGPResultCreateDto, GrandPrixResultNote>();
             CreateMap<DescriptionGPResultUpdateDto, GrandPrixResultNote>();
 
-            CreateMap<DNQ, DNQDto>();
-            CreateMap<DNQCreateDto, DNQ>();
-            CreateMap<DNQUpdateDto, DNQ>();
-
             CreateMap<Engine, EngineDto>();
             CreateMap<EngineCreateDto, Engine>();
             CreateMap<EngineUpdateDto, Engine>();
 
-            CreateMap<Fail, FailDto>();
-            CreateMap<FailCreateDto, Fail>();
-            CreateMap<FailUpdateDto, Fail>();
-
             CreateMap<FastLap, FastLapDto>();
             CreateMap<FastLapCreateDto, FastLap>();
             CreateMap<FastLapUpdateDto, FastLap>();
-
-            CreateMap<Fine, FineDto>();
-            CreateMap<FineCreateDto, Fine>();
-            CreateMap<FineUpdateDto, Fine>();
 
             CreateMap<GrandPrix, GPDto>();
             CreateMap<GPCreateDto, GrandPrix>();
@@ -63,10 +51,6 @@ namespace SFPrj
             CreateMap<Participant, ParticipantDto>();
             CreateMap<ParticipantCreateDto, Participant>(); 
             CreateMap<ParticipantUpdateDto, Participant>();
-
-            CreateMap<Pit, PitDto>();
-            CreateMap<PitCreateDto, Pit>();
-            CreateMap<PitUpdateDto, Pit>();
 
             CreateMap<Qualification, QualificationDto>();
             CreateMap<QualificationCreateDto, Qualification>();
@@ -95,10 +79,6 @@ namespace SFPrj
             CreateMap<TrackСonfiguration, TrackСonfigurationDto>();
             CreateMap<TrackСonfigurationCreateDto, TrackСonfiguration>();
             CreateMap<TrackСonfigurationUpdateDto, TrackСonfiguration>();
-
-            CreateMap<TypeFail, TypeFailDto>();
-            CreateMap<TypeFailCreateDto, TypeFail>();
-            CreateMap<TypeFailUpdateDto, TypeFail>();
 
             CreateMap<Tyre, TyreDto>();
             CreateMap<TyreCreateDto, Tyre>(); 

@@ -7,18 +7,14 @@ namespace Contracts
         IChassiRepository Chassi { get; }
         ICountryRepository Country { get; }
         IDescriptionGPResultRepository DescriptionGPResult { get; }
-        IDNQRepository DNQ { get; }
         IEngineRepository Engine { get; }
-        IFailRepository Fail { get; }
         IFastLapRepository FastLap { get; }
-        IFineRepository Fine { get; }
         IGPRepository GP { get; }
         IGPResultRepository GPResult { get; }
         IImageRepository Image { get; }
         ILeaderLapRepository LeaderLap { get; }
         IManufacturerRepository Manufacturer { get; }
         IParticipantRepository Participant { get; }
-        IPitRepository Pit { get; }
         IQualificationRepository Qualification { get; }
         IRacerRepository Racer { get; }
         ISeasonRepository Season { get; }
@@ -26,7 +22,6 @@ namespace Contracts
         ITeamRepository Team { get; }
         ITrackСonfigurationRepository TrackConfiguration { get; }
         ITrackRepository Track { get; }
-        ITypeFailRepository TypeFail { get; }
         ITyreRepository Tyre { get; }
         Task SaveAsync();
     }

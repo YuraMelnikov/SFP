@@ -9,6 +9,5 @@ namespace Entities.DataTransferObjects
         public float AverageSpeed { get; set; }
         public int Lap { get; set; }
         public ParticipantDto ParticipantDto { get; set; }
-        public TypeFinishDto TypeFinishDto { get; set; }
     }
 }
