@@ -14,7 +14,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "Time is required")]
         public string Time { get; set; }
         [Required(ErrorMessage = "Average speed is required")]
-        public float AverageSpeed { get; set; }
+        public string AverageSpeed { get; set; }
         [Required(ErrorMessage = "Lap is required")]
         public int Lap { get; set; }
         [Required(ErrorMessage = "Points is required")]

@@ -514,32 +514,125 @@ namespace ParserApp
             //    }
             //}
 
-            gpList = repository.GrandPrixes
-                .AsNoTracking()
-                .Include(a => a.Season)
-                .ToList();
+            gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season).ToList();
             foreach (var gp in gpList)
             {
                 string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=c&drv_be=&cha_be=&eng_be=";
                 document = await context.OpenAsync(linkForParc);
+                var tdPosition = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(1)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdClassification = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(2)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdNumber = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(3)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdFlag = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdRacer = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(5)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdLap = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdTime = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(8)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdAverageSpeed = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(9)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdPoints = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(10)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdNote = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(11)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                int countTd = tdNote.Count;
+                int posDouble = 0;
+                string stateDouble = "";
+                string timeDouble = "";
+                string avsDouble = "";
+                bool boolDouble = false;
 
-                //#gp_column_2 > table > tbody > tr:nth-child(2) > td:nth-child(1)
-                //#gp_column_2 > table > tbody > tr:nth-child(11) > td:nth-child(1)
+                Guid IdParticipant;
+                int? Position;
+                string Classification;
+                int Lap;
+                string Time;
+                string AverageSpeed;
+                float Points;
+                string Note;
 
-                //#gp_column_2 > table > tbody > tr:nth-child(2) > td:nth-child(9)
-                //#gp_column_2 > table > tbody > tr:nth-child(11) > td:nth-child(8)
-                var resList = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                GrandPrixResult result = new GrandPrixResult { 
-                    IdParticipant = Guid.NewGuid(), 
-                    Lap = 0, 
-                    Points = 0, 
-                    Position = 0, 
-                    Time = "" 
+                for (int i = 1; i < countTd; i++)
+                {
+                    if (tdFlag[i] == "=")
+                    {
+                        boolDouble = true;
+                        try
+                        {
+                            posDouble = Convert.ToInt32(tdPosition[i]);
+                        }
+                        catch
+                        {
+                            posDouble = 0;
+                        }
+                        avsDouble = tdAverageSpeed[i];
+                        timeDouble = tdTime[i];
+                        stateDouble = tdClassification[i];
+                    }
+                    else
+                    {
+                        if (tdPosition[i] != "")
+                            boolDouble = false;
+                        if (tdClassification[i] != "")
+                            boolDouble = false;
+                        if (boolDouble == true)
+                        {
+                            if (posDouble != 0)
+                            {
+                                IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+                                Position = posDouble;
+                                Classification = stateDouble;
+                                Lap = Convert.ToInt32(tdLap[i]);
+                                Time = timeDouble;
+                                AverageSpeed = avsDouble;
+                                Points = 0f;
+                                if (tdPoints[i] != "")
+                                    Points = (float)Convert.ToDouble(tdPoints[i]);
+                                Note = tdNote[i];
+                            }
+                            else
+                            {
+                                IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+                                Position = 0;
+                                Classification = stateDouble;
+                                Lap = Convert.ToInt32(tdLap[i]);
+                                Time = timeDouble;
+                                AverageSpeed = avsDouble;
+                                Points = 0f;
+                                if (tdPoints[i] != "")
+                                    Points = (float)Convert.ToDouble(tdPoints[i]);
+                                Note = tdNote[i];
+                            }
+                        }
+                        else
+                        {
+                            boolDouble = false;
+                            posDouble = 0;
+                            stateDouble = "";
+                            timeDouble = "";
+                            avsDouble = "";
+                            IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+                            if (tdPosition[i] == "")
+                                Position = null;
+                            else
+                                Position = Convert.ToInt32(tdPosition[i]);
+                            Classification = tdClassification[i];
+                            Lap = Convert.ToInt32(tdLap[i]);
+                            Time = tdTime[i];
+                            AverageSpeed = tdAverageSpeed[i]; 
+                            Points = 0f;
+                            if (tdPoints[i] != "")
+                                Points = (float)Convert.ToDouble(tdPoints[i]);
+                            Note = tdNote[i];
+                        }
+                        Console.WriteLine("Pos: " + Position + " | Cls: " + Classification + " | Lap: " + Lap.ToString() + " | Time: " + Time + " | AVS: " + AverageSpeed + " | Poi: " + Points.ToString() + " | Note: " + Note);
+                    }
+                }
+                GrandPrixResult result = new GrandPrixResult
+                {
+                    IdParticipant = Guid.NewGuid(),
+                    Position = 0,
+                    Classification = "",
+                    Lap = 0,
+                    Time = "",
+                    AverageSpeed = "",
+                    Points = 0,
+                    Note = ""
                 };
-
-
             }
-
             Console.ReadKey();
         }
     }
@@ -571,31 +664,3 @@ namespace ParserApp
         }
     }
 }
-
-
-//1       2       Нино Фарина	Alfa Romeo	70	2:13'23.6	146.4	9	
-//2       3       Луиджи Фаджиоли	Alfa Romeo	70	2:13'26.2	146.3	6	
-//3       4       Редж Парнелл	Alfa Romeo	70	2:14'15.6	145.4	4	
-//4       14      Ив Жиро-Кабанту	Talbot-Lago	68	2:13'25.0	142.2	3	
-//5       15      Луи Розье	Talbot-Lago	68	2:14'28.4	141.1	2	
-//6       12      Боб Джерард	ERA	67	2:13'26.4	140.1		
-//7       11      Кат Харрисон	ERA	67	2:13'26.8	140.1		
-//8       16      Филип Этанселен	Talbot-Lago	65	2:14'30.6	134.8		
-//9       6       Дэвид Хемпшир	Maserati	64	2:14'03.6	133.2		
-//10      10 = Maserati    64  2:15'00.4	132.2		
-
-//    Джо Фрай		45				Отдал автомобиль Шоуи-Тэйлору
-//	Брайан Шоуи-Тэйлор		19				Взял автомобиль Фрая
-//11		18		Джонни Клэз	Talbot-Lago	64	2:15'28.6	131.8		
-//нф 1       Хуан - Мануэль Фанхио Alfa Romeo	62				Маслопровод
-//нк	23		Джо Келли	Alta	57				
-//нф	21		Принц Бира	Maserati	49				Впрыск топлива
-//нф	5		Дэвид Марри	Maserati	44				Двигатель
-//нф	24		Джеф Кроссли	Alta	43				Трансмиссия
-//нф	20		Туло де Граффенрид	Maserati	36				Двигатель / шатун
-//нф	19		Луи Широн	Maserati	24				Утечка масла / сцепление
-//нф	17		Эжен Мартен	Talbot-Lago	8				Давление масла / двигатель
-//нф	9	=		ERA	5				Коробка передач
-//	Питер Уокер		2				Отдал автомобиль Ролту
-//	Тони Ролт		3				Взял автомобиль Уокера / коробка передач
-//нф	8		Лесли Джонсон	ERA	2				Нагнетатель турбонаддува
