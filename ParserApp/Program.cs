@@ -656,41 +656,101 @@ namespace ParserApp
             //    Console.WriteLine();
             //}
 
-            gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season).Where(a => a.Number == 26).ToList();
-            foreach (var gp in gpList)
+            //gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season).ToList();
+            //foreach (var gp in gpList)
+            //{
+            //    string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=f&drv_be=&cha_be=&eng_be=";
+            //    document = await context.OpenAsync(linkForParc);
+            //    var tdflRacer = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdflTime = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdflSpeed = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(10)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    bool contract = false;
+            //    for (int i = 0; i < tdflRacer.Count; i++)
+            //    {
+            //        try
+            //        {
+            //            Guid pacipiandId = repository.Participants
+            //                .AsNoTracking()
+            //                .Include(a => a.Racer)
+            //                .First(a => a.IdGrandPrix == gp.Id && a.Racer.FirstName == tdflRacer[i])
+            //                .Id;
+            //            FastLap fastLap = new FastLap();
+            //            fastLap.IdParticipant = pacipiandId;
+            //            fastLap.Time = tdflTime[i];
+            //            fastLap.AverageSpeed = tdflSpeed[i];
+            //            repository.FastLaps.Add(fastLap);
+            //            repository.SaveChanges();
+            //            contract = true;
+            //            break;
+            //        }
+            //        catch 
+            //        {
+            //        }
+            //    }
+            //}
+
+            //gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season).ToList();
+            //char[] trimLLChars = { '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            //foreach (var gp in gpList)
+            //{
+            //    string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=c&drv_be=&cha_be=&eng_be=";
+            //    document = await context.OpenAsync(linkForParc);
+            //    var leaderLaps = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(3) > table > tbody > tr").ToList().Cast<IHtmlTableRowElement>().Select(m => m.TextContent).ToList();
+            //    bool control = false;
+            //    for (int i = 0; i < leaderLaps.Count; i++)
+            //    {
+            //        try
+            //        {
+            //            Guid guidLapParcipiat = repository.Participants.AsNoTracking().Include(a => a.Racer).First(a => a.IdGrandPrix == gp.Id && a.Racer.FirstName == leaderLaps[i].Trim(trimLLChars)).Id;
+            //            int first = 0;
+            //            int last = 0;
+            //            string racerTrim = leaderLaps[i].Trim(trimLLChars);
+            //            try
+            //            {
+            //                string tmp1 = leaderLaps[i].Replace(racerTrim, "");
+            //                first = Convert.ToInt32(leaderLaps[i].Substring(0, leaderLaps[i].IndexOf("-")));
+            //                last = Convert.ToInt32(tmp1.Substring(leaderLaps[i].IndexOf("-") + 1));
+            //            }
+            //            catch
+            //            {
+            //                first = Convert.ToInt32(leaderLaps[i].Replace(racerTrim, ""));
+            //                last = first;
+            //            }
+            //            LeaderLap lap = new LeaderLap();
+            //            lap.IdParticipant = guidLapParcipiat;
+            //            lap.First = first;
+            //            lap.Last = last;
+            //            repository.LeaderLaps.Add(lap);
+            //            repository.SaveChanges();
+            //            control = true;
+            //        }
+            //        catch
+            //        {
+            //        }
+            //    }
+            //    Console.WriteLine(gp.Number.ToString() + " - " + control);
+            //}
+
+            var listGP = repository.GrandPrixes.AsNoTracking().Where(a => a.Number > 338).ToList();
+            foreach (var gp in listGP)
             {
-                string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=f&drv_be=&cha_be=&eng_be=";
-                document = await context.OpenAsync(linkForParc);
-                var tdflRacer = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdflTime = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdflSpeed = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(10)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                bool contract = false;
-                for (int i = 0; i < tdflRacer.Count; i++)
+                int i = 1;
+                var quaList = repository.Qualifications
+                    .Include(a => a.Participant)
+                    .Where(a => a.Participant.IdGrandPrix == gp.Id)
+                    .OrderBy(a => a.Time)
+                    .ToList();
+                foreach (var qua in quaList)
                 {
-                    try
-                    {
-                        Guid pacipiandId = repository.Participants
-                            .AsNoTracking()
-                            .Include(a => a.Racer)
-                            .First(a => a.IdGrandPrix == gp.Id && a.Racer.FirstName == tdflRacer[i])
-                            .Id;
-                        FastLap fastLap = new FastLap();
-                        fastLap.IdParticipant = pacipiandId;
-                        fastLap.Time = tdflTime[i];
-                        fastLap.AverageSpeed = tdflSpeed[i];
-                        repository.FastLaps.Add(fastLap);
-                        repository.SaveChanges();
-                        contract = true;
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                    }
+                    qua.Position = i;
+                    repository.Entry(qua).State = EntityState.Modified;
+                    repository.SaveChanges();
+                    i++;
                 }
-                if(contract == false)
-                    Console.WriteLine(contract);
-                Console.WriteLine(contract);
+                Console.WriteLine(gp.Id.ToString() + " - " + gp.Number.ToString());
             }
+
+
             Console.ReadKey();
         }
     }

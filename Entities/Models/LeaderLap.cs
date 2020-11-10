@@ -7,14 +7,14 @@ namespace Entities.Models
     [Table("LeaderLap")]
     public class LeaderLap : EntityId
     {
-        [Required(ErrorMessage = "Result Grand prix is required")]
-        public Guid IdGrandPrixResult { get; set; }
+        [Required(ErrorMessage = "Participant is required")]
+        public Guid IdParticipant { get; set; }
         [Required(ErrorMessage = "First is required")]
         public int First { get; set; }
         [Required(ErrorMessage = "Last is required")]
         public int Last { get; set; }
 
-        [ForeignKey("IdGrandPrixResult")]
-        public GrandPrixResult GrandPrixResult { get; set; }
+        [ForeignKey("IdParticipant")]
+        public Participant Participant { get; set; }
     }
 }
