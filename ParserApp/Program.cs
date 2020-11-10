@@ -2,7 +2,9 @@
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Entities.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -653,6 +655,42 @@ namespace ParserApp
             //    Console.WriteLine();
             //    Console.WriteLine();
             //}
+
+            gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season).Where(a => a.Number == 26).ToList();
+            foreach (var gp in gpList)
+            {
+                string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=f&drv_be=&cha_be=&eng_be=";
+                document = await context.OpenAsync(linkForParc);
+                var tdflRacer = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdflTime = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                var tdflSpeed = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(10)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+                bool contract = false;
+                for (int i = 0; i < tdflRacer.Count; i++)
+                {
+                    try
+                    {
+                        Guid pacipiandId = repository.Participants
+                            .AsNoTracking()
+                            .Include(a => a.Racer)
+                            .First(a => a.IdGrandPrix == gp.Id && a.Racer.FirstName == tdflRacer[i])
+                            .Id;
+                        FastLap fastLap = new FastLap();
+                        fastLap.IdParticipant = pacipiandId;
+                        fastLap.Time = tdflTime[i];
+                        fastLap.AverageSpeed = tdflSpeed[i];
+                        repository.FastLaps.Add(fastLap);
+                        repository.SaveChanges();
+                        contract = true;
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                if(contract == false)
+                    Console.WriteLine(contract);
+                Console.WriteLine(contract);
+            }
             Console.ReadKey();
         }
     }

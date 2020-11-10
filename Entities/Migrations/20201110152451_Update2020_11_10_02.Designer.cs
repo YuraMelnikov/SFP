@@ -3,15 +3,17 @@ using System;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20201110152451_Update2020_11_10_02")]
+    partial class Update2020_11_10_02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,7 +152,7 @@ namespace Entities.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("IdParticipant")
+                    b.Property<Guid>("IdGrandPrixResult")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Time")
@@ -159,7 +161,7 @@ namespace Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdParticipant");
+                    b.HasIndex("IdGrandPrixResult");
 
                     b.ToTable("FastLap");
                 });
@@ -780,9 +782,9 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.FastLap", b =>
                 {
-                    b.HasOne("Entities.Models.Participant", "Participant")
+                    b.HasOne("Entities.Models.GrandPrixResult", "GrandPrixResult")
                         .WithMany()
-                        .HasForeignKey("IdParticipant")
+                        .HasForeignKey("IdGrandPrixResult")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
