@@ -514,7 +514,9 @@ namespace ParserApp
             //    }
             //}
 
-            gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season).ToList();
+            gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season)
+                //.Where(a => a.Number > 48)
+                .ToList();
             foreach (var gp in gpList)
             {
                 string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=c&drv_be=&cha_be=&eng_be=";
@@ -535,103 +537,122 @@ namespace ParserApp
                 string timeDouble = "";
                 string avsDouble = "";
                 bool boolDouble = false;
-
                 Guid IdParticipant;
                 int? Position;
                 string Classification;
-                int Lap;
+                int? Lap;
                 string Time;
                 string AverageSpeed;
                 float Points;
                 string Note;
-
                 for (int i = 1; i < countTd; i++)
                 {
-                    if (tdFlag[i] == "=")
+                    if((tdPosition[i] + tdClassification[i] + tdRacer[i]).Replace(" ", "") != "")
                     {
-                        boolDouble = true;
-                        try
+                        tdRacer[i] = tdRacer[i].Replace("*", "").Trim(' ');
+                        if (tdFlag[i] == "=")
                         {
-                            posDouble = Convert.ToInt32(tdPosition[i]);
-                        }
-                        catch
-                        {
-                            posDouble = 0;
-                        }
-                        avsDouble = tdAverageSpeed[i];
-                        timeDouble = tdTime[i];
-                        stateDouble = tdClassification[i];
-                    }
-                    else
-                    {
-                        if (tdPosition[i] != "")
-                            boolDouble = false;
-                        if (tdClassification[i] != "")
-                            boolDouble = false;
-                        if (boolDouble == true)
-                        {
-                            if (posDouble != 0)
+                            boolDouble = true;
+                            try
                             {
-                                IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
-                                Position = posDouble;
-                                Classification = stateDouble;
-                                Lap = Convert.ToInt32(tdLap[i]);
-                                Time = timeDouble;
-                                AverageSpeed = avsDouble;
-                                Points = 0f;
-                                if (tdPoints[i] != "")
-                                    Points = (float)Convert.ToDouble(tdPoints[i]);
-                                Note = tdNote[i];
+                                posDouble = Convert.ToInt32(tdPosition[i]);
                             }
-                            else
+                            catch
                             {
-                                IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
-                                Position = 0;
-                                Classification = stateDouble;
-                                Lap = Convert.ToInt32(tdLap[i]);
-                                Time = timeDouble;
-                                AverageSpeed = avsDouble;
-                                Points = 0f;
-                                if (tdPoints[i] != "")
-                                    Points = (float)Convert.ToDouble(tdPoints[i]);
-                                Note = tdNote[i];
+                                posDouble = 0;
                             }
+                            avsDouble = tdAverageSpeed[i];
+                            timeDouble = tdTime[i];
+                            stateDouble = tdClassification[i];
                         }
                         else
                         {
-                            boolDouble = false;
-                            posDouble = 0;
-                            stateDouble = "";
-                            timeDouble = "";
-                            avsDouble = "";
-                            IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
-                            if (tdPosition[i] == "")
-                                Position = null;
+                            if (tdPosition[i] != "")
+                                boolDouble = false;
+                            if (tdClassification[i] != "")
+                                boolDouble = false;
+                            if (boolDouble == true)
+                            {
+                                if (posDouble != 0)
+                                {
+                                    IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i].Replace("* ", "") && a.IdGrandPrix == gp.Id).Id;
+                                    Position = posDouble;
+                                    Classification = stateDouble;
+                                    if (tdLap[i] == "")
+                                        Lap = null;
+                                    else
+                                        Lap = Convert.ToInt32(tdLap[i]);
+                                    Time = timeDouble;
+                                    AverageSpeed = avsDouble;
+                                    Points = 0f;
+                                    if (tdPoints[i] != "")
+                                        Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
+                                    Note = tdNote[i];
+                                }
+                                else
+                                {
+                                    IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+                                    Position = 0;
+                                    Classification = stateDouble;
+                                    if (tdLap[i] == "")
+                                        Lap = null;
+                                    else
+                                        Lap = Convert.ToInt32(tdLap[i]);
+                                    Time = timeDouble;
+                                    AverageSpeed = avsDouble;
+                                    Points = 0f;
+                                    if (tdPoints[i] != "")
+                                        Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
+                                    Note = tdNote[i];
+                                }
+                            }
                             else
-                                Position = Convert.ToInt32(tdPosition[i]);
-                            Classification = tdClassification[i];
-                            Lap = Convert.ToInt32(tdLap[i]);
-                            Time = tdTime[i];
-                            AverageSpeed = tdAverageSpeed[i]; 
-                            Points = 0f;
-                            if (tdPoints[i] != "")
-                                Points = (float)Convert.ToDouble(tdPoints[i]);
-                            Note = tdNote[i];
+                            {
+                                boolDouble = false;
+                                posDouble = 0;
+                                stateDouble = "";
+                                timeDouble = "";
+                                avsDouble = "";
+                                IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+                                if (tdPosition[i] == "")
+                                    Position = null;
+                                else
+                                    Position = Convert.ToInt32(tdPosition[i]);
+                                Classification = tdClassification[i];
+                                if (tdLap[i] == "")
+                                    Lap = null;
+                                else
+                                    Lap = Convert.ToInt32(tdLap[i]);
+                                Time = tdTime[i];
+                                AverageSpeed = tdAverageSpeed[i];
+                                Points = 0f;
+                                if (tdPoints[i] != "")
+                                    Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
+                                Note = tdNote[i];
+                            }
+                            GrandPrixResult result = new GrandPrixResult
+                            {
+                                IdParticipant = IdParticipant,
+                                Position = Position,
+                                Classification = Classification,
+                                Lap = Lap,
+                                Time = Time,
+                                AverageSpeed = AverageSpeed,
+                                Points = Points,
+                                Note = Note
+                            };
+                            repository.GrandPrixResults.Add(result);
+                            repository.SaveChanges();
+                            Console.WriteLine(String.Format("{0,3:" + "}", Position.ToString()) + " | " + String.Format("{0,3:" + "}", Classification) + " | " + String.Format("{0,25:" + "}", tdRacer[i]) + " | " + String.Format("{0,3:" + "}", Lap.ToString()) + " | " + String.Format("{0,10:" + "}", AverageSpeed) + " | " + String.Format("{0,3:" + "}", Points) + " | " + Note);
                         }
-                        Console.WriteLine("Pos: " + Position + " | Cls: " + Classification + " | Lap: " + Lap.ToString() + " | Time: " + Time + " | AVS: " + AverageSpeed + " | Poi: " + Points.ToString() + " | Note: " + Note);
+                    }
+                    else
+                    {
                     }
                 }
-                GrandPrixResult result = new GrandPrixResult
-                {
-                    IdParticipant = Guid.NewGuid(),
-                    Position = 0,
-                    Classification = "",
-                    Lap = 0,
-                    Time = "",
-                    AverageSpeed = "",
-                    Points = 0,
-                    Note = ""
-                };
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
             }
             Console.ReadKey();
         }

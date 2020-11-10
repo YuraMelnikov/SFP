@@ -16,7 +16,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "Average speed is required")]
         public string AverageSpeed { get; set; }
         [Required(ErrorMessage = "Lap is required")]
-        public int Lap { get; set; }
+        public int? Lap { get; set; }
         [Required(ErrorMessage = "Points is required")]
         public float Points { get; set; }
         [Required(ErrorMessage = "Position is required")]
