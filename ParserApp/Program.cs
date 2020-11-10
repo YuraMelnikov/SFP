@@ -514,146 +514,145 @@ namespace ParserApp
             //    }
             //}
 
-            gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season)
-                //.Where(a => a.Number > 48)
-                .ToList();
-            foreach (var gp in gpList)
-            {
-                string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=c&drv_be=&cha_be=&eng_be=";
-                document = await context.OpenAsync(linkForParc);
-                var tdPosition = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(1)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdClassification = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(2)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdNumber = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(3)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdFlag = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdRacer = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(5)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdLap = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdTime = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(8)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdAverageSpeed = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(9)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdPoints = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(10)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                var tdNote = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(11)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
-                int countTd = tdNote.Count;
-                int posDouble = 0;
-                string stateDouble = "";
-                string timeDouble = "";
-                string avsDouble = "";
-                bool boolDouble = false;
-                Guid IdParticipant;
-                int? Position;
-                string Classification;
-                int? Lap;
-                string Time;
-                string AverageSpeed;
-                float Points;
-                string Note;
-                for (int i = 1; i < countTd; i++)
-                {
-                    if((tdPosition[i] + tdClassification[i] + tdRacer[i]).Replace(" ", "") != "")
-                    {
-                        tdRacer[i] = tdRacer[i].Replace("*", "").Trim(' ');
-                        if (tdFlag[i] == "=")
-                        {
-                            boolDouble = true;
-                            try
-                            {
-                                posDouble = Convert.ToInt32(tdPosition[i]);
-                            }
-                            catch
-                            {
-                                posDouble = 0;
-                            }
-                            avsDouble = tdAverageSpeed[i];
-                            timeDouble = tdTime[i];
-                            stateDouble = tdClassification[i];
-                        }
-                        else
-                        {
-                            if (tdPosition[i] != "")
-                                boolDouble = false;
-                            if (tdClassification[i] != "")
-                                boolDouble = false;
-                            if (boolDouble == true)
-                            {
-                                if (posDouble != 0)
-                                {
-                                    IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i].Replace("* ", "") && a.IdGrandPrix == gp.Id).Id;
-                                    Position = posDouble;
-                                    Classification = stateDouble;
-                                    if (tdLap[i] == "")
-                                        Lap = null;
-                                    else
-                                        Lap = Convert.ToInt32(tdLap[i]);
-                                    Time = timeDouble;
-                                    AverageSpeed = avsDouble;
-                                    Points = 0f;
-                                    if (tdPoints[i] != "")
-                                        Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
-                                    Note = tdNote[i];
-                                }
-                                else
-                                {
-                                    IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
-                                    Position = 0;
-                                    Classification = stateDouble;
-                                    if (tdLap[i] == "")
-                                        Lap = null;
-                                    else
-                                        Lap = Convert.ToInt32(tdLap[i]);
-                                    Time = timeDouble;
-                                    AverageSpeed = avsDouble;
-                                    Points = 0f;
-                                    if (tdPoints[i] != "")
-                                        Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
-                                    Note = tdNote[i];
-                                }
-                            }
-                            else
-                            {
-                                boolDouble = false;
-                                posDouble = 0;
-                                stateDouble = "";
-                                timeDouble = "";
-                                avsDouble = "";
-                                IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
-                                if (tdPosition[i] == "")
-                                    Position = null;
-                                else
-                                    Position = Convert.ToInt32(tdPosition[i]);
-                                Classification = tdClassification[i];
-                                if (tdLap[i] == "")
-                                    Lap = null;
-                                else
-                                    Lap = Convert.ToInt32(tdLap[i]);
-                                Time = tdTime[i];
-                                AverageSpeed = tdAverageSpeed[i];
-                                Points = 0f;
-                                if (tdPoints[i] != "")
-                                    Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
-                                Note = tdNote[i];
-                            }
-                            GrandPrixResult result = new GrandPrixResult
-                            {
-                                IdParticipant = IdParticipant,
-                                Position = Position,
-                                Classification = Classification,
-                                Lap = Lap,
-                                Time = Time,
-                                AverageSpeed = AverageSpeed,
-                                Points = Points,
-                                Note = Note
-                            };
-                            repository.GrandPrixResults.Add(result);
-                            repository.SaveChanges();
-                            Console.WriteLine(String.Format("{0,3:" + "}", Position.ToString()) + " | " + String.Format("{0,3:" + "}", Classification) + " | " + String.Format("{0,25:" + "}", tdRacer[i]) + " | " + String.Format("{0,3:" + "}", Lap.ToString()) + " | " + String.Format("{0,10:" + "}", AverageSpeed) + " | " + String.Format("{0,3:" + "}", Points) + " | " + Note);
-                        }
-                    }
-                    else
-                    {
-                    }
-                }
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine();
-            }
+            //gpList = repository.GrandPrixes.AsNoTracking().Include(a => a.Season)
+            //    .ToList();
+            //foreach (var gp in gpList)
+            //{
+            //    string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=c&drv_be=&cha_be=&eng_be=";
+            //    document = await context.OpenAsync(linkForParc);
+            //    var tdPosition = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(1)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdClassification = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(2)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdNumber = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(3)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdFlag = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(4)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdRacer = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(5)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdLap = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(7)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdTime = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(8)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdAverageSpeed = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(9)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdPoints = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(10)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    var tdNote = document.QuerySelectorAll("#gp_column_2 > table > tbody > tr > td:nth-child(11)").ToList().Cast<IHtmlTableDataCellElement>().Select(m => m.TextContent).ToList();
+            //    int countTd = tdNote.Count;
+            //    int posDouble = 0;
+            //    string stateDouble = "";
+            //    string timeDouble = "";
+            //    string avsDouble = "";
+            //    bool boolDouble = false;
+            //    Guid IdParticipant;
+            //    int? Position;
+            //    string Classification;
+            //    int? Lap;
+            //    string Time;
+            //    string AverageSpeed;
+            //    float Points;
+            //    string Note;
+            //    for (int i = 1; i < countTd; i++)
+            //    {
+            //        if((tdPosition[i] + tdClassification[i] + tdRacer[i]).Replace(" ", "") != "")
+            //        {
+            //            tdRacer[i] = tdRacer[i].Replace("*", "").Trim(' ');
+            //            if (tdFlag[i] == "=")
+            //            {
+            //                boolDouble = true;
+            //                try
+            //                {
+            //                    posDouble = Convert.ToInt32(tdPosition[i]);
+            //                }
+            //                catch
+            //                {
+            //                    posDouble = 0;
+            //                }
+            //                avsDouble = tdAverageSpeed[i];
+            //                timeDouble = tdTime[i];
+            //                stateDouble = tdClassification[i];
+            //            }
+            //            else
+            //            {
+            //                if (tdPosition[i] != "")
+            //                    boolDouble = false;
+            //                if (tdClassification[i] != "")
+            //                    boolDouble = false;
+            //                if (boolDouble == true)
+            //                {
+            //                    if (posDouble != 0)
+            //                    {
+            //                        IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i].Replace("* ", "") && a.IdGrandPrix == gp.Id).Id;
+            //                        Position = posDouble;
+            //                        Classification = stateDouble;
+            //                        if (tdLap[i] == "")
+            //                            Lap = null;
+            //                        else
+            //                            Lap = Convert.ToInt32(tdLap[i]);
+            //                        Time = timeDouble;
+            //                        AverageSpeed = avsDouble;
+            //                        Points = 0f;
+            //                        if (tdPoints[i] != "")
+            //                            Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
+            //                        Note = tdNote[i];
+            //                    }
+            //                    else
+            //                    {
+            //                        IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+            //                        Position = 0;
+            //                        Classification = stateDouble;
+            //                        if (tdLap[i] == "")
+            //                            Lap = null;
+            //                        else
+            //                            Lap = Convert.ToInt32(tdLap[i]);
+            //                        Time = timeDouble;
+            //                        AverageSpeed = avsDouble;
+            //                        Points = 0f;
+            //                        if (tdPoints[i] != "")
+            //                            Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
+            //                        Note = tdNote[i];
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    boolDouble = false;
+            //                    posDouble = 0;
+            //                    stateDouble = "";
+            //                    timeDouble = "";
+            //                    avsDouble = "";
+            //                    IdParticipant = repository.Participants.Include(a => a.Racer).First(a => a.Racer.FirstName == tdRacer[i] && a.IdGrandPrix == gp.Id).Id;
+            //                    if (tdPosition[i] == "")
+            //                        Position = null;
+            //                    else
+            //                        Position = Convert.ToInt32(tdPosition[i]);
+            //                    Classification = tdClassification[i];
+            //                    if (tdLap[i] == "")
+            //                        Lap = null;
+            //                    else
+            //                        Lap = Convert.ToInt32(tdLap[i]);
+            //                    Time = tdTime[i];
+            //                    AverageSpeed = tdAverageSpeed[i];
+            //                    Points = 0f;
+            //                    if (tdPoints[i] != "")
+            //                        Points = (float)Convert.ToDouble(tdPoints[i].Replace("(", "").Replace(")", ""));
+            //                    Note = tdNote[i];
+            //                }
+            //                GrandPrixResult result = new GrandPrixResult
+            //                {
+            //                    IdParticipant = IdParticipant,
+            //                    Position = Position,
+            //                    Classification = Classification,
+            //                    Lap = Lap,
+            //                    Time = Time,
+            //                    AverageSpeed = AverageSpeed,
+            //                    Points = Points,
+            //                    Note = Note
+            //                };
+            //                repository.GrandPrixResults.Add(result);
+            //                repository.SaveChanges();
+            //                Console.WriteLine(String.Format("{0,3:" + "}", Position.ToString()) + " | " + String.Format("{0,3:" + "}", Classification) + " | " + String.Format("{0,25:" + "}", tdRacer[i]) + " | " + String.Format("{0,3:" + "}", Lap.ToString()) + " | " + String.Format("{0,10:" + "}", AverageSpeed) + " | " + String.Format("{0,3:" + "}", Points) + " | " + Note);
+            //            }
+            //        }
+            //        else
+            //        {
+            //        }
+            //    }
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //}
             Console.ReadKey();
         }
     }

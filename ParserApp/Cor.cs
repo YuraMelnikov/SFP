@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ParserApp
+﻿namespace ParserApp
 {
     public class Cor
     {

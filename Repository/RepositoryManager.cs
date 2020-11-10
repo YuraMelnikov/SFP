@@ -9,7 +9,6 @@ namespace Repository
         private readonly RepositoryContext _repoContext;
         private IChassiRepository _chassi;
         private ICountryRepository _country;
-        private IDescriptionGPResultRepository _descriptionGPResult;
         private IEngineRepository _engine;
         private IFastLapRepository _fastLap;
         private IGPRepository _gP;
@@ -49,16 +48,6 @@ namespace Repository
                 if(_country == null)
                     _country = new CountryRepository(_repoContext);
                 return _country;
-            }
-        }
-
-        public IDescriptionGPResultRepository DescriptionGPResult 
-        {
-            get
-            {
-                if(_descriptionGPResult == null)
-                    _descriptionGPResult = new DescriptionGPResultRepository(_repoContext);
-                return _descriptionGPResult;
             }
         }
 

@@ -20,10 +20,6 @@ namespace SFPrj
             CreateMap<CountryCreateDto, Country>();
             CreateMap<CountryUpdateDto, Country>();
 
-            CreateMap<GrandPrixResultNote, DescriptionGPResultDto>();
-            CreateMap<DescriptionGPResultCreateDto, GrandPrixResultNote>();
-            CreateMap<DescriptionGPResultUpdateDto, GrandPrixResultNote>();
-
             CreateMap<Engine, EngineDto>();
             CreateMap<EngineCreateDto, Engine>();
             CreateMap<EngineUpdateDto, Engine>();

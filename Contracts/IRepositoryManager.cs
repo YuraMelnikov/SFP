@@ -6,7 +6,6 @@ namespace Contracts
     {
         IChassiRepository Chassi { get; }
         ICountryRepository Country { get; }
-        IDescriptionGPResultRepository DescriptionGPResult { get; }
         IEngineRepository Engine { get; }
         IFastLapRepository FastLap { get; }
         IGPRepository GP { get; }

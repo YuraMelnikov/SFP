@@ -24,7 +24,6 @@ namespace Entities
         public DbSet<GrandprixNote> GrandprixNotes { get; set; }
         public DbSet<GrandPrixImg> GrandPrixImgs { get; set; }
         public DbSet<GrandPrixResult> GrandPrixResults { get; set; }
-        public DbSet<GrandPrixResultNote> GrandPrixResultNotes { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<LeaderLap> LeaderLaps { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
@@ -39,7 +38,6 @@ namespace Entities
         public DbSet<TeamName> TeamNames { get; set; }
         public DbSet<Track> Tracks { get; set; }
         public DbSet<TrackСonfiguration> TrackСonfigurations { get; set; }
-        public DbSet<TypeFail> TypeFails { get; set; }
         public DbSet<Tyre> Tyres { get; set; }
     }
 }
