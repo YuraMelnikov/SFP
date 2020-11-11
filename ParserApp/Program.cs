@@ -11,6 +11,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using DeviantartApi;
+using DeviantartApi.Attributes;
+using DeviantartApi.Objects;
+using DeviantartApi.Requests;
+using DeviantartApi.Requests.Feed;
 
 namespace ParserApp
 {
@@ -44,7 +49,7 @@ namespace ParserApp
             //    }
             //}
 
-            Guid getDefGuid = repository.Images.First(a => a.Link == "wwwroot/img/cnt_empty.gif").Id;
+            //Guid getDefGuid = repository.Images.First(a => a.Link == "wwwroot/img/cnt_empty.gif").Id;
 
             //for (int i = 1950; i < 2020; i++)
             //{
@@ -400,7 +405,7 @@ namespace ParserApp
             //f bastL
 
 
-            var gpList = repository.GrandPrixes.Include(a => a.Season).AsNoTracking().ToList();
+            //var gpList = repository.GrandPrixes.Include(a => a.Season).AsNoTracking().ToList();
             //foreach (var gp in gpList)
             //{
             //    string linkForParc = "https://wildsoft.motorsport.com/gptable_be.php?y_be=1900&gp_be=" + gp.Number.ToString() + "&t_be=l&drv_be=&cha_be=&eng_be=";
@@ -446,10 +451,10 @@ namespace ParserApp
             //    }
             //}
 
-            gpList = repository.GrandPrixes.Include(a => a.Season)
-                .AsNoTracking()
-                //.Where(a => a.Number > 551)
-                .ToList();
+            //gpList = repository.GrandPrixes.Include(a => a.Season)
+            //    .AsNoTracking()
+            //    //.Where(a => a.Number > 551)
+            //    .ToList();
             //char[] trimChars = { ' ', 'q', 'Q', 'w','W', 'E', 'e', 'R', 'r', 'T', 't', 'Y', 'y', 'U', 'u', 'I', 'i', 'O', 'o', 'P', 'p', 'a', 'A',
             //    'S', 's', 'D', 'd', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', 'K', 'k', 'L', 'Z', 'l', 'z', 'X', 'x', 'C', 'c', 'V', 'v', 'B', 'b', 'N', 'n', 'M', 'm' };
             //foreach (var gp in gpList)
@@ -731,26 +736,31 @@ namespace ParserApp
             //    Console.WriteLine(gp.Number.ToString() + " - " + control);
             //}
 
-            var listGP = repository.GrandPrixes.AsNoTracking().Where(a => a.Number > 338).ToList();
-            foreach (var gp in listGP)
-            {
-                int i = 1;
-                var quaList = repository.Qualifications
-                    .Include(a => a.Participant)
-                    .Where(a => a.Participant.IdGrandPrix == gp.Id)
-                    .OrderBy(a => a.Time)
-                    .ToList();
-                foreach (var qua in quaList)
-                {
-                    qua.Position = i;
-                    repository.Entry(qua).State = EntityState.Modified;
-                    repository.SaveChanges();
-                    i++;
-                }
-                Console.WriteLine(gp.Id.ToString() + " - " + gp.Number.ToString());
-            }
+            //var listGP = repository.GrandPrixes.AsNoTracking().Where(a => a.Number > 338).ToList();
+            //foreach (var gp in listGP)
+            //{
+            //    int i = 1;
+            //    var quaList = repository.Qualifications
+            //        .Include(a => a.Participant)
+            //        .Where(a => a.Participant.IdGrandPrix == gp.Id)
+            //        .OrderBy(a => a.Time)
+            //        .ToList();
+            //    foreach (var qua in quaList)
+            //    {
+            //        qua.Position = i;
+            //        repository.Entry(qua).State = EntityState.Modified;
+            //        repository.SaveChanges();
+            //        i++;
+            //    }
+            //    Console.WriteLine(gp.Id.ToString() + " - " + gp.Number.ToString());
+            //}
+            var result = await new DeviantartApi.Requests.User.WhoAmIRequest().ExecuteAsync();
 
 
+
+            document = await context.OpenAsync("https://www.deviantart.com/f1-history/gallery/all");
+
+            
             Console.ReadKey();
         }
     }

@@ -27,14 +27,13 @@ namespace Entities
         public DbSet<Image> Images { get; set; }
         public DbSet<LeaderLap> LeaderLaps { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
-        public DbSet<ManufacturerImg> ManufacturerImgs { get; set; }
         public DbSet<Participant> Participants { get; set; }
         public DbSet<Qualification> Qualifications { get; set; }
         public DbSet<Racer> Racers { get; set; }
         public DbSet<RacerImg> RacerImgs { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Team> Teams { get; set; }
-        public DbSet<TeamImg> TeamImgs { get; set; }
+        public DbSet<ParticipantImg> TeamImgs { get; set; }
         public DbSet<TeamName> TeamNames { get; set; }
         public DbSet<Track> Tracks { get; set; }
         public DbSet<TrackСonfiguration> TrackСonfigurations { get; set; }
